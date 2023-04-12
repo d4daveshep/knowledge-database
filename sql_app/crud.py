@@ -3,9 +3,6 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 
-# from .models import User
-
-
 def get_user(db_session: Session, user_id: int) -> models.User | None:
     return db_session.query(models.User).filter(models.User.id == user_id).first()
 
