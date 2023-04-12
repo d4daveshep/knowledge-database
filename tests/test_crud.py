@@ -3,7 +3,7 @@ import os
 import pytest
 
 from sql_app import crud, models
-from sql_app.database import SessionLocal, engine
+from sql_app.database import LocalSession, engine
 from sql_app.schemas import UserCreate, ItemCreate
 
 
@@ -11,7 +11,7 @@ from sql_app.schemas import UserCreate, ItemCreate
 def db_session():
     models.Base.metadata.create_all(bind=engine)
 
-    session = SessionLocal()
+    session = LocalSession()
     yield session
 
     session.close()

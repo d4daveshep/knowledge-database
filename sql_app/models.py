@@ -1,7 +1,9 @@
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship, mapped_column, Mapped
+from sqlalchemy.orm import relationship, mapped_column, Mapped, DeclarativeBase
 
-from .database import Base
+
+class Base(DeclarativeBase):
+    pass
 
 
 class User(Base):
