@@ -33,3 +33,15 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+
+
+class NodeBase(BaseModel):
+    name: str
+
+
+class NodeCreate(NodeBase):
+    pass
+
+
+class Node(NodeBase):
+    id: int
