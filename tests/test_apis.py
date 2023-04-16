@@ -1,4 +1,5 @@
 import os
+from os.path import exists
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -8,7 +9,8 @@ from sql_app import schemas
 from sql_app.main import app, get_db_session
 from sql_app.models import Base
 
-os.remove("./test.db")
+if exists("./test.db"):
+    os.remove("./test.db")
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
 
