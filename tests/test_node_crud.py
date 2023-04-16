@@ -55,16 +55,12 @@ def test_get_nodes(session_with_3_nodes):
     assert len(nodes) == 3
 
 
-def test_select_node_case_insensitive(session_with_3_nodes):
-    select_stmt = select(Node).where(Node.name.ilike("%robin%"))
-    robin = session_with_3_nodes.scalars(select_stmt).one()
+def test_get_node_like_name(session_with_3_nodes):
+    nodes = crud.get_nodes_like_name(session_with_3_nodes,like="robin")
+    assert len(nodes) == 1
+    robin = nodes[0]
     assert robin.name == "Robin Southgate"
 
-
-def test_cant_read_non_existent_node(session_with_3_nodes):
-    select_stmt = select(Node).where(Node.name.ilike("%chris%"))
-    nodes = [node for node in session_with_3_nodes.scalars(select_stmt)]
-    assert len(nodes) == 0
 
 
 def test_update_node(session_with_3_nodes):

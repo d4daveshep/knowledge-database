@@ -58,3 +58,8 @@ def get_node_by_name(db_session: Session, name: str) -> models.Node | None:
 def get_nodes(db_session: Session, skip: int = 0, limit: int = 100) -> list[models.Node]:
     select_stmt = select(models.Node)
     return list(db_session.scalars(select_stmt).all())
+
+
+def get_nodes_like_name(db_session: Session, like: str, skip: int = 0, limit: int = 100):
+    select_stmt = select(models.Node).filter(models.Node.name.ilike(f"%{like}%"))
+    return list(db_session.scalars(select_stmt).all())

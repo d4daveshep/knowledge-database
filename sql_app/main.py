@@ -62,8 +62,12 @@ def create_node(node: schemas.NodeCreate, db_session: Session = Depends(get_db_s
 
 
 @app.get("/nodes/", response_model=list[schemas.Node])
-def read_nodes(skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
-    nodes = crud.get_nodes(db_session, skip=skip, limit=limit)
+def read_nodes(like: str = "*", skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
+    if like == "*":
+        nodes = crud.get_nodes(db_session, skip=skip, limit=limit)
+    else:
+        nodes = crud.get_nodes_like_name(db_session, like=like, skip=skip, limit=limit)
+
     return nodes
 
 
