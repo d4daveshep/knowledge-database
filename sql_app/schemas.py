@@ -48,3 +48,19 @@ class Node(NodeBase):
 
     class Config:
         orm_mode = True
+
+
+class ConnectionBase(BaseModel):
+    name: str
+
+
+class ConnectionCreate(ConnectionBase):  # this is the info needed to create a connection
+    subject: NodeCreate | int
+    target: NodeCreate | int
+    # subject_id: int | None
+    # target_id: int | None
+
+
+class Connection(ConnectionBase):  # this is a fully-populated valid connection from the database
+    subject: Node
+    target: Node

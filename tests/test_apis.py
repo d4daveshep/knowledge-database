@@ -33,7 +33,7 @@ app.dependency_overrides[get_db_session] = override_get_db
 client = TestClient(app)
 
 
-def test_crud_APIs():
+def test_node_crud_APIs():
     # CREATE
     name_1 = "First New Starter"
     response = client.post("/nodes/", json=schemas.NodeCreate(name=name_1).dict())

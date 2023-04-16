@@ -79,3 +79,7 @@ def delete_node(db_session: Session, node_id: int) -> None:
     delete_stmt = delete(models.Node).where(models.Node.id == node_id)
     db_session.execute(delete_stmt)
     db_session.commit()
+
+
+def create_connection(db_session, connection: schemas.ConnectionCreate) -> models.Connection:
+    return None

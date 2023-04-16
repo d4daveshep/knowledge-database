@@ -92,3 +92,8 @@ def update_node(node_id: int, node: schemas.NodeCreate, db_session: Session = De
 def delete_node(node_id: int, db_session: Session = Depends(get_db_session)):
     crud.delete_node(db_session, node_id)
     return "Deleted"
+
+
+@app.post("/connections/", response_model=schemas.Connection)
+def create_connection(connection: schemas.ConnectionCreate, db_session: Session = Depends(get_db_session)):
+    pass
