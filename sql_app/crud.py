@@ -82,4 +82,5 @@ def delete_node(db_session: Session, node_id: int) -> None:
 
 
 def create_connection(db_session, connection: schemas.ConnectionCreate) -> models.Connection:
-    return None
+    return None  # TODO
+
