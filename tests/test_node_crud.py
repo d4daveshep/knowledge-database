@@ -1,5 +1,5 @@
 import pytest
-from sqlalchemy import create_engine, select, update, delete
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from sql_app import models, crud
@@ -56,27 +56,26 @@ def test_get_nodes(session_with_3_nodes):
 
 
 def test_get_node_like_name(session_with_3_nodes):
-    nodes = crud.get_nodes_like_name(session_with_3_nodes,like="robin")
+    nodes = crud.get_nodes_like_name(session_with_3_nodes, like="robin")
     assert len(nodes) == 1
     robin = nodes[0]
     assert robin.name == "Robin Southgate"
 
 
-
 def test_update_node(session_with_3_nodes):
-    update_stmt = update(Node).where(Node.name.ilike("%andrew%")).values(name="Andy Linde")
-    result = session_with_3_nodes.execute(update_stmt)
-    assert result.rowcount == 1
+    node = crud.update_node(session_with_3_nodes, 1, updated_name="Andy Linde")
+    assert node.name == "Andy Linde"
 
-    select_stmt = select(Node).where(Node.name.contains("Andy"))
-    andy = session_with_3_nodes.scalars(select_stmt).one()
-    assert andy.name == "Andy Linde"
+
+def test_update_nonexistent_node(session_with_3_nodes):
+    node = crud.update_node(session_with_3_nodes, 99, updated_name="Andy Linde")
+    assert node is None
 
 
 def test_delete_node(session_with_3_nodes):
-    delete_stmt = delete(Node).where(Node.name.ilike("%david%"))
-    result = session_with_3_nodes.execute(delete_stmt)
-    assert result.rowcount == 1
+    crud.delete_node(session_with_3_nodes, 2)
+    node = crud.get_node(session_with_3_nodes, 2)
+    assert node is None
 
-    select_stmt = select(Node)
-    assert len(session_with_3_nodes.scalars(select_stmt).all()) == 2
+    nodes = crud.get_nodes(session_with_3_nodes)
+    assert len(nodes) == 2

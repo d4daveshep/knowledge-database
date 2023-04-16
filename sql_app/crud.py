@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, update, delete
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -63,3 +63,19 @@ def get_nodes(db_session: Session, skip: int = 0, limit: int = 100) -> list[mode
 def get_nodes_like_name(db_session: Session, like: str, skip: int = 0, limit: int = 100):
     select_stmt = select(models.Node).filter(models.Node.name.ilike(f"%{like}%"))
     return list(db_session.scalars(select_stmt).all())
+
+
+def update_node(db_session: Session, node_id: int, updated_name: str) -> models.Node | None:
+    db_node = get_node(db_session, node_id)
+    if db_node is None:
+        return None
+    update_stmt = update(models.Node).where(models.Node.id == node_id).values(name=updated_name)
+    db_session.execute(update_stmt)
+    db_session.commit()
+    return get_node(db_session, node_id)
+
+
+def delete_node(db_session: Session, node_id: int) -> None:
+    delete_stmt = delete(models.Node).where(models.Node.id == node_id)
+    db_session.execute(delete_stmt)
+    db_session.commit()
