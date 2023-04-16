@@ -45,3 +45,6 @@ class NodeCreate(NodeBase):
 
 class Node(NodeBase):
     id: int
+
+    class Config:
+        orm_mode = True

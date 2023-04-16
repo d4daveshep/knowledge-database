@@ -37,17 +37,22 @@ def test_create_node(db_session):
     assert node.id
 
 
-def test_read_node(session_with_3_nodes):
-    select_stmt = select(Node).where(Node.name == "Andrew Lindesay")
-    nodes = [node for node in session_with_3_nodes.scalars(select_stmt)]
-    assert len(nodes) == 1
-    assert nodes[0].name == "Andrew Lindesay"
+def test_get_node_by_id(session_with_3_nodes):
+    node = crud.get_node(session_with_3_nodes, 2)
+    assert node.name == "David Rawson"
 
-    select_stmt = select(Node).where(Node.name.contains("David"))
-    nodes = session_with_3_nodes.scalars(select_stmt).all()
-    assert len(nodes) == 1
-    for node in session_with_3_nodes.scalars(select_stmt):
-        assert node.name == "David Rawson"
+    node = crud.get_node(session_with_3_nodes, 99)
+    assert not node
+
+
+def test_get_node_by_name(session_with_3_nodes):
+    node = crud.get_node_by_name(session_with_3_nodes, "David Rawson")
+    assert node.name == "David Rawson"
+
+
+def test_get_nodes(session_with_3_nodes):
+    nodes = crud.get_nodes(session_with_3_nodes)
+    assert len(nodes) == 3
 
 
 def test_select_node_case_insensitive(session_with_3_nodes):

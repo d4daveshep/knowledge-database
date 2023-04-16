@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -42,3 +43,18 @@ def create_node(db_session: Session, node: schemas.NodeCreate) -> models.Node:
     db_session.commit()
     db_session.refresh(db_node)
     return db_node
+
+
+def get_node(db_session: Session, node_id: int) -> models.Node | None:
+    select_stmt = select(models.Node).filter(models.Node.id == node_id)
+    return db_session.scalars(select_stmt).first()
+
+
+def get_node_by_name(db_session: Session, name: str) -> models.Node | None:
+    select_stmt = select(models.Node).filter(models.Node.name == name)
+    return db_session.scalars(select_stmt).first()
+
+
+def get_nodes(db_session: Session, skip: int = 0, limit: int = 100) -> list[models.Node]:
+    select_stmt = select(models.Node)
+    return list(db_session.scalars(select_stmt).all())

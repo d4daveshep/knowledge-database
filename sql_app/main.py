@@ -51,3 +51,25 @@ def create_item_for_user(
 def read_items(skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
     items = crud.get_items(db_session, skip=skip, limit=limit)
     return items
+
+
+@app.post("/nodes/", response_model=schemas.Node)
+def create_node(node: schemas.NodeCreate, db_session: Session = Depends(get_db_session)):
+    db_node = crud.get_node_by_name(db_session, name=node.name)
+    if db_node:
+        raise HTTPException(status_code=400, detail="Node already esists")
+    return crud.create_node(db_session=db_session, node=node)
+
+
+@app.get("/nodes/", response_model=list[schemas.Node])
+def read_nodes(skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
+    nodes = crud.get_nodes(db_session, skip=skip, limit=limit)
+    return nodes
+
+
+@app.get("/nodes/{node_id}", response_model=schemas.Node)
+def read_node(node_id: int, db_session: Session = Depends(get_db_session)):
+    db_node = crud.get_node(db_session, node_id=node_id)
+    if db_node is None:
+        raise HTTPException(status_code=404, detail="Node not found")
+    return db_node

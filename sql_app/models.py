@@ -27,12 +27,12 @@ class Item(Base):
 
     owner: Mapped["User"] = relationship(back_populates="items")
 
+
 class Node(Base):
-    __tablename__ = "node_table"
+    __tablename__ = "nodes"
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column()
 
     def __repr__(self):
         return f"Node(id={self.id}, name={self.name!r})"
-
