@@ -40,22 +40,34 @@ def client():
 
 
 def test_node_crud_apis(client):
-    # CREATE
-    name_1 = "First New Starter"
-    response = client.post("/nodes/", json=schemas.NodeCreate(name=name_1).dict())
+    # TODO break into separate tests
+    pass
+
+
+def test_create_node_api(client):
+    name = "First New Starter"
+    response = client.post("/nodes/", json=schemas.NodeCreate(name=name).dict())
     assert response.status_code == 200, response.text
     node = schemas.Node(**response.json())
-    assert node.name == name_1
+    assert node.name == name
     assert node.id == 1
 
-    # READ BY ID
+
+def test_read_node_api(client):
+    name = "First New Starter"
+    response = client.post("/nodes/", json=schemas.NodeCreate(name=name).dict())
+    node = schemas.Node(**response.json())
+
     response = client.get(f"/nodes/{node.id}")
     assert response.status_code == 200, response.text
     node = schemas.Node(**response.json())
-    assert node.name == name_1
+    assert node.name == name
     assert node.id == 1
 
-    # READ ALL
+
+def test_read_all_nodes_api(client):
+    name_1 = "First New Starter"
+    client.post("/nodes/", json=schemas.NodeCreate(name=name_1).dict())
     name_2 = "Second New Starter"
     client.post("/nodes/", json=schemas.NodeCreate(name=name_2).dict())
 
@@ -68,7 +80,11 @@ def test_node_crud_apis(client):
     assert node_1.name == name_1
     assert node_2.name == name_2
 
-    # READ BY NAME LIKE
+
+def test_read_node_by_name_api(client):
+    name_2 = "Second New Starter"
+    client.post("/nodes/", json=schemas.NodeCreate(name=name_2).dict())
+
     response = client.get("/nodes/?like=Second")
     assert response.status_code == 200, response.text
     nodes_json = response.json()
@@ -76,14 +92,22 @@ def test_node_crud_apis(client):
     node_2 = schemas.Node(**nodes_json[0])
     assert node_2.name == name_2
 
-    # UPDATE
+
+def test_update_node_api(client):
+    name_2 = "Second New Starter"
+    client.post("/nodes/", json=schemas.NodeCreate(name=name_2).dict())
     name_3 = "Third New Starter"
-    response = client.put("/nodes/2", json=schemas.NodeCreate(name=name_3).dict())
+
+    response = client.put("/nodes/1", json=schemas.NodeCreate(name=name_3).dict())
     assert response.status_code == 200, response.text
     node = schemas.Node(**response.json())
     assert node.name == name_3
-    assert node.id == 2
+    assert node.id == 1
 
+
+def test_delete_node_api(client):
+    name_2 = "Second New Starter"
+    client.post("/nodes/", json=schemas.NodeCreate(name=name_2).dict())
     # DELETE
     response = client.delete("/nodes/1")
     assert response.status_code == 200, response.text
@@ -93,7 +117,7 @@ def test_node_crud_apis(client):
     nodes_json = response.json()
     assert len(nodes_json) == 1
     node_2 = schemas.Node(**nodes_json[0])
-    assert node_2.name == name_3
+    assert node_2.name == name_2
 
 
 def test_create_connection_api_with_new_nodes(client):
