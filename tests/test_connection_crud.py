@@ -30,3 +30,25 @@ def test_create_connection_and_nodes(db_session):
     assert conn.name == "has title"
     assert conn.subject.name == "Andrew"
     assert conn.target.name == "Chief Engineer"
+
+
+def test_create_connection_to_existing_nodes(db_session):
+    conn_1 = crud.create_connection(
+        db_session, ConnectionCreate(
+            name="has title",
+            subject=NodeCreate(name="Andrew"),
+            target=NodeCreate(name="Chief Engineer")
+        )
+    )
+
+    conn_2 = crud.create_connection(
+        db_session, ConnectionCreate(
+            name="is a",
+            subject=conn_1.subject_id,
+            target=conn_1.target_id
+        )
+    )
+
+    assert conn_2.name == "is a"
+    assert conn_2.subject.name == "Andrew"
+    assert conn_2.target.name == "Chief Engineer"

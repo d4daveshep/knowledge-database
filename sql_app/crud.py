@@ -81,6 +81,19 @@ def delete_node(db_session: Session, node_id: int) -> None:
     db_session.commit()
 
 
-def create_connection(db_session, connection: schemas.ConnectionCreate) -> models.Connection:
-    return None  # TODO
+def create_connection(db_session: Session, connection: schemas.ConnectionCreate) -> models.Connection:
+    if isinstance(connection.subject, int):
+        subject = get_node(db_session, connection.subject)
+    else:
+        subject = create_node(db_session, connection.subject)
 
+    if isinstance(connection.target, int):
+        target = get_node(db_session, connection.target)
+    else:
+        target = create_node(db_session, connection.target)
+
+    db_connection = models.Connection(name=connection.name, subject=subject, target=target)
+    db_session.add(db_connection)
+    db_session.commit()
+    db_session.refresh(db_connection)
+    return db_connection
