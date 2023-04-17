@@ -52,3 +52,15 @@ def test_create_connection_to_existing_nodes(db_session):
     assert conn_2.name == "is a"
     assert conn_2.subject.name == "Andrew"
     assert conn_2.target.name == "Chief Engineer"
+
+
+def test_create_connection_to_nonexistent_nodes(db_session):
+    conn_2 = crud.create_connection(
+        db_session, ConnectionCreate(
+            name="bad connection",
+            subject=98,
+            target=99
+        )
+    )
+
+    assert conn_2.name == "bad connection"

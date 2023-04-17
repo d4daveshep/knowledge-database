@@ -93,7 +93,7 @@ def test_node_crud_APIs():
 
 
 def test_connection_crud_APIs():
-    # CREATE
+    # CREATE WITH NEW NODES
     subject = "Andrew"
     conn_name = "is a "
     target = "Chief Engineer"
@@ -103,14 +103,30 @@ def test_connection_crud_APIs():
         subject=schemas.NodeCreate(name=subject),
         target=schemas.NodeCreate(name=target)
     )
-    cc_dict = cc.dict()
     response = client.post(
         "/connections/",
-        json=cc_dict
+        json=cc.dict()
     )
     assert response.status_code == 200, response.text
     conn = schemas.Connection(**response.json())
     assert conn.name == conn_name
     assert conn.id == 1
+    assert conn.subject.name == subject
+    assert conn.target.name == target
+
+    # CREATE WITH EXISTING NODES
+    cc = schemas.ConnectionCreate(
+        name="has title",
+        subject=conn.subject.id,
+        target=conn.target.id
+    )
+    response = client.post(
+        "/connections/",
+        json=cc.dict()
+    )
+    assert response.status_code == 200, response.text
+    conn = schemas.Connection(**response.json())
+    assert conn.name == "has title"
+    assert conn.id == 2
     assert conn.subject.name == subject
     assert conn.target.name == target

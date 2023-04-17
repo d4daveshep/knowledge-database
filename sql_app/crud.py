@@ -82,13 +82,21 @@ def delete_node(db_session: Session, node_id: int) -> None:
 
 
 def create_connection(db_session: Session, connection: schemas.ConnectionCreate) -> models.Connection:
+    # TODO refactor this into a method to avoid repetition
     if isinstance(connection.subject, int):
         subject = get_node(db_session, connection.subject)
+        if subject is None:
+            # TODO throw exception here
+            pass
     else:
         subject = create_node(db_session, connection.subject)
 
     if isinstance(connection.target, int):
         target = get_node(db_session, connection.target)
+        if target is None:
+            # TODO throw exception here
+            pass
+
     else:
         target = create_node(db_session, connection.target)
 

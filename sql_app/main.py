@@ -58,7 +58,7 @@ def get_db_session():
 def create_node(node: schemas.NodeCreate, db_session: Session = Depends(get_db_session)):
     db_node = crud.get_node_by_name(db_session, name=node.name)
     if db_node:
-        raise HTTPException(status_code=400, detail="Node already esists")
+        raise HTTPException(status_code=400, detail="Node already exists")
     return crud.create_node(db_session=db_session, node=node)
 
 
