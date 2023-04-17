@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from sql_app import models, crud
+from sql_app.crud import ConnectionNodeNotFoundError
 from sql_app.schemas import NodeCreate, ConnectionCreate
 
 
@@ -55,12 +56,11 @@ def test_create_connection_to_existing_nodes(db_session):
 
 
 def test_create_connection_to_nonexistent_nodes(db_session):
-    conn_2 = crud.create_connection(
-        db_session, ConnectionCreate(
-            name="bad connection",
-            subject=98,
-            target=99
+    with pytest.raises(ConnectionNodeNotFoundError) as error:
+        conn_2 = crud.create_connection(
+            db_session, ConnectionCreate(
+                name="bad connection",
+                subject=98,
+                target=99
+            )
         )
-    )
-
-    assert conn_2.name == "bad connection"

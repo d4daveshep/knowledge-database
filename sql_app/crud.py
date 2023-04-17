@@ -81,26 +81,26 @@ def delete_node(db_session: Session, node_id: int) -> None:
     db_session.commit()
 
 
+class ConnectionNodeNotFoundError(Exception):
+    pass
+
+
+def get_or_create_connection_node(db_session: Session, node: schemas.NodeCreate | int) -> models.Node:
+    if isinstance(node, int):
+        db_node = get_node(db_session, node)
+        if db_node is None:
+            raise ConnectionNodeNotFoundError(f"node_id: {node}")
+    else:
+        db_node = create_node(db_session, node)
+
+    return db_node
+
+
 def create_connection(db_session: Session, connection: schemas.ConnectionCreate) -> models.Connection:
-    # TODO refactor this into a method to avoid repetition
-    if isinstance(connection.subject, int):
-        subject = get_node(db_session, connection.subject)
-        if subject is None:
-            # TODO throw exception here
-            pass
-    else:
-        subject = create_node(db_session, connection.subject)
+    subject_node = get_or_create_connection_node(db_session, connection.subject)
+    target_node = get_or_create_connection_node(db_session, connection.target)
 
-    if isinstance(connection.target, int):
-        target = get_node(db_session, connection.target)
-        if target is None:
-            # TODO throw exception here
-            pass
-
-    else:
-        target = create_node(db_session, connection.target)
-
-    db_connection = models.Connection(name=connection.name, subject=subject, target=target)
+    db_connection = models.Connection(name=connection.name, subject=subject_node, target=target_node)
     db_session.add(db_connection)
     db_session.commit()
     db_session.refresh(db_connection)

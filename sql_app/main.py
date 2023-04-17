@@ -2,6 +2,7 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
+from .crud import ConnectionNodeNotFoundError
 from .database import LocalSession, engine
 
 models.Base.metadata.create_all(bind=engine)
@@ -96,4 +97,8 @@ def delete_node(node_id: int, db_session: Session = Depends(get_db_session)):
 
 @app.post("/connections/", response_model=schemas.Connection)
 def create_connection(connection: schemas.ConnectionCreate, db_session: Session = Depends(get_db_session)):
-    return crud.create_connection(db_session, connection)
+    try:
+        db_connection = crud.create_connection(db_session, connection)
+    except ConnectionNodeNotFoundError:
+        raise HTTPException(status_code=404, detail="Connection node not found")
+    return db_connection
