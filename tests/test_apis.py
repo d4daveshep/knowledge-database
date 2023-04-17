@@ -74,7 +74,7 @@ def test_node_crud_APIs():
 
     # UPDATE
     name_3 = "Third New Starter"
-    response = client.put("/nodes/2", json= schemas.NodeCreate(name=name_3).dict())
+    response = client.put("/nodes/2", json=schemas.NodeCreate(name=name_3).dict())
     assert response.status_code == 200, response.text
     node = schemas.Node(**response.json())
     assert node.name == name_3
@@ -92,5 +92,25 @@ def test_node_crud_APIs():
     assert node_2.name == name_3
 
 
+def test_connection_crud_APIs():
+    # CREATE
+    subject = "Andrew"
+    conn_name = "is a "
+    target = "Chief Engineer"
 
-
+    cc = schemas.ConnectionCreate(
+        name=conn_name,
+        subject=schemas.NodeCreate(name=subject),
+        target=schemas.NodeCreate(name=target)
+    )
+    cc_dict = cc.dict()
+    response = client.post(
+        "/connections/",
+        json=cc_dict
+    )
+    assert response.status_code == 200, response.text
+    conn = schemas.Connection(**response.json())
+    assert conn.name == conn_name
+    assert conn.id == 1
+    assert conn.subject.name == subject
+    assert conn.target.name == target
