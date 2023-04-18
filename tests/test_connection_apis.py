@@ -1,0 +1,108 @@
+import os
+from os.path import exists
+
+import pytest
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from starlette.testclient import TestClient
+
+from sql_app import schemas
+from sql_app.main import app, get_db_session
+from sql_app.models import Base
+
+# global test data
+andrew_name = "Andrew Anderson"
+brian_name = "Brian Brown"
+charlie_name = "Charlie Charkson"
+
+chief_eng_name = "Chief Engineer"
+mobile_eng_name = "Mobile Engineer"
+
+java_name = "Java"
+angular_name = "Angular"
+react_name = "React"
+android_name = "Android"
+spring_boot_name = "SpringBoot"
+
+
+@pytest.fixture()
+def client():
+    if exists("./test.db"):
+        os.remove("./test.db")
+
+    sqlalchemy_database_url = "sqlite:///./test.db"
+
+    engine = create_engine(
+        sqlalchemy_database_url, connect_args={"check_same_thread": False}
+    )
+    testing_session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+    Base.metadata.create_all(bind=engine)
+
+    def override_get_db():
+        try:
+            db = testing_session_local()
+            yield db
+        finally:
+            db.close()
+
+    app.dependency_overrides[get_db_session] = override_get_db
+
+    client = TestClient(app)
+
+    client.post("/nodes/", json=schemas.NodeCreate(name=andrew_name).dict())
+    client.post("/nodes/", json=schemas.NodeCreate(name=chief_eng_name).dict())
+    # client.post("/nodes/", json=schemas.NodeCreate(name=name_3).dict())
+
+    yield client
+
+    os.remove("./test.db")
+
+
+def test_create_connection_api_with_new_nodes(client):
+    subject_name = "Wayne Wallace"
+    conn_name = "is a"
+    target_name = "Test Engineer"
+
+    cc = schemas.ConnectionCreate(
+        name=conn_name,
+        subject=schemas.NodeCreate(name=subject_name),
+        target=schemas.NodeCreate(name=target_name)
+    )
+    response = client.post(
+        "/connections/",
+        json=cc.dict()
+    )
+    assert response.status_code == 200, response.text
+    conn = schemas.Connection(**response.json())
+    assert conn.name == conn_name
+    assert conn.id == 1
+    assert conn.subject.name == subject_name
+    assert conn.target.name == target_name
+
+
+def test_create_connection_api_with_existing_nodes(client):
+    andrew = schemas.Node(**client.get("/nodes/1").json())
+    chief_eng = schemas.Node(**client.get("/nodes/2").json())
+
+    cc = schemas.ConnectionCreate(
+        name="has title",
+        subject=andrew.id,
+        target=chief_eng.id
+    )
+    response = client.post(
+        "/connections/",
+        json=cc.dict()
+    )
+    assert response.status_code == 200, response.text
+    conn = schemas.Connection(**response.json())
+    assert conn.name == "has title"
+    assert conn.id == 1
+    assert conn.subject.name == andrew_name
+    assert conn.target.name == chief_eng_name
+
+
+def test_create_connection_api_with_nonexistent_nodes(client):
+    cc = schemas.ConnectionCreate(name="bad connection", subject=98, target=99)
+    response = client.post("/connections/", json=cc.dict())
+    assert response.status_code == 404
