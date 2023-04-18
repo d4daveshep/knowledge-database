@@ -102,3 +102,14 @@ def create_connection(connection: schemas.ConnectionCreate, db_session: Session 
     except ConnectionNodeNotFoundError:
         raise HTTPException(status_code=404, detail="Connection node not found")
     return db_connection
+
+@app.get("/connections/", response_model=list[schemas.Connection])
+def read_connections(like: str = "*", skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
+
+    # if like == "*":
+    #     connections = crud(db_session, skip=skip, limit=limit)
+    # else:
+    #     # nodes = crud.get_nodes_like_name(db_session, like=like, skip=skip, limit=limit)
+    #     pass
+    return []
+

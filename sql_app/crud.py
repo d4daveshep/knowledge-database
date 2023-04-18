@@ -105,3 +105,8 @@ def create_connection(db_session: Session, connection: schemas.ConnectionCreate)
     db_session.commit()
     db_session.refresh(db_connection)
     return db_connection
+
+
+def get_connections(db_session: Session, skip: int = 0, limit: int = 100) -> list[models.Connection]:
+    select_stmt = select(models.Connection)
+    return list(db_session.scalars(select_stmt).all())

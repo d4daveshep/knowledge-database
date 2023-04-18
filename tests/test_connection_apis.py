@@ -24,6 +24,8 @@ react_name = "React"
 android_name = "Android"
 spring_boot_name = "SpringBoot"
 
+role_connection_name = "has title"
+
 
 @pytest.fixture()
 def client():
@@ -50,9 +52,17 @@ def client():
 
     client = TestClient(app)
 
-    client.post("/nodes/", json=schemas.NodeCreate(name=andrew_name).dict())
-    client.post("/nodes/", json=schemas.NodeCreate(name=chief_eng_name).dict())
-    # client.post("/nodes/", json=schemas.NodeCreate(name=name_3).dict())
+    client.post("/nodes/", json=schemas.NodeCreate(name=andrew_name).dict())  # id: 1
+    client.post("/nodes/", json=schemas.NodeCreate(name=chief_eng_name).dict())  # id: 2
+    client.post("/nodes/", json=schemas.NodeCreate(name=brian_name).dict()) # id: 3
+    client.post("/nodes/", json=schemas.NodeCreate(name=mobile_eng_name).dict()) # id: 4
+
+
+
+    client.post("/connections/", json=schemas.ConnectionCreate(
+        name=role_connection_name, subject=1, target=2).dict())  # id: 1
+    client.post("/connections/", json=schemas.ConnectionCreate(
+        name=role_connection_name, subject=3, target=4).dict())  # id: 2
 
     yield client
 
@@ -106,3 +116,15 @@ def test_create_connection_api_with_nonexistent_nodes(client):
     cc = schemas.ConnectionCreate(name="bad connection", subject=98, target=99)
     response = client.post("/connections/", json=cc.dict())
     assert response.status_code == 404
+
+
+def test_read_connections_by_name(client):
+    response = client.get("/connections/?like=title")
+    assert response.status_code == 200, response.text
+    nodes_json = response.json()
+    assert len(nodes_json) == 2
+    conn_1 = schemas.Node(**nodes_json[0])
+    conn_2 = schemas.Node(**nodes_json[1])
+    assert conn_1.name == conn_2.name == role_connection_name
+
+
