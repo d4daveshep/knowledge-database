@@ -54,10 +54,8 @@ def client():
 
     client.post("/nodes/", json=schemas.NodeCreate(name=andrew_name).dict())  # id: 1
     client.post("/nodes/", json=schemas.NodeCreate(name=chief_eng_name).dict())  # id: 2
-    client.post("/nodes/", json=schemas.NodeCreate(name=brian_name).dict()) # id: 3
-    client.post("/nodes/", json=schemas.NodeCreate(name=mobile_eng_name).dict()) # id: 4
-
-
+    client.post("/nodes/", json=schemas.NodeCreate(name=brian_name).dict())  # id: 3
+    client.post("/nodes/", json=schemas.NodeCreate(name=mobile_eng_name).dict())  # id: 4
 
     client.post("/connections/", json=schemas.ConnectionCreate(
         name=role_connection_name, subject=1, target=2).dict())  # id: 1
@@ -86,7 +84,7 @@ def test_create_connection_api_with_new_nodes(client):
     assert response.status_code == 200, response.text
     conn = schemas.Connection(**response.json())
     assert conn.name == conn_name
-    assert conn.id == 1
+    assert conn.id == 3  # client fixture creates 2 connections
     assert conn.subject.name == subject_name
     assert conn.target.name == target_name
 
@@ -107,7 +105,7 @@ def test_create_connection_api_with_existing_nodes(client):
     assert response.status_code == 200, response.text
     conn = schemas.Connection(**response.json())
     assert conn.name == "has title"
-    assert conn.id == 1
+    assert conn.id == 3  # client fixture creates 2 connections
     assert conn.subject.name == andrew_name
     assert conn.target.name == chief_eng_name
 
@@ -126,5 +124,3 @@ def test_read_connections_by_name(client):
     conn_1 = schemas.Node(**nodes_json[0])
     conn_2 = schemas.Node(**nodes_json[1])
     assert conn_1.name == conn_2.name == role_connection_name
-
-

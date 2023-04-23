@@ -91,7 +91,9 @@ def get_or_create_connection_node(db_session: Session, node: schemas.NodeCreate 
         if db_node is None:
             raise ConnectionNodeNotFoundError(f"node_id: {node}")
     else:
-        db_node = create_node(db_session, node)
+        db_node = get_node_by_name(db_session,node.name)
+        if not db_node:
+            db_node = create_node(db_session, node)
 
     return db_node
 
@@ -109,4 +111,9 @@ def create_connection(db_session: Session, connection: schemas.ConnectionCreate)
 
 def get_connections(db_session: Session, skip: int = 0, limit: int = 100) -> list[models.Connection]:
     select_stmt = select(models.Connection)
+    return list(db_session.scalars(select_stmt).all())
+
+
+def get_connections_like_name(db_session:Session, like:str, skip:int=0, limit:int=100) -> list[models.Connection]:
+    select_stmt = select(models.Connection).filter(models.Connection.name.ilike(f"%{like}%"))
     return list(db_session.scalars(select_stmt).all())

@@ -1,10 +1,10 @@
 import pytest
-from sqlalchemy import create_engine, select
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from sql_app import models, crud
 from sql_app.crud import ConnectionNodeNotFoundError
-from sql_app.schemas import NodeCreate, ConnectionCreate, Node, Connection
+from sql_app.schemas import NodeCreate, ConnectionCreate
 
 
 @pytest.fixture()
@@ -43,41 +43,39 @@ def db_session_with_nodes_and_connections(db_session):
     westpac = NodeCreate(name="Westpac NZ")
     gdt = NodeCreate(name="Global Dairy Trade")
 
-    andrew_chief = ConnectionCreate(subject=andrew, name="has title", target=chief)
-    andrew_java = ConnectionCreate(subject=andrew, name="knows", target=java)
-    andrew_spring_boot = ConnectionCreate(subject=andrew, name="knows", target=spring_boot)
-    andrew_twg = ConnectionCreate(subject=andrew, name="worked on", target=twg)
-    andrew_gdt = ConnectionCreate(subject=andrew, name="worked on", target=gdt)
+    crud.create_connection(db_session, ConnectionCreate(name="has title", subject=andrew, target=chief))
+    crud.create_connection(db_session, ConnectionCreate(name="has experience in", subject=andrew, target=java))
+    crud.create_connection(db_session, ConnectionCreate(name="has experience in", subject=andrew, target=spring_boot))
+    crud.create_connection(db_session, ConnectionCreate(subject=andrew, name="worked at", target=twg))
+    crud.create_connection(db_session, ConnectionCreate(subject=andrew, name="worked at", target=gdt))
 
-    david_lead = ConnectionCreate(subject=david, name="has title", target=fe_pl)
-    david_java = ConnectionCreate(subject=david, name="knows", target=java)
-    david_android = ConnectionCreate(subject=david, name="knows", target=android)
-    david_westpac = ConnectionCreate(subject=david, name="worked on", target=westpac)
+    crud.create_connection(db_session, ConnectionCreate(subject=david, name="has title", target=fe_pl))
+    crud.create_connection(db_session, ConnectionCreate(subject=david, name="has experience in", target=java))
+    crud.create_connection(db_session, ConnectionCreate(subject=david, name="has experience in", target=android))
+    crud.create_connection(db_session, ConnectionCreate(subject=david, name="worked at", target=westpac))
 
-    robin_chief = ConnectionCreate(subject=robin, name="has title", target=chief)
-    robin_angular = ConnectionCreate(subject=robin, name="knows", target=angular)
-    robin_react = ConnectionCreate(subject=robin, name="knows", target=react)
-    robin_cdx = ConnectionCreate(subject=robin, name="worked on", target=cdx)
-    robin_gdt = ConnectionCreate(subject=robin, name="worked on", target=gdt)
+    crud.create_connection(db_session, ConnectionCreate(subject=robin, name="has title", target=chief))
+    crud.create_connection(db_session, ConnectionCreate(subject=robin, name="has experience in", target=angular))
+    crud.create_connection(db_session, ConnectionCreate(subject=robin, name="has experience in", target=react))
+    crud.create_connection(db_session, ConnectionCreate(subject=robin, name="worked at", target=cdx))
+    crud.create_connection(db_session, ConnectionCreate(subject=robin, name="worked at", target=gdt))
 
-    assert False  # TODO this stuff doesn't work yet
+    # assert False  # TODO this stuff doesn't work yet
 
-    db_session.add_all([andrew_chief, andrew_java, andrew_spring_boot, andrew_twg, andrew_gdt,
-                        david_lead, david_java, david_android, david_westpac,
-                        robin_chief, robin_angular, robin_react, robin_cdx, robin_gdt
-                        ])
-    db_session.commit()
+    # db_session.add_all([andrew_chief, andrew_java, andrew_spring_boot, andrew_twg, andrew_gdt,
+    #                     david_lead, david_java, david_android, david_westpac,
+    #                     robin_chief, robin_angular, robin_react, robin_cdx, robin_gdt
+    #                     ])
+    # db_session.commit()
 
     yield db_session
 
 
 def test_fixture(db_session_with_nodes_and_connections):
-    select_all_nodes = select(Node)
-    nodes = db_session_with_nodes_and_connections.scalars(select_all_nodes).all()
+    nodes = crud.get_nodes(db_session_with_nodes_and_connections)
     assert len(nodes) == 14
 
-    select_all_connections = select(Connection)
-    connections = db_session_with_nodes_and_connections.scalars(select_all_connections).all()
+    connections = crud.get_connections(db_session_with_nodes_and_connections)
     assert len(connections) == 14
 
 
@@ -127,7 +125,3 @@ def test_create_connection_to_nonexistent_nodes(db_session):
             )
         )
 
-
-def test_get_connections(db_session):
-    connections = crud.get_connections(db_session)
-    assert len(connections) == 2
