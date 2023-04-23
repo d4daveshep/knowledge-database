@@ -124,3 +124,40 @@ def test_create_connection_to_nonexistent_nodes(db_session):
                 target=99
             )
         )
+
+
+def test_delete_connection(db_session_with_nodes_and_connections):
+    crud.delete_connection(db_session_with_nodes_and_connections, 1)
+    connections = crud.get_connections(db_session_with_nodes_and_connections)
+    assert len(connections) == 13
+
+
+def test_delete_nonexistent_connection(db_session_with_nodes_and_connections):
+    crud.delete_connection(db_session_with_nodes_and_connections, 99)
+    connections = crud.get_connections(db_session_with_nodes_and_connections)
+    assert len(connections) == 14
+
+
+def test_delete_node_deletes_connections_to_node(db_session_with_nodes_and_connections):
+    # find and delete Andrew
+    andrew = crud.get_nodes_like_name(db_session_with_nodes_and_connections, "Andrew")[0]
+    crud.delete_node(db_session_with_nodes_and_connections, andrew.id)
+
+    # verify only 1 node deleted
+    nodes = crud.get_nodes(db_session_with_nodes_and_connections)
+    assert len(nodes) == 13
+
+    # verify 5 connections deleted
+    connections = crud.get_connections(db_session_with_nodes_and_connections)
+    assert len(connections) == 9
+
+
+def test_get_connections_to_node_id(db_session_with_nodes_and_connections):
+    andrew = crud.get_nodes_like_name(db_session_with_nodes_and_connections, "Andrew")[0]
+
+    connections = crud.get_connections_to_node(db_session_with_nodes_and_connections, andrew.id)
+    assert len(connections) == 5
+
+
+def test_get_connections_to_node_name_like(db_session_with_nodes_and_connections):
+    assert False

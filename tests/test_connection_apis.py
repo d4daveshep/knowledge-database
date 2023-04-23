@@ -124,3 +124,18 @@ def test_read_connections_by_name(client):
     conn_1 = schemas.Node(**nodes_json[0])
     conn_2 = schemas.Node(**nodes_json[1])
     assert conn_1.name == conn_2.name == role_connection_name
+
+
+def test_update_connection(client):
+    assert False
+
+def test_delete_connection(client):
+    response = client.get("/connections/")
+    assert len(response.json()) == 2
+
+    response = client.delete("/connections/2")
+    assert response.status_code == 200
+    assert response.text == '"deleted, id=2"'
+
+    response = client.get("/connections/")
+    assert len(response.json()) == 1

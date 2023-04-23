@@ -43,8 +43,18 @@ def update_node(db_session: Session, node_id: int, updated_name: str) -> models.
 
 
 def delete_node(db_session: Session, node_id: int) -> None:
+    # delete the node
     delete_stmt = delete(models.Node).where(models.Node.id == node_id)
     db_session.execute(delete_stmt)
+
+    # delete any connections to the node
+    delete_stmt = delete(models.Connection).where(
+        models.Connection.subject_id == node_id)
+    db_session.execute(delete_stmt)
+    delete_stmt = delete(models.Connection).where(
+        models.Connection.target_id == node_id)
+    db_session.execute(delete_stmt)
+
     db_session.commit()
 
 
@@ -85,3 +95,18 @@ def get_connections_like_name(db_session: Session, like: str, skip: int = 0, lim
     models.Connection]:
     select_stmt = select(models.Connection).filter(models.Connection.name.ilike(f"%{like}%"))
     return list(db_session.scalars(select_stmt).all())
+
+
+def delete_connection(db_session: Session, connection_id: int) -> None:
+    delete_stmt = delete(models.Connection).where(models.Connection.id == connection_id)
+    db_session.execute(delete_stmt)
+    db_session.commit()
+
+
+def get_connections_to_node(db_session: Session, node_id: int) -> list[models.Connection]:
+    select_stmt = select(models.Connection).filter(models.Connection.subject_id == node_id)
+    connections = list(db_session.scalars(select_stmt).all())
+    select_stmt = select(models.Connection).filter(models.Connection.target_id == node_id)
+    connections.extend(list(db_session.scalars(select_stmt).all()))
+    return connections
+

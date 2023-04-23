@@ -79,3 +79,4 @@ def test_delete_node(session_with_3_nodes):
 
     nodes = crud.get_nodes(session_with_3_nodes)
     assert len(nodes) == 2
+

@@ -56,7 +56,7 @@ def update_node(node_id: int, node: schemas.NodeCreate, db_session: Session = De
 @app.delete("/nodes/{node_id}")
 def delete_node(node_id: int, db_session: Session = Depends(get_db_session)):
     crud.delete_node(db_session, node_id)
-    return "Deleted"
+    return f"deleted, id={node_id}"
 
 
 @app.post("/connections/", response_model=schemas.Connection)
@@ -76,3 +76,8 @@ def read_connections(like: str = "*", skip: int = 0, limit: int = 100, db_sessio
         connections = crud.get_connections_like_name(db_session, like=like, skip=skip, limit=limit)
         pass
     return connections
+
+@app.delete("/connections/{connection_id}")
+def delete_connection(connection_id:int, db_session:Session = Depends(get_db_session)):
+    crud.delete_connection(db_session, connection_id)
+    return f"deleted, id={connection_id}"

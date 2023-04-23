@@ -106,6 +106,7 @@ def test_update_node_api(client):
 def test_delete_node_api(client):
     response = client.delete("/nodes/2")
     assert response.status_code == 200, response.text
+    assert response.text == '"deleted, id=2"'
 
     response = client.get("/nodes/")
     assert response.status_code == 200, response.text
