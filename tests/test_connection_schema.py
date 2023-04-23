@@ -16,18 +16,16 @@ def test_connection_create_subject_target_nodes():
     # assert cc_dict["subject_id"] is None
     # assert cc_dict["target_id"] is None
 
+
 def test_connection_create_subject_target_ids():
     cc = ConnectionCreate(subject=1,
                           name="has title",
                           target=2)
     assert cc
 
+
 def test_connection_create_no_subject():
     with pytest.raises(ValidationError) as error:
         cc = ConnectionCreate(name="has title", target=2)
         assert cc
     pass
-
-
-
-

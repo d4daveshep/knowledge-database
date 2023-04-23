@@ -124,4 +124,3 @@ def test_create_connection_to_nonexistent_nodes(db_session):
                 target=99
             )
         )
-
