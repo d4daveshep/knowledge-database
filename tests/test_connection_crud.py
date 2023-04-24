@@ -161,3 +161,18 @@ def test_get_connections_to_node_id(db_session_with_nodes_and_connections):
 
 def test_get_connections_to_node_name_like(db_session_with_nodes_and_connections):
     assert False
+
+
+def test_get_connection_by_id(db_session_with_nodes_and_connections):
+    andrew = crud.get_connection(db_session_with_nodes_and_connections, 1)
+    assert andrew.id == 1
+
+
+def test_update_connection(db_session_with_nodes_and_connections):
+    connection = crud.update_connection(db_session_with_nodes_and_connections, connection_id=1,
+                                        updated_connection=ConnectionCreate(name="is a",
+                                                                            subject=NodeCreate(name="Ryan Sharpe"),
+                                                                            target=NodeCreate(name="Nice Guy")
+                                                                            )
+                                        )
+    assert connection.id == 1

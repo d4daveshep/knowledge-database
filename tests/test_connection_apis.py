@@ -126,8 +126,8 @@ def test_read_connections_by_name(client):
     assert conn_1.name == conn_2.name == role_connection_name
 
 
-def test_update_connection(client):
-    assert False
+# def test_update_connection(client):
+#     assert False
 
 def test_delete_connection(client):
     response = client.get("/connections/")
@@ -139,3 +139,18 @@ def test_delete_connection(client):
 
     response = client.get("/connections/")
     assert len(response.json()) == 1
+
+def test_get_connection_by_id(client):
+    response = client.get("connections/1")
+    assert response.status_code == 200, response.text
+    role_connection_json = response.json()
+    assert role_connection_json["id"] == 1
+    assert role_connection_json["name"] == role_connection_name
+
+def test_put_new_connection(client):
+    response = client.get("/connections/3")
+    assert response.status_code == 404
+    response = client.put("/connections/3", json=schemas.ConnectionCreate(
+        name="wants to be", subject=3, target=2).dict())  # id 3 = brian wants to be chief engineer
+    assert response.status_code == 201  # created
+

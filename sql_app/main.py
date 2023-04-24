@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Response, status
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
@@ -77,7 +77,25 @@ def read_connections(like: str = "*", skip: int = 0, limit: int = 100, db_sessio
         pass
     return connections
 
+
+@app.get("/connections/{connection_id}", response_model=schemas.Connection)
+def read_connection(connection_id: int, db_session: Session = Depends(get_db_session)):
+    db_connection = crud.get_connection(db_session, connection_id=connection_id)
+    if db_connection is None:
+        raise HTTPException(status_code=404, detail="Connection not found")
+    return db_connection
+
+
 @app.delete("/connections/{connection_id}")
-def delete_connection(connection_id:int, db_session:Session = Depends(get_db_session)):
+def delete_connection(connection_id: int, db_session: Session = Depends(get_db_session)):
     crud.delete_connection(db_session, connection_id)
     return f"deleted, id={connection_id}"
+
+
+@app.put("/connections/{connection_id}", status_code=200)
+def update_connection(connection_id: int, connection: schemas.ConnectionCreate, response: Response,
+                      db_session: Session = Depends(get_db_session)) -> int:
+    if crud.get_connection(db_session, connection_id) is None:
+        response.status_code = status.HTTP_201_CREATED
+    db_connection = crud.update_connection(db_session, connection_id, updated_connection=connection)
+    return db_connection.id

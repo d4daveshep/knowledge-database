@@ -110,3 +110,27 @@ def get_connections_to_node(db_session: Session, node_id: int) -> list[models.Co
     connections.extend(list(db_session.scalars(select_stmt).all()))
     return connections
 
+
+def get_connection(db_session: Session, connection_id: int) -> models.Connection | None:
+    select_stmt = select(models.Connection).filter(models.Connection.id == connection_id)
+    return db_session.scalars(select_stmt).first()
+
+
+def update_connection(db_session: Session, connection_id: int,
+                      updated_connection: schemas.ConnectionCreate) -> models.Connection:
+    subject_node = get_or_create_connection_node(db_session, updated_connection.subject)
+    target_node = get_or_create_connection_node(db_session, updated_connection.target)
+
+    if get_connection(db_session, connection_id) is None:
+        db_connection = models.Connection(id=connection_id, name=updated_connection.name, subject=subject_node,
+                                          target=target_node)
+        db_session.add(db_connection)
+        db_session.commit()
+        db_session.refresh(db_connection)
+    else:
+        update_stmt = update(models.Connection).where(models.Connection.id == connection_id).values(
+            name=updated_connection.name, subject_id=subject_node.id, target_id=target_node.id)
+        db_session.execute(update_stmt)
+        db_session.commit()
+        db_connection = get_connection(db_session, connection_id)
+    return db_connection
