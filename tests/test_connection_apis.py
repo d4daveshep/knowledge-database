@@ -154,3 +154,5 @@ def test_put_new_connection(client):
         name="wants to be", subject=3, target=2).dict())  # id 3 = brian wants to be chief engineer
     assert response.status_code == 201  # created
 
+def test_put_existing_connection(client):
+    assert False
