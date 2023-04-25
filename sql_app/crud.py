@@ -137,3 +137,12 @@ def update_connection(db_session: Session, connection_id: int,
         db_session.commit()
         db_connection = get_connection(db_session, connection_id)
     return db_connection
+
+
+def get_connections_to_node_like_name(db_session:Session, like:str) -> models.Connection|None:
+    # select_stmt = select(models.Connection).filter(models.Connection.subject_id == node_id)
+    # connections = list(db_session.scalars(select_stmt).all())
+    # select_stmt = select(models.Connection).filter(models.Connection.target_id == node_id)
+    # connections.extend(list(db_session.scalars(select_stmt).all()))
+    # return connections
+    return []

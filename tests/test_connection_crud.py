@@ -115,7 +115,7 @@ def test_create_connection_to_existing_nodes(db_session):
     assert conn_2.target.name == "Chief Engineer"
 
 
-def test_create_connection_to_nonexistent_nodes(db_session):
+def test_create_connection_to_nonexistent_node_ids(db_session):
     with pytest.raises(ConnectionNodeNotFoundError) as error:
         conn_2 = crud.create_connection(
             db_session, ConnectionCreate(
@@ -127,7 +127,9 @@ def test_create_connection_to_nonexistent_nodes(db_session):
 
 
 def test_delete_connection(db_session_with_nodes_and_connections):
-    crud.delete_connection(db_session_with_nodes_and_connections, 1)
+    rows_deleted = crud.delete_connection(db_session_with_nodes_and_connections, 1)
+    assert rows_deleted == 1
+
     connections = crud.get_connections(db_session_with_nodes_and_connections)
     assert len(connections) == 13
 
@@ -160,6 +162,11 @@ def test_get_connections_to_node_id(db_session_with_nodes_and_connections):
 
 
 def test_get_connections_to_node_name_like(db_session_with_nodes_and_connections):
+    nodes_with_a = crud.get_nodes_like_name(db_session_with_nodes_and_connections, "a")
+    assert len(nodes_with_a) == 11
+
+    connections_to_nodes_with_a = crud.get_connections_to_node_like_name(db_session_with_nodes_and_connections, "a")
+
     assert False
 
 
