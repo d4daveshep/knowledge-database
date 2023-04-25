@@ -1,4 +1,4 @@
-from sqlalchemy import select, update, delete
+from sqlalchemy import select, update, delete, Result
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -42,20 +42,22 @@ def update_node(db_session: Session, node_id: int, updated_name: str) -> models.
     return get_node(db_session, node_id)
 
 
-def delete_node(db_session: Session, node_id: int) -> None:
+def delete_node(db_session: Session, node_id: int) -> int:
     # delete the node
     delete_stmt = delete(models.Node).where(models.Node.id == node_id)
-    db_session.execute(delete_stmt)
+    result: Result = db_session.execute(delete_stmt)
 
-    # delete any connections to the node
-    delete_stmt = delete(models.Connection).where(
-        models.Connection.subject_id == node_id)
-    db_session.execute(delete_stmt)
-    delete_stmt = delete(models.Connection).where(
-        models.Connection.target_id == node_id)
-    db_session.execute(delete_stmt)
+    if result.rowcount:
+        # delete any connections to the node
+        delete_stmt = delete(models.Connection).where(
+            models.Connection.subject_id == node_id)
+        db_session.execute(delete_stmt)
+        delete_stmt = delete(models.Connection).where(
+            models.Connection.target_id == node_id)
+        db_session.execute(delete_stmt)
 
     db_session.commit()
+    return result.rowcount
 
 
 class ConnectionNodeNotFoundError(Exception):
@@ -99,7 +101,7 @@ def get_connections_like_name(db_session: Session, like: str, skip: int = 0, lim
 
 def delete_connection(db_session: Session, connection_id: int) -> int:
     delete_stmt = delete(models.Connection).where(models.Connection.id == connection_id)
-    result = db_session.execute(delete_stmt)
+    result: Result = db_session.execute(delete_stmt)
     db_session.commit()
     return result.rowcount
 
