@@ -97,10 +97,11 @@ def get_connections_like_name(db_session: Session, like: str, skip: int = 0, lim
     return list(db_session.scalars(select_stmt).all())
 
 
-def delete_connection(db_session: Session, connection_id: int) -> None:
+def delete_connection(db_session: Session, connection_id: int) -> int:
     delete_stmt = delete(models.Connection).where(models.Connection.id == connection_id)
-    db_session.execute(delete_stmt)
+    result = db_session.execute(delete_stmt)
     db_session.commit()
+    return result.rowcount
 
 
 def get_connections_to_node(db_session: Session, node_id: int) -> list[models.Connection]:

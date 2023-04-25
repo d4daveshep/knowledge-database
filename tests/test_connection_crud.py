@@ -176,3 +176,7 @@ def test_update_connection(db_session_with_nodes_and_connections):
                                                                             )
                                         )
     assert connection.id == 1
+    assert connection.name == "is a"
+    assert connection.subject.name == "Ryan Sharpe"
+    assert connection.target.name == "Nice Guy"
+
