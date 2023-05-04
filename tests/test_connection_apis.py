@@ -1,10 +1,9 @@
-import json
 import os
 from os.path import exists
 
 import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, Engine
+from sqlalchemy.orm import sessionmaker, Session
 from starlette.testclient import TestClient
 
 from sql_app import schemas
@@ -35,14 +34,15 @@ def client():
 
     sqlalchemy_database_url = "sqlite:///./test.db"
 
-    engine = create_engine(
+    engine: Engine = create_engine(
         sqlalchemy_database_url, connect_args={"check_same_thread": False}
     )
-    testing_session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    testing_session_local: sessionmaker[Session] = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
     Base.metadata.create_all(bind=engine)
 
     def override_get_db():
+        global db
         try:
             db = testing_session_local()
             yield db
@@ -140,6 +140,7 @@ def test_delete_existing_connection(client):
     response = client.get("/connections/")
     assert len(response.json()) == 1
 
+
 def test_delete_nonexistent_connection(client):
     response = client.get("/connections/")
     assert len(response.json()) == 2
@@ -150,6 +151,7 @@ def test_delete_nonexistent_connection(client):
     response = client.get("/connections/")
     assert len(response.json()) == 2
 
+
 def test_get_connection_by_id(client):
     response = client.get("connections/1")
     assert response.status_code == 200, response.text
@@ -157,12 +159,14 @@ def test_get_connection_by_id(client):
     assert role_connection_json["id"] == 1
     assert role_connection_json["name"] == role_connection_name
 
+
 def test_put_new_connection(client):
     response = client.get("/connections/3")
     assert response.status_code == 404
     response = client.put("/connections/3", json=schemas.ConnectionCreate(
         name="wants to be", subject=3, target=2).dict())  # id 3 = brian wants to be chief engineer
     assert response.status_code == 201  # created
+
 
 def test_put_existing_connection(client):
     response = client.get("/connections/1")
