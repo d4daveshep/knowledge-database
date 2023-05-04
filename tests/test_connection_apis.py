@@ -1,3 +1,4 @@
+import json
 import os
 from os.path import exists
 
@@ -116,7 +117,7 @@ def test_create_connection_api_with_nonexistent_nodes(client):
     assert response.status_code == 404
 
 
-def test_read_connections_by_name(client):
+def test_get_connections_by_name(client):
     response = client.get("/connections/?like=title")
     assert response.status_code == 200, response.text
     nodes_json = response.json()
@@ -129,16 +130,25 @@ def test_read_connections_by_name(client):
 # def test_update_connection(client):
 #     assert False
 
-def test_delete_connection(client):
+def test_delete_existing_connection(client):
     response = client.get("/connections/")
     assert len(response.json()) == 2
 
     response = client.delete("/connections/2")
     assert response.status_code == 200
-    assert response.text == '"deleted, id=2"'
 
     response = client.get("/connections/")
     assert len(response.json()) == 1
+
+def test_delete_nonexistent_connection(client):
+    response = client.get("/connections/")
+    assert len(response.json()) == 2
+
+    response = client.delete("/connections/99")
+    assert response.status_code == 404
+
+    response = client.get("/connections/")
+    assert len(response.json()) == 2
 
 def test_get_connection_by_id(client):
     response = client.get("connections/1")
@@ -155,4 +165,16 @@ def test_put_new_connection(client):
     assert response.status_code == 201  # created
 
 def test_put_existing_connection(client):
-    assert False
+    response = client.get("/connections/1")
+    assert response.status_code == 200
+
+    response = client.put("/connections/1", json=schemas.ConnectionCreate(
+        name="wants to be", subject=3, target=2).dict())  # id 1 = brian wants to be chief engineer
+    assert response.status_code == 200
+
+    response = client.get("/connections/1")
+    connection = schemas.Connection.parse_raw(response.text)
+    assert connection.id == 1
+    assert connection.name == "wants to be"
+    assert connection.subject.id == 3
+    assert connection.target.id == 2

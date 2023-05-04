@@ -86,10 +86,12 @@ def read_connection(connection_id: int, db_session: Session = Depends(get_db_ses
     return db_connection
 
 
-@app.delete("/connections/{connection_id}")
-def delete_connection(connection_id: int, db_session: Session = Depends(get_db_session)):
-    crud.delete_connection(db_session, connection_id)
-    return f"deleted, id={connection_id}"
+@app.delete("/connections/{connection_id}", status_code=200)
+def delete_connection(connection_id: int, response:Response, db_session: Session = Depends(get_db_session)):
+    if crud.delete_connection(db_session, connection_id):
+        return
+    else:
+        raise HTTPException(status_code=404)
 
 
 @app.put("/connections/{connection_id}", status_code=200)

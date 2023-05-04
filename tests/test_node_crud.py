@@ -72,11 +72,18 @@ def test_update_nonexistent_node(session_with_3_nodes):
     assert node is None
 
 
-def test_delete_node(session_with_3_nodes):
-    crud.delete_node(session_with_3_nodes, 2)
+def test_delete_existing_node(session_with_3_nodes):
+    rows_deleted = crud.delete_node(session_with_3_nodes, 2)
+    assert rows_deleted == 1
     node = crud.get_node(session_with_3_nodes, 2)
     assert node is None
 
     nodes = crud.get_nodes(session_with_3_nodes)
     assert len(nodes) == 2
 
+
+def test_delete_nonexistent_node(session_with_3_nodes):
+    rows_deleted = crud.delete_node(session_with_3_nodes, 99)
+    assert rows_deleted == 0
+    nodes = crud.get_nodes(session_with_3_nodes)
+    assert len(nodes) == 3
