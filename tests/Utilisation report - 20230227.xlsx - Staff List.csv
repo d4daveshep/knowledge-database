@@ -1,0 +1,199 @@
+ClearPoint Utilisation Report,,,,,,,,,,,,,,,,,
+,,Available hours for Period = #working days in period x 8 hours,,,,,,,,,,,,,,,
+Week ending:,,Available hours = Available hours for Period - Leave days,,,,,,,,,,,,,,,
+"Sun, 26 Feb 2023",,Utilisation =Billable hours / Available hours,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,Last week,,,,,Available hours for period,,,Month to date,,,,,Available hours for MTD,
+,,,20-Feb,26-Feb,,,,40,,,1-Feb,26-Feb,,,,144,
+Name,GM,Perm/Contract,Billable Hours,Non-billable hours,Internal.,Presales,Leave Hours,Weekly Total,Utilisation,Comments,Billable Hours MTD,Non-billable MTD,Internal MTD,Presales MTD,Leave Hours MTD,Monthly total,Utilisation MTD
+Aaron Ooi,Dan Cornwall,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Aaron Zhou,David Shepherd Acting GM SE,Contract,  32 ,  -   ,  -   ,  -   ,  -   ,  32 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Abhishek Thapliyal,Malen Hurbuns,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  114 ,  -   ,  -   ,  -   ,  24 ,  138 ,100%
+Adrian Rivers,David Shepherd Acting GM SE,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Aleksandra Ovalle,Dan Cornwall,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  112 ,  -   ,  24 ,  -   ,  8 ,  144 ,82%
+Alex Zuehlke,Craig McDonald,Perm,  38 ,  -   ,  2 ,  -   ,  -   ,  40 ,95%,,  93 ,  -   ,  4 ,  -   ,  48 ,  144 ,96%
+Alexey Pavlenko,Lesley Walmsley Acting GM CS,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Amin Zabihi,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  24 ,  -   ,  -   ,  -   ,  -   ,  24 ,100%
+Andrew Barclay,Craig McDonald,Perm,  -   ,  -   ,  -   ,  -   ,  40 ,  40 ,0% ,,  51 ,  -   ,  5 ,  -   ,  88 ,  144 ,91%
+Andrew Campkin,Malen Hurbuns,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  130 ,  -   ,  2 ,  -   ,  12 ,  144 ,98%
+Andrew Lindesay,David Shepherd Acting GM SE,Perm,  25 ,  -   ,  15 ,  -   ,  -   ,  40 ,62%,Perm utilisation < 90%,  82 ,  1 ,  52 ,  -   ,  8 ,  143 ,61%
+Andrew Martin,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  52 ,  -   ,  -   ,  -   ,  12 ,  64 ,100%
+Andrew Simpson,Craig McDonald,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  28 ,  -   ,  -   ,  -   ,  -   ,  28 ,100%
+Andrew Wells,Craig McDonald,Contract,  45 ,  -   ,  -   ,  -   ,  -   ,  45 ,100%,,  154 ,  -   ,  -   ,  -   ,  -   ,  154 ,100%
+Andy Mussell,Craig McDonald,Contract,  37 ,  -   ,  -   ,  -   ,  -   ,  37 ,100%,,  128 ,  -   ,  -   ,  -   ,  8 ,  136 ,100%
+Angel Petrovski,David Shepherd,Contract,  30 ,  -   ,  -   ,  -   ,  16 ,  46 ,100%,,  140 ,  1 ,  -   ,  -   ,  32 ,  173 ,99%
+Anthony Barr,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  40 ,  40 ,0% ,,  88 ,  -   ,  -   ,  -   ,  48 ,  136 ,100%
+Ardhra Jacob,Craig McDonald,Perm,  24 ,  -   ,  16 ,  -   ,  -   ,  40 ,60%,Perm utilisation < 90%,  88 ,  -   ,  48 ,  -   ,  8 ,  144 ,65%
+Asanka Padmakumara,Lesley Walmsley Acting GM CS,Perm,  29 ,  -   ,  11 ,  -   ,  -   ,  40 ,73%,Perm utilisation < 90%,  89 ,  -   ,  31 ,  -   ,  24 ,  144 ,74%
+Ava Czechowska,Lesley Walmsley Acting GM CS,Perm,  1 ,  -   ,  40 ,  -   ,  -   ,  40 ,1%,Perm utilisation < 90%,  5 ,  -   ,  68 ,  -   ,  72 ,  145 ,6%
+Barbara Gray,Craig McDonald,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Ben Phear,Lesley Walmsley Acting GM CS,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Bert Huang,David Shepherd Acting GM SE,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  135 ,  -   ,  -   ,  -   ,  8 ,  143 ,100%
+Bhawna Malhotra,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  112 ,  -   ,  -   ,  -   ,  -   ,  112 ,100%
+Bjarne Hansen,Mike Gatman,Perm,  3 ,  -   ,  38 ,  -   ,  -   ,  40 ,6%,Perm utilisation < 90%,  11 ,  -   ,  122 ,  -   ,  12 ,  144 ,8%
+Blair Jackson,Craig McDonald,Perm,  -   ,  -   ,  28 ,  -   ,  -   ,  28 ,0%,Missing Hours,  40 ,  -   ,  56 ,  -   ,  6 ,  102 ,42%
+Boris Guskee,David Shepherd,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  112 ,  -   ,  -   ,  -   ,  -   ,  112 ,100%
+Brenda Goudie,Craig McDonald,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Bryan Stephens,Mike Gatman,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  68 ,  -   ,  -   ,  -   ,  -   ,  68 ,100%
+Carlos Liu,David Shepherd Acting GM SE,Contract,  32 ,  -   ,  -   ,  -   ,  8 ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Caterina Berimballi,Craig McDonald,Perm,  20 ,  -   ,  20 ,  -   ,  -   ,  40 ,50%,Perm utilisation < 90%,  60 ,  -   ,  52 ,  -   ,  32 ,  144 ,54%
+Celeste Ormaechea,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Charles Wang,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  248 ,  -   ,  -   ,  -   ,  -   ,  248 ,100%
+Chris Callaghan,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Chris Hoolihan,David Shepherd,Contract,  27 ,  -   ,  -   ,  -   ,  -   ,  27 ,100%,,  72 ,  -   ,  -   ,  -   ,  40 ,  112 ,100%
+Clare Haeney,Craig McDonald,Contract,  24 ,  -   ,  -   ,  -   ,  16 ,  40 ,100%,,  120 ,  -   ,  -   ,  -   ,  24 ,  144 ,100%
+Colin Henwood,Malen Hurbuns,Contract,  37 ,  -   ,  -   ,  -   ,  3 ,  40 ,100%,,  113 ,  -   ,  -   ,  -   ,  32 ,  144 ,100%
+Colin Sergay,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  144 ,  -   ,  -   ,  -   ,  -   ,  144 ,100%
+Connor Hewett,Lesley Walmsley Acting GM CS,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Corne Aspeling,David Shepherd Acting GM SE,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  118 ,  -   ,  2 ,  -   ,  24 ,  144 ,98%
+Craig Forster,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  30 ,  -   ,  -   ,  -   ,  -   ,  30 ,100%
+Craig McDonald,Lesley Walmsley ,Perm,  2 ,  1 ,  37 ,  -   ,  -   ,  40 ,5%,Perm utilisation < 90%,  7 ,  8 ,  117 ,  -   ,  12 ,  144 ,5%
+Dameon Andersen,Lesley Walmsley Acting GM CS,Perm,  20 ,  -   ,  20 ,  -   ,  -   ,  40 ,50%,Perm utilisation < 90%,  70 ,  -   ,  50 ,  -   ,  -   ,  120 ,58%
+Dan Cornwall,Lesley Walmsley ,Perm,  6 ,  -   ,  34 ,  -   ,  -   ,  40 ,15%,Perm utilisation < 90%,  19 ,  -   ,  98 ,  -   ,  8 ,  125 ,16%
+Danny Rietkerk,David Shepherd Acting GM SE,Perm,  24 ,  -   ,  -   ,  -   ,  16 ,  40 ,100%,,  118 ,  -   ,  3 ,  -   ,  24 ,  144 ,98%
+Daron Robinson,David Shepherd Acting GM SE,Contract,  24 ,  -   ,  -   ,  -   ,  -   ,  24 ,100%,,  99 ,  -   ,  -   ,  -   ,  -   ,  99 ,100%
+David Rawson,David Shepherd Acting GM SE,Perm,  32 ,  4 ,  4 ,  -   ,  -   ,  40 ,80%,Perm utilisation < 90%,  120 ,  4 ,  12 ,  -   ,  8 ,  144 ,88%
+David Shepherd,Lesley Walmsley ,Perm,  -   ,  -   ,  40 ,  -   ,  -   ,  40 ,0%,Perm utilisation < 90%,  3 ,  -   ,  122 ,  -   ,  20 ,  144 ,2%
+Dennis Sosnoski,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Dhaval Tanna,Craig McDonald,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Dileep Samala,Malen Hurbuns,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Dirk Wessels,Malen Hurbuns,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  9 ,  144 ,100%
+Dmitry Oparin,David Shepherd Acting GM SE,Perm,  24 ,  -   ,  1 ,  -   ,  16 ,  40 ,98%,,  102 ,  -   ,  2 ,  -   ,  40 ,  144 ,98%
+Ed Statham,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Edward Weaver,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  96 ,  -   ,  -   ,  -   ,  48 ,  144 ,100%
+Ekamban Chokkappan,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  28 ,  -   ,  -   ,  -   ,  -   ,  28 ,100%
+Fedor Vinogradov,Malen Hurbuns,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Fletcher Thomas,Craig McDonald,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Fran O'Neil,Lesley Walmsley Acting GM CS,Contract,  42 ,  -   ,  -   ,  -   ,  -   ,  42 ,100%,,  141 ,  -   ,  -   ,  -   ,  8 ,  149 ,100%
+Ganesan Srinivasan,Lesley Walmsley Acting GM CS,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  112 ,  -   ,  -   ,  -   ,  24 ,  136 ,100%
+Gerald Garcia,Malen Hurbuns,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Gerry Dassi,David Shepherd Acting GM SE,Perm,  24 ,  -   ,  16 ,  -   ,  -   ,  40 ,60%,Perm utilisation < 90%,  94 ,  -   ,  42 ,  -   ,  8 ,  144 ,69%
+Gowri Rudrabhatla,Malen Hurbuns,Perm,  37 ,  -   ,  4 ,  -   ,  -   ,  40 ,91%,,  123 ,  -   ,  13 ,  -   ,  8 ,  144 ,91%
+Grace Wang,Craig McDonald,Perm,  30 ,  -   ,  2 ,  -   ,  -   ,  32 ,94%,Missing Hours,  99 ,  -   ,  5 ,  -   ,  8 ,  112 ,95%
+Greg Montgomery,Mike Gatman,#N/A,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% 
+Hamid Sedghinezhad,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% 
+Heidi Cone,David Shepherd Acting GM SE,Perm,  28 ,  -   ,  2 ,  -   ,  -   ,  30 ,94%,Missing Hours,  74 ,  -   ,  6 ,  -   ,  25 ,  105 ,93%
+Hsichen Hsieh,Dan Cornwall,Perm,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  86 ,  -   ,  12 ,  -   ,  8 ,  106 ,88%
+Inderdip Vraich,Craig McDonald,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Irina Southwell,David Shepherd Acting GM SE,Contract,  32 ,  -   ,  -   ,  -   ,  8 ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Jack Luo,Malen Hurbuns,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Jason Kang,Malen Hurbuns,Perm,  39 ,  -   ,  1 ,  -   ,  -   ,  40 ,97%,,  133 ,  -   ,  3 ,  -   ,  8 ,  144 ,98%
+Jason Qu,Malen Hurbuns,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  134 ,  -   ,  -   ,  -   ,  14 ,  148 ,100%
+Jenny Chiu,Craig McDonald,Perm,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  8 ,  12 ,  4 ,  -   ,  -   ,  24 ,32%
+Jenny Mullane,Mike Gatman,Perm,  12 ,  2 ,  18 ,  -   ,  -   ,  32 ,38%,Missing Hours,  28 ,  10 ,  53 ,  -   ,  7 ,  98 ,31%
+Jiaqiu Zhao,Malen Hurbuns,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  137 ,  -   ,  -   ,  -   ,  8 ,  145 ,100%
+Jill Nones,Lesley Walmsley Acting GM CS,Perm,  7 ,  -   ,  32 ,  -   ,  2 ,  40 ,17%,Perm utilisation < 90%,  67 ,  -   ,  49 ,  -   ,  29 ,  144 ,58%
+Joel Guevara,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Jonathan Ackerman,David Shepherd,Contract,  44 ,  -   ,  -   ,  -   ,  -   ,  44 ,100%,,  149 ,  -   ,  -   ,  -   ,  8 ,  157 ,100%
+Jonathon Poi Lee,Malen Hurbuns,#N/A,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% 
+Josh van den Heever,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Karan Ramanathan,Lesley Walmsley Acting GM CS,Perm,  -   ,  -   ,  40 ,  -   ,  -   ,  40 ,0%,Perm utilisation < 90%,  -   ,  -   ,  104 ,  -   ,  40 ,  144 ,0%
+Karo Liang,Dan Cornwall,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Karthik Kreen Krishnan,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Kate Lu,Dan Cornwall,Perm,  15 ,  -   ,  26 ,  -   ,  -   ,  40 ,36%,Perm utilisation < 90%,  45 ,  -   ,  92 ,  -   ,  8 ,  144 ,33%
+Kelvin Li,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Ken Kato,Malen Hurbuns,Perm,  42 ,  -   ,  -   ,  -   ,  -   ,  42 ,100%,,  130 ,  -   ,  -   ,  -   ,  16 ,  146 ,100%
+Kenji Yamasaki,David Shepherd Acting GM SE,Contract,  32 ,  -   ,  -   ,  -   ,  8 ,  40 ,100%,,  120 ,  -   ,  -   ,  -   ,  24 ,  144 ,100%
+Kevin Zhang,David Shepherd Acting GM SE,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  133 ,  -   ,  4 ,  -   ,  8 ,  144 ,97%
+Kiran Rajan,Malen Hurbuns,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Kirill Ivanov,Lesley Walmsley Acting GM CS,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  120 ,  -   ,  -   ,  -   ,  24 ,  144 ,100%
+Kris Rayana,Lesley Walmsley Acting GM CS,Contract,  20 ,  -   ,  -   ,  -   ,  -   ,  20 ,100%,,  60 ,  -   ,  -   ,  -   ,  -   ,  60 ,100%
+Krishaal Kumar,Craig McDonald,Perm,  17 ,  4 ,  19 ,  -   ,  -   ,  40 ,43%,Perm utilisation < 90%,  50 ,  4 ,  58 ,  -   ,  32 ,  144 ,45%
+Krishna Caldas,David Shepherd,Perm,  24 ,  -   ,  16 ,  -   ,  -   ,  40 ,60%,Perm utilisation < 90%,  48 ,  -   ,  88 ,  -   ,  8 ,  144 ,35%
+Lana Shatonova,David Shepherd Acting GM SE,Contract,  16 ,  -   ,  -   ,  -   ,  -   ,  16 ,100%,,  112 ,  -   ,  -   ,  -   ,  -   ,  112 ,100%
+Llyle Van Schalkwyk,David Shepherd,Contract,  41 ,  -   ,  -   ,  -   ,  -   ,  41 ,100%,,  132 ,  -   ,  -   ,  -   ,  -   ,  132 ,100%
+Luci Niemand,Craig McDonald,Perm,  5 ,  5 ,  16 ,  -   ,  -   ,  26 ,20%,Missing Hours,  34 ,  16 ,  64 ,  -   ,  16 ,  130 ,30%
+Lux Liu,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  96 ,  -   ,  -   ,  -   ,  -   ,  96 ,100%
+Maheesha Kottegoda,Craig McDonald,Contract,  37 ,  -   ,  -   ,  -   ,  -   ,  37 ,100%,,  135 ,  -   ,  -   ,  -   ,  -   ,  135 ,100%
+Malendra Hurbuns,Lesley Walmsley ,Perm,  -   ,  -   ,  -   ,  -   ,  40 ,  40 ,0% ,,  3 ,  1 ,  45 ,  -   ,  96 ,  144 ,5%
+Manu Tendulkar,Dan Cornwall,Perm,  -   ,  -   ,  40 ,  -   ,  -   ,  40 ,0%,Perm utilisation < 90%,  2 ,  -   ,  134 ,  -   ,  8 ,  144 ,1%
+Manuel Mendes,Lesley Walmsley Acting GM CS,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Marvin Villahermosa,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  40 ,  40 ,0% ,,  -   ,  -   ,  -   ,  -   ,  144 ,  144 ,0% 
+Mary-anne Stuart-William,Craig McDonald,Contract,  5 ,  -   ,  0 ,  -   ,  -   ,  5 ,95%,Missing Hours,  25 ,  6 ,  3 ,  -   ,  -   ,  34 ,75%
+Mason Blackwood,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  40 ,  40 ,0% ,,  56 ,  -   ,  -   ,  -   ,  88 ,  144 ,100%
+Massimo Berimballi,Craig McDonald,Perm,  -   ,  -   ,  40 ,  -   ,  -   ,  40 ,0%,Perm utilisation < 90%,  -   ,  -   ,  112 ,  -   ,  32 ,  144 ,0%
+Matt Millar,Craig McDonald,Perm,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% 
+Matthew Berg,Malen Hurbuns,Perm,  40 ,  -   ,  1 ,  -   ,  -   ,  40 ,99%,,  131 ,  -   ,  6 ,  -   ,  8 ,  144 ,96%
+Matthew Clarke,David Shepherd Acting GM SE,Contract,  36 ,  -   ,  -   ,  -   ,  4 ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Max Tang,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Maxim Kukharev,Lesley Walmsley Acting GM CS,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Megan Robb,Dan Cornwall,Perm,  1 ,  -   ,  40 ,  -   ,  -   ,  40 ,1%,Perm utilisation < 90%,  2 ,  -   ,  134 ,  -   ,  8 ,  144 ,1%
+Michael Magsuci,Malen Hurbuns,Perm,  37 ,  -   ,  3 ,  -   ,  -   ,  40 ,93%,,  122 ,  1 ,  14 ,  -   ,  8 ,  145 ,89%
+Michael Owen,Malen Hurbuns,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Michael Whelan,Malen Hurbuns,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Mike Gatman,Lesley Walmsley ,Perm,  3 ,  -   ,  37 ,  -   ,  -   ,  40 ,8%,Perm utilisation < 90%,  9 ,  -   ,  127 ,  -   ,  8 ,  144 ,6%
+Mike Nguyen,Malen Hurbuns,Perm,  36 ,  -   ,  4 ,  -   ,  -   ,  40 ,90%,,  120 ,  -   ,  16 ,  -   ,  8 ,  144 ,88%
+Mina Al-Ansari,Craig McDonald,Perm,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  33 ,  29 ,  45 ,  -   ,  8 ,  115 ,31%
+Miriam Walker,Dan Cornwall,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  72 ,  -   ,  -   ,  -   ,  -   ,  72 ,100%
+Mohit Kalra,David Shepherd Acting GM SE,Contract,  42 ,  -   ,  -   ,  -   ,  -   ,  42 ,100%,,  138 ,  -   ,  -   ,  -   ,  -   ,  138 ,100%
+Morne Niemand,Malen Hurbuns,Perm,  37 ,  -   ,  4 ,  -   ,  -   ,  40 ,91%,,  125 ,  1 ,  8 ,  -   ,  11 ,  144 ,94%
+Naga Seramsetty,Craig McDonald,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Natasha Pearce,Lesley Walmsley Acting GM CS,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  56 ,  -   ,  -   ,  -   ,  -   ,  56 ,100%
+Nicholas Redgwell,Craig McDonald,Perm,  32 ,  -   ,  8 ,  -   ,  -   ,  40 ,80%,Perm utilisation < 90%,  114 ,  -   ,  22 ,  -   ,  8 ,  144 ,84%
+Nikolay Perov,David Shepherd Acting GM SE,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Nripendra Pradhananga,Malen Hurbuns,Perm,  -   ,  -   ,  40 ,  -   ,  -   ,  40 ,0%,Perm utilisation < 90%,  -   ,  -   ,  136 ,  -   ,  8 ,  144 ,0%
+Oliver Liu,Malen Hurbuns,Perm,  39 ,  -   ,  1 ,  -   ,  -   ,  40 ,98%,,  124 ,  -   ,  4 ,  -   ,  16 ,  144 ,97%
+Omkar Kadam,Craig McDonald,Perm,  2 ,  1 ,  23 ,  -   ,  16 ,  41 ,6%,Perm utilisation < 90%,  19 ,  1 ,  106 ,  -   ,  24 ,  150 ,15%
+Paul Hayter,Lesley Walmsley Acting GM CS,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Paul McDonnell,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Paul Wavish,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  144 ,  -   ,  -   ,  -   ,  -   ,  144 ,100%
+Pavel Diatchenko,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Peter Hunter,Malen Hurbuns,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Phil Spenceley,Lesley Walmsley Acting GM CS,Contract,  43 ,  -   ,  -   ,  -   ,  -   ,  43 ,100%,,  146 ,  -   ,  -   ,  -   ,  -   ,  146 ,100%
+Prabhakar Rachamalla,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Prabhu Ramamoorthy,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Pragathi Singamneni,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Reece Gibbs,Malen Hurbuns,Perm,  32 ,  -   ,  -   ,  -   ,  8 ,  40 ,100%,,  120 ,  -   ,  -   ,  -   ,  8 ,  128 ,100%
+Rich Smith,Craig McDonald,Perm,  19 ,  -   ,  21 ,  -   ,  -   ,  40 ,48%,Perm utilisation < 90%,  100 ,  -   ,  37 ,  -   ,  8 ,  144 ,73%
+Riel Fabillar,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Robert Clark,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Robin Bygrave,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  24 ,  -   ,  -   ,  -   ,  -   ,  24 ,100%
+Robin Southgate,David Shepherd,Contract,  24 ,  -   ,  -   ,  -   ,  -   ,  24 ,100%,,  100 ,  -   ,  -   ,  -   ,  20 ,  120 ,100%
+Rodd Penney,Mike Gatman,Perm,  -   ,  40 ,  -   ,  -   ,  -   ,  40 ,0%,Perm utilisation < 90%,  -   ,  80 ,  56 ,  -   ,  8 ,  144 ,0%
+Ruan van Maarleveld,Malen Hurbuns,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Ryan Harte,Dan Cornwall,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Sam Vellinga,David Shepherd Acting GM SE,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Sama Sagar,Craig McDonald,Perm,  -   ,  -   ,  40 ,  -   ,  -   ,  40 ,0%,Perm utilisation < 90%,  72 ,  -   ,  40 ,  -   ,  32 ,  144 ,64%
+Samuel Grospe,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+See Wong,Malen Hurbuns,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% 
+Shane Henderson,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  144 ,  -   ,  -   ,  -   ,  -   ,  144 ,100%
+Shi Min Lee,Dan Cornwall,Perm,  37 ,  -   ,  4 ,  -   ,  -   ,  40 ,91%,,  46 ,  -   ,  90 ,  -   ,  8 ,  144 ,34%
+Sina Mobeen,Craig McDonald,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Steve Kelly,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  145 ,  -   ,  -   ,  -   ,  -   ,  145 ,100%
+Stuart Chen,David Shepherd Acting GM SE,Perm,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  -   ,  -   ,  40 ,  -   ,  24 ,  64 ,0%
+Stuart Hilton,Dan Cornwall,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Stuart Massey,David Shepherd,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Sujan Gurung,Lesley Walmsley Acting GM CS,Perm,  32 ,  -   ,  -   ,  -   ,  8 ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Tao Lin,Lesley Walmsley Acting GM CS,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  96 ,  -   ,  -   ,  -   ,  8 ,  104 ,100%
+Ted Regino,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Tejas Kulkarni,Craig McDonald,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Terence White,Lesley Walmsley Acting GM CS,Perm,  20 ,  -   ,  20 ,  -   ,  -   ,  40 ,50%,Perm utilisation < 90%,  54 ,  -   ,  79 ,  -   ,  12 ,  144 ,41%
+Thiam Fatt,Craig McDonald,Perm,  40 ,  7 ,  -   ,  -   ,  -   ,  47 ,85%,Perm utilisation < 90%,  136 ,  25 ,  -   ,  -   ,  8 ,  169 ,84%
+Thomas Vercoutre,Lesley Walmsley Acting GM CS,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  32 ,  -   ,  -   ,  -   ,  -   ,  32 ,100%
+Tim Ruddell,David Shepherd Acting GM SE,Contract,  41 ,  -   ,  -   ,  -   ,  14 ,  54 ,100%,,  131 ,  -   ,  -   ,  -   ,  29 ,  160 ,100%
+Tom Ellis,Craig McDonald,Perm,  44 ,  1 ,  2 ,  -   ,  -   ,  47 ,94%,,  129 ,  5 ,  14 ,  -   ,  8 ,  156 ,87%
+Tracy Carmona,Craig McDonald,Contract,  32 ,  -   ,  -   ,  -   ,  8 ,  40 ,100%,,  104 ,  -   ,  -   ,  -   ,  40 ,  144 ,100%
+Troy Wing,David Shepherd,Contract,  -   ,  -   ,  -   ,  -   ,  -   ,  -   ,0% ,Missing Hours,  14 ,  -   ,  -   ,  -   ,  -   ,  14 ,100%
+Varun Ghaswala,Malen Hurbuns,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Vaughan Walker,Craig McDonald,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  120 ,  -   ,  -   ,  -   ,  16 ,  136 ,100%
+Victor Mingueza,Lesley Walmsley Acting GM CS,Contract,  39 ,  -   ,  -   ,  -   ,  -   ,  39 ,100%,,  135 ,  -   ,  -   ,  -   ,  -   ,  135 ,100%
+Vivek Chari,David Shepherd Acting GM SE,Contract,  -   ,  -   ,  -   ,  -   ,  40 ,  40 ,0% ,,  2 ,  -   ,  -   ,  -   ,  142 ,  144 ,100%
+Wayne Goh,David Shepherd Acting GM SE,Perm,  8 ,  -   ,  -   ,  -   ,  -   ,  8 ,100%,,  104 ,  -   ,  -   ,  -   ,  8 ,  112 ,100%
+Weeda Lostitmonton,Malen Hurbuns,Perm,  39 ,  -   ,  1 ,  -   ,  -   ,  40 ,98%,,  127 ,  -   ,  2 ,  -   ,  16 ,  144 ,99%
+Wen-Yang Ji,Malen Hurbuns,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Willard Nyamunokora,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  144 ,  -   ,  -   ,  -   ,  -   ,  144 ,100%
+William Le,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Winnie Sowerby,Craig McDonald,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+Yi Liu,Lesley Walmsley Acting GM CS,Perm,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  128 ,  -   ,  -   ,  -   ,  16 ,  144 ,100%
+Yong Que,David Shepherd Acting GM SE,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  8 ,  144 ,100%
+Zoe Xu,Malen Hurbuns,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%
+,,,  849 ,  17 ,  237 ,  -   ,  80 ,"  1,183 ",,,"  3,155 ",  98 ,  673 ,  -   ,  510 ,"  4,435 ",
+ ,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+ ,,,,,,,,,,,,,,,,,
+, ,,,,,,,,,,,,,,,,
