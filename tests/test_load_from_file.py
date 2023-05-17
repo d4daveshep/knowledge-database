@@ -19,7 +19,7 @@ def db_session():
 
 
 def test_parse_staff_list_line():
-    data_line = "Aaron Ooi,Dan Cornwall,Contract,  40 ,  -   ,  -   ,  -   ,  -   ,  40 ,100%,,  136 ,  -   ,  -   ,  -   ,  -   ,  136 ,100%"
+    data_line = "Aaron Ooi,Dan Cornwall,Contract,  40"
     staff_data: StaffData = parse_staff_list_line(data_line)
     assert staff_data.name == "Aaron Ooi"
     assert staff_data.gm == "Dan Cornwall"
@@ -30,7 +30,6 @@ def test_load_staff_list(db_session):
     filename = "./Utilisation report - 20230227.xlsx - Staff List.csv"
 
     lines_processed = load_staff_list(db_session, filename)
-
     assert lines_processed == 181
 
     all_connections: list[models.Connection] = crud.get_connections(db_session, limit=400)
@@ -38,6 +37,9 @@ def test_load_staff_list(db_session):
 
     aaron_connections: list[models.Connection] = crud.get_connections_to_node_like_name(db_session, like="Aaron Ooi")
     assert len(aaron_connections) == 2
+
+    zoe_connections: list[models.Connection] = crud.get_connections_to_node_like_name(db_session, like="Zoe Xu")
+    assert len(zoe_connections) == 2
 
 
 
