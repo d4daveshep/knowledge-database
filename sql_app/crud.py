@@ -27,7 +27,7 @@ def get_nodes(db_session: Session, skip: int = 0, limit: int = 100) -> list[mode
     return list(db_session.scalars(select_stmt).all())
 
 
-def get_nodes_like_name(db_session: Session, like: str, skip: int = 0, limit: int = 100):
+def get_nodes_like_name(db_session: Session, like: str, skip: int = 0, limit: int = 100) -> list[models.Node]:
     select_stmt = select(models.Node).filter(models.Node.name.ilike(f"%{like}%"))
     return list(db_session.scalars(select_stmt).all())
 
@@ -139,10 +139,13 @@ def update_connection(db_session: Session, connection_id: int,
     return db_connection
 
 
-def get_connections_to_node_like_name(db_session:Session, like:str) -> models.Connection|None:
-    # select_stmt = select(models.Connection).filter(models.Connection.subject_id == node_id)
-    # connections = list(db_session.scalars(select_stmt).all())
-    # select_stmt = select(models.Connection).filter(models.Connection.target_id == node_id)
-    # connections.extend(list(db_session.scalars(select_stmt).all()))
-    # return connections
-    return []
+def get_connections_to_node_like_name(db_session: Session, like: str) -> list[models.Connection]:
+    nodes_like: list[models.Node] = get_nodes_like_name(db_session, like)
+    connections: set[models.Connection] = set()
+
+    for node in nodes_like:
+        connections_to_node: list[models.Connection] = get_connections_to_node(db_session, node.id)
+        for connection in connections_to_node:
+            connections.add(connection)
+
+    return list(connections)

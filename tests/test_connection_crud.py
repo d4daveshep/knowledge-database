@@ -162,12 +162,14 @@ def test_get_connections_to_node_id(db_session_with_nodes_and_connections):
 
 
 def test_get_connections_to_node_name_like(db_session_with_nodes_and_connections):
-    nodes_with_a = crud.get_nodes_like_name(db_session_with_nodes_and_connections, "a")
-    assert len(nodes_with_a) == 11
+    nodes_like = crud.get_nodes_like_name(db_session_with_nodes_and_connections, "robin")
+    assert len(nodes_like) == 1
 
-    connections_to_nodes_with_a = crud.get_connections_to_node_like_name(db_session_with_nodes_and_connections, "a")
+    connections_to_nodes_like = crud.get_connections_to_node_like_name(db_session_with_nodes_and_connections, "robin")
 
-    assert False
+    assert len(connections_to_nodes_like) == 5
+    connection_10 = crud.get_connection(db_session_with_nodes_and_connections, 10)
+    assert connection_10 in connections_to_nodes_like
 
 
 def test_get_connection_by_id(db_session_with_nodes_and_connections):
@@ -186,4 +188,3 @@ def test_update_connection(db_session_with_nodes_and_connections):
     assert connection.name == "is a"
     assert connection.subject.name == "Ryan Sharpe"
     assert connection.target.name == "Nice Guy"
-
