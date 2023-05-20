@@ -9,12 +9,13 @@ from utilities.cvs_file_loader import load_staff_list, parse_staff_list_line, St
 @pytest.fixture()
 def db_session():
     engine = create_engine("sqlite://", echo=True)
-
     models.Base.metadata.create_all(engine)
 
     with Session(engine) as session:
         yield session
+        # tests run
 
+        # tear down
         pass
 
 
@@ -42,5 +43,8 @@ def test_load_staff_list(db_session):
     assert len(zoe_connections) == 2
 
 
+def test_parse_time_by_task_line():
+    data_line = "AlphaCert Limited,J003255,ALPH-2136 ACC AWS Discovery,AlphaCert Consultancy,AlphaCert Consultancy,Terence White,PERM,30-Jan-23,Yes,1,,Finalise and issue report,Terence White,Terence White"
+    task_time_data: TaskTimeData = parse_time_by_task_line(data_line)
 
-
+    assert False
