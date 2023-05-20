@@ -87,7 +87,7 @@ def read_connection(connection_id: int, db_session: Session = Depends(get_db_ses
 
 
 @app.delete("/connections/{connection_id}", status_code=200)
-def delete_connection(connection_id: int, response:Response, db_session: Session = Depends(get_db_session)):
+def delete_connection(connection_id: int, response: Response, db_session: Session = Depends(get_db_session)):
     if crud.delete_connection(db_session, connection_id):
         return
     else:
@@ -101,3 +101,11 @@ def update_connection(connection_id: int, connection: schemas.ConnectionCreate, 
         response.status_code = status.HTTP_201_CREATED
     db_connection = crud.update_connection(db_session, connection_id, updated_connection=connection)
     return db_connection.id
+
+
+@app.get("/stats/", status_code=200)
+def get_database_stats(response: Response, db_session: Session = Depends(get_db_session)):
+    stats = {"node_count": crud.get_table_size(db_session, models.Node),
+             "connection_count": crud.get_table_size(db_session, models.Connection)}
+
+    return stats

@@ -182,3 +182,11 @@ def test_put_existing_connection(client):
     assert connection.name == "wants to be"
     assert connection.subject.id == 3
     assert connection.target.id == 2
+
+
+def test_stats_api(client):
+    response = client.get("/stats/")
+    assert response.status_code == 200
+    response_json = response.json()
+    assert response_json["node_count"] == 4
+    assert response_json["connection_count"] == 2
