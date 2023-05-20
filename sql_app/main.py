@@ -1,5 +1,8 @@
-from fastapi import Depends, FastAPI, HTTPException, Response, status
+from io import BytesIO, TextIOWrapper
+
+from fastapi import Depends, FastAPI, HTTPException, Response, status, Request, UploadFile, File
 from sqlalchemy.orm import Session
+from starlette.templating import Jinja2Templates
 
 from . import crud, models, schemas
 from .crud import ConnectionNodeNotFoundError
@@ -8,6 +11,7 @@ from .database import LocalSession, engine
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
 
 
 # Dependency
@@ -109,3 +113,33 @@ def get_database_stats(response: Response, db_session: Session = Depends(get_db_
              "connection_count": crud.get_table_size(db_session, models.Connection)}
 
     return stats
+
+
+@app.get('/')
+def main(request: Request):
+    return templates.TemplateResponse('index.html', {'request': request})
+
+
+@app.post('/upload')
+def upload(file: UploadFile = File(...)):
+    try:
+        contents = file.file.read()
+        buffer = BytesIO(contents)
+        text_buffer = TextIOWrapper(buffer)
+        for line in text_buffer.readlines():
+            print(line)
+        pass
+        # df = pd.read_csv(buffer)
+    except:
+        raise HTTPException(status_code=500, detail='Something went wrong')
+    finally:
+        buffer.close()
+        file.file.close()
+
+    return {"message": "OK"}
+
+    # remove a column from the DataFrame
+    # df.drop('age', axis=1, inplace=True)
+    #
+    # headers = {'Content-Disposition': 'attachment; filename="modified_data.csv"'}
+    # return Response(df.to_csv(), headers=headers, media_type='text/csv')
