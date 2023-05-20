@@ -76,16 +76,28 @@ def get_or_create_connection_node(db_session: Session, node: schemas.NodeCreate 
 
     return db_node
 
+def get_connection_by_name_target_id_and_subject_id(db_session: Session, name: str, subject_id: int,
+                                                    target_id: int) -> models.Connection | None:
+    select_stmt = select(models.Connection).filter(models.Connection.name == name,
+                                                   models.Connection.subject_id == subject_id,
+                                                   models.Connection.target_id == target_id)
+
+    return db_session.scalars(select_stmt).first()
 
 def create_connection(db_session: Session, connection: schemas.ConnectionCreate) -> models.Connection:
-    subject_node = get_or_create_connection_node(db_session, connection.subject)
-    target_node = get_or_create_connection_node(db_session, connection.target)
+    subject_node: models.Node = get_or_create_connection_node(db_session, connection.subject)
+    target_node: models.Node = get_or_create_connection_node(db_session, connection.target)
 
-    db_connection = models.Connection(name=connection.name, subject=subject_node, target=target_node)
-    db_session.add(db_connection)
-    db_session.commit()
-    db_session.refresh(db_connection)
-    return db_connection
+    existing_connection = get_connection_by_name_target_id_and_subject_id(
+        db_session, name=connection.name, subject_id=subject_node.id, target_id=target_node.id)
+    if not existing_connection:
+        db_connection = models.Connection(name=connection.name, subject=subject_node, target=target_node)
+        db_session.add(db_connection)
+        db_session.commit()
+        db_session.refresh(db_connection)
+        return db_connection
+    else:
+        return existing_connection
 
 
 def get_connections(db_session: Session, skip: int = 0, limit: int = 100) -> list[models.Connection]:
@@ -154,3 +166,5 @@ def get_connections_to_node_like_name(db_session: Session, like: str) -> list[mo
 def get_table_size(db_session, table_class: table) -> int:
     length = db_session.scalar(select(func.count()).select_from(table_class))
     return length
+
+

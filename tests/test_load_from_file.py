@@ -69,5 +69,5 @@ def test_load_time_by_task(db_session):
     lines_processed = load_time_by_task(db_session, filename)
     assert lines_processed == 5056
 
-    assert crud.get_table_size(db_session, models.Connection) == 15168
+    assert crud.get_table_size(db_session, models.Connection) == 1061
     assert crud.get_table_size(db_session, models.Node) == 382

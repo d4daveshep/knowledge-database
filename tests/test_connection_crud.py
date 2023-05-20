@@ -190,3 +190,38 @@ def test_update_connection(db_session_with_nodes_and_connections):
     assert connection.name == "is a"
     assert connection.subject.name == "Ryan Sharpe"
     assert connection.target.name == "Nice Guy"
+
+
+def test_cant_create_duplicate_connection(db_session):
+    crud.create_connection(
+        db_session,
+        ConnectionCreate(name="is a unique", subject=NodeCreate(name="David"), target=NodeCreate(name="human being"))
+    )
+
+    assert crud.get_table_size(db_session, models.Node) == 2
+    assert crud.get_table_size(db_session, models.Connection) == 1
+
+    crud.create_connection(
+        db_session,
+        ConnectionCreate(name="is a unique", subject=NodeCreate(name="David"), target=NodeCreate(name="human being"))
+    )
+
+    assert crud.get_table_size(db_session, models.Node) == 2
+    assert crud.get_table_size(db_session, models.Connection) == 1
+
+
+def test_get_connection_by_name_and_node_ids(db_session_with_nodes_and_connections):
+    node_1 = crud.get_node(db_session_with_nodes_and_connections, 1)
+    node_2 = crud.get_node(db_session_with_nodes_and_connections, 2)
+    new_connection_name = "my new connection"
+    new_connection = crud.create_connection(
+        db_session_with_nodes_and_connections,
+        ConnectionCreate(name=new_connection_name, subject=node_1.id, target=node_2.id)
+    )
+
+    got_connection = crud.get_connection_by_name_target_id_and_subject_id(db_session_with_nodes_and_connections,
+                                                                          name=new_connection_name,
+                                                                          subject_id=node_1.id,
+                                                                          target_id=node_2.id)
+
+    assert new_connection.id == got_connection.id

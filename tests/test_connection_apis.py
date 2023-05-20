@@ -68,6 +68,13 @@ def client():
     os.remove("./test.db")
 
 
+def test_client_fixture(client):
+    response = client.get("/stats/")
+    assert response.status_code == 200
+    stats = response.json()
+    assert stats["node_count"] == 4
+    assert stats["connection_count"] == 2
+
 def test_create_connection_api_with_new_nodes(client):
     subject_name = "Wayne Wallace"
     conn_name = "is a"
@@ -95,7 +102,7 @@ def test_create_connection_api_with_existing_nodes(client):
     chief_eng = schemas.Node(**client.get("/nodes/2").json())
 
     cc = schemas.ConnectionCreate(
-        name="has title",
+        name="still has title",
         subject=andrew.id,
         target=chief_eng.id
     )
@@ -105,7 +112,7 @@ def test_create_connection_api_with_existing_nodes(client):
     )
     assert response.status_code == 200, response.text
     conn = schemas.Connection(**response.json())
-    assert conn.name == "has title"
+    assert conn.name == "still has title"
     assert conn.id == 3  # client fixture creates 2 connections
     assert conn.subject.name == andrew_name
     assert conn.target.name == chief_eng_name
