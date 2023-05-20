@@ -1,4 +1,4 @@
-from sqlalchemy import select, update, delete, Result
+from sqlalchemy import select, update, delete, Result, func, table
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -149,3 +149,8 @@ def get_connections_to_node_like_name(db_session: Session, like: str) -> list[mo
             connections.add(connection)
 
     return list(connections)
+
+
+def get_table_size(db_session, table_class: table) -> int:
+    length = db_session.scalar(select(func.count()).select_from(table_class))
+    return length

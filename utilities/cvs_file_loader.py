@@ -18,7 +18,7 @@ class TaskTimeData(BaseModel):
     job_name: str
     staff_name: str
     date: date
-    hours: int
+    hours: int | float
 
     @validator("date", pre=True)
     def parse_date(cls, value):
@@ -31,15 +31,47 @@ class TaskTimeData(BaseModel):
 
 def parse_staff_list_line(line) -> StaffData:
     data = line.strip().split(',')
-    return StaffData(name=data[0], gm=data[1], employment=data[2])
+    staff_data = StaffData(name=data[0], gm=data[1], employment=data[2])
+    # print(staff_data)
+    return staff_data
 
 
-8
+def load_time_by_task(db_session: Session, csv_filename: str) -> int:
+    lines_processed = 0
+    with open(csv_filename) as csv_file:
+        for _ in range(2):
+            line = csv_file.readline()
+        while line:
+            task_time_data: TaskTimeData = parse_time_by_task_line(line)
+
+            crud.create_connection(
+                db_session, ConnectionCreate(name="worked on", subject=NodeCreate(name=task_time_data.staff_name),
+                                             target=NodeCreate(name=task_time_data.client_name))
+            )
+            crud.create_connection(
+                db_session, ConnectionCreate(name="billed time to", subject=NodeCreate(name=task_time_data.staff_name),
+                                             target=NodeCreate(name=task_time_data.job_name))
+            )
+            crud.create_connection(
+                db_session, ConnectionCreate(name="has job", subject=NodeCreate(name=task_time_data.client_name),
+                                             target=NodeCreate(name=task_time_data.job_name))
+            )
+
+            # a_graph.add_connection(name, "worked on", client)
+            # a_graph.add_connection(name, "billed time to", job)
+            # a_graph.add_connection(client, "has job", job)
+            lines_processed += 1
+            line = csv_file.readline()
+
+    return lines_processed
 
 
 def parse_time_by_task_line(line) -> TaskTimeData:
     data = line.strip().split(',')
-    return TaskTimeData(client_name=data[0], job_name=data[2], staff_name=data[5], date=data[7], hours=data[9])
+    time_task_data = TaskTimeData(client_name=data[0], job_name=data[2], staff_name=data[5], date=data[7],
+                                  hours=data[9])
+    # print(time_task_data)
+    return time_task_data
 
 
 def load_staff_list(db_session: Session, csv_filename: str) -> int:

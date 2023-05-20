@@ -6,12 +6,12 @@ from sqlalchemy.orm import Session
 
 from sql_app import models, crud
 from utilities.cvs_file_loader import load_staff_list, parse_staff_list_line, StaffData, TaskTimeData, \
-    parse_time_by_task_line
+    parse_time_by_task_line, load_time_by_task
 
 
 @pytest.fixture()
 def db_session():
-    engine = create_engine("sqlite://", echo=True)
+    engine = create_engine("sqlite://")#, echo=True)
     models.Base.metadata.create_all(engine)
 
     with Session(engine) as session:
@@ -36,6 +36,9 @@ def test_load_staff_list(db_session):
     lines_processed = load_staff_list(db_session, filename)
     assert lines_processed == 181
 
+    assert crud.get_table_size(db_session, models.Connection) == 362
+    assert crud.get_table_size(db_session, models.Node) == 188
+
     all_connections: list[models.Connection] = crud.get_connections(db_session, limit=400)
     assert len(all_connections) == 362
 
@@ -55,3 +58,16 @@ def test_parse_time_by_task_line():
     assert task_time_data.staff_name == "Terence White"
     assert task_time_data.date == date(2023, 1, 30)
     assert task_time_data.hours == 1
+
+    data_line = "AlphaCert Limited,J003255,ALPH-2136 ACC AWS Discovery,AlphaCert Consultancy,AlphaCert Consultancy,Terence White,PERM,30-Jan-23,Yes,0.25,,Finalise and issue report,Terence White,Terence White"
+    task_time_data: TaskTimeData = parse_time_by_task_line(data_line)
+    assert task_time_data.hours == 0.25
+
+def test_load_time_by_task(db_session):
+    filename = "./Utilisation report - 20230227.xlsx - TimeByTask.csv"
+
+    lines_processed = load_time_by_task(db_session, filename)
+    assert lines_processed == 5056
+
+    assert crud.get_table_size(db_session, models.Connection) == 15168
+    assert crud.get_table_size(db_session, models.Node) == 382
