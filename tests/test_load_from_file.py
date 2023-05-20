@@ -1,9 +1,12 @@
+from datetime import date
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from sql_app import models, crud
-from utilities.cvs_file_loader import load_staff_list, parse_staff_list_line, StaffData
+from utilities.cvs_file_loader import load_staff_list, parse_staff_list_line, StaffData, TaskTimeData, \
+    parse_time_by_task_line
 
 
 @pytest.fixture()
@@ -47,4 +50,8 @@ def test_parse_time_by_task_line():
     data_line = "AlphaCert Limited,J003255,ALPH-2136 ACC AWS Discovery,AlphaCert Consultancy,AlphaCert Consultancy,Terence White,PERM,30-Jan-23,Yes,1,,Finalise and issue report,Terence White,Terence White"
     task_time_data: TaskTimeData = parse_time_by_task_line(data_line)
 
-    assert False
+    assert task_time_data.client_name == "AlphaCert Limited"
+    assert task_time_data.job_name == "ALPH-2136 ACC AWS Discovery"
+    assert task_time_data.staff_name == "Terence White"
+    assert task_time_data.date == date(2023, 1, 30)
+    assert task_time_data.hours == 1
