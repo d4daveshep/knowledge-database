@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from sql_app import models, crud
-from utilities.cvs_file_loader import load_staff_list, parse_staff_list_line, StaffData, TaskTimeData, \
+from utilities.cvs_file_loader import load_staff_list_from_csv_file, parse_staff_list_line, StaffData, TaskTimeData, \
     parse_time_by_task_line, load_time_by_task
 
 
@@ -33,7 +33,7 @@ def test_parse_staff_list_line():
 def test_load_staff_list(db_session):
     filename = "./Utilisation report - 20230227.xlsx - Staff List.csv"
 
-    lines_processed = load_staff_list(db_session, filename)
+    lines_processed = load_staff_list_from_csv_file(db_session, filename)
     assert lines_processed == 181
 
     assert crud.get_table_size(db_session, models.Connection) == 362

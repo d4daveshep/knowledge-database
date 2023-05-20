@@ -4,6 +4,7 @@ from fastapi import Depends, FastAPI, HTTPException, Response, status, Request, 
 from sqlalchemy.orm import Session
 from starlette.templating import Jinja2Templates
 
+import utilities.cvs_file_loader
 from . import crud, models, schemas
 from .crud import ConnectionNodeNotFoundError
 from .database import LocalSession, engine
@@ -121,22 +122,18 @@ def main(request: Request):
 
 
 @app.post('/upload')
-def upload(file: UploadFile = File(...)):
+def upload(file: UploadFile = File(...), db_session: Session=Depends(get_db_session)):
     try:
-        contents = file.file.read()
-        buffer = BytesIO(contents)
-        text_buffer = TextIOWrapper(buffer)
-        for line in text_buffer.readlines():
-            print(line)
-        pass
-        # df = pd.read_csv(buffer)
+        file_contents = file.file.read()
+        text_buffer = TextIOWrapper(BytesIO(file_contents))
+        lines_processed = utilities.cvs_file_loader.load_staff_list_from_csv_buffer(db_session, text_buffer)
     except:
         raise HTTPException(status_code=500, detail='Something went wrong')
     finally:
-        buffer.close()
+        text_buffer.close()
         file.file.close()
 
-    return {"message": "OK"}
+    return {"message": "OK", "lines processed": lines_processed}
 
     # remove a column from the DataFrame
     # df.drop('age', axis=1, inplace=True)
