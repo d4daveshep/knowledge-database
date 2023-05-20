@@ -121,6 +121,10 @@ def main(request: Request):
     return templates.TemplateResponse('index.html', {'request': request})
 
 
+@app.get("/fileupload")
+def file_upload_page(request: Request):
+    return templates.TemplateResponse("fileupload.html", {"request": request})
+
 @app.post('/upload')
 def upload(file: UploadFile = File(...), db_session: Session=Depends(get_db_session)):
     try:
