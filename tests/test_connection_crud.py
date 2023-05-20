@@ -74,9 +74,11 @@ def db_session_with_nodes_and_connections(db_session):
 def test_fixture(db_session_with_nodes_and_connections):
     nodes = crud.get_nodes(db_session_with_nodes_and_connections)
     assert len(nodes) == 14
+    assert crud.get_table_size(db_session_with_nodes_and_connections, models.Node) == 14
 
     connections = crud.get_connections(db_session_with_nodes_and_connections)
     assert len(connections) == 14
+    assert crud.get_table_size(db_session_with_nodes_and_connections, models.Connection) == 14
 
 
 def test_create_connection_and_nodes(db_session):
