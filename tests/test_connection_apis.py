@@ -134,11 +134,22 @@ def test_create_connection_api_with_nonexistent_nodes(client):
 def test_get_connections_by_name(client):
     response = client.get("/connections/?name_like=title")
     assert response.status_code == 200, response.text
-    nodes_json = response.json()
-    assert len(nodes_json) == 2
-    conn_1 = schemas.Node(**nodes_json[0])
-    conn_2 = schemas.Node(**nodes_json[1])
+    connections_json = response.json()
+    assert len(connections_json) == 2
+    conn_1 = schemas.Connection(**connections_json[0])
+    conn_2 = schemas.Connection(**connections_json[1])
     assert conn_1.name == conn_2.name == role_connection_name
+
+
+def test_get_connections_by_node_id(client):
+    response = client.get("/connections/?node_id=1")
+    assert response.status_code == 200, response.text
+    connections_json = response.json()
+    assert len(connections_json) == 2
+    conn_1 = schemas.Connection(**connections_json[0])
+    assert conn_1.id == 1
+    conn_2 = schemas.Connection(**connections_json[1])
+    assert conn_2.id == 3
 
 
 # def test_update_connection(client):

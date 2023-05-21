@@ -75,12 +75,15 @@ def create_connection(connection: schemas.ConnectionCreate, db_session: Session 
 
 
 @app.get("/connections/", response_model=list[schemas.Connection])
-def get_connections(name_like: str = "*", skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
-    if name_like == "*":
-        connections = crud.get_connections(db_session, skip=skip, limit=limit)
+def get_connections(name_like: str = "*", node_id:int=0, skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
+    if node_id > 0:
+        connections = crud.get_connections_to_node(db_session, node_id)
     else:
-        connections = crud.get_connections_like_name(db_session, like=name_like, skip=skip, limit=limit)
-        pass
+        if name_like == "*":
+            connections = crud.get_connections(db_session, skip=skip, limit=limit)
+        else:
+            connections = crud.get_connections_like_name(db_session, like=name_like, skip=skip, limit=limit)
+            pass
     return connections
 
 
