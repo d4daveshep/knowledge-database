@@ -1,8 +1,9 @@
+import datetime
 from io import BytesIO, TextIOWrapper
 
 from fastapi import Depends, FastAPI, HTTPException, Response, status, Request, UploadFile, File
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
-from starlette.templating import Jinja2Templates
 
 import utilities.cvs_file_loader
 from . import crud, models, schemas
@@ -33,7 +34,7 @@ def create_node(node: schemas.NodeCreate, db_session: Session = Depends(get_db_s
 
 
 @app.get("/nodes/", response_model=list[schemas.Node])
-def read_nodes(like: str = "*", skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
+def get_nodes(like: str = "*", skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
     if like == "*":
         nodes = crud.get_nodes(db_session, skip=skip, limit=limit)
     else:
@@ -43,7 +44,7 @@ def read_nodes(like: str = "*", skip: int = 0, limit: int = 100, db_session: Ses
 
 
 @app.get("/nodes/{node_id}", response_model=schemas.Node)
-def read_node(node_id: int, db_session: Session = Depends(get_db_session)):
+def get_node(node_id: int, db_session: Session = Depends(get_db_session)):
     db_node = crud.get_node(db_session, node_id=node_id)
     if db_node is None:
         raise HTTPException(status_code=404, detail="Node not found")
@@ -74,7 +75,7 @@ def create_connection(connection: schemas.ConnectionCreate, db_session: Session 
 
 
 @app.get("/connections/", response_model=list[schemas.Connection])
-def read_connections(like: str = "*", skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
+def get_connections(like: str = "*", skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
     if like == "*":
         connections = crud.get_connections(db_session, skip=skip, limit=limit)
     else:
@@ -84,7 +85,7 @@ def read_connections(like: str = "*", skip: int = 0, limit: int = 100, db_sessio
 
 
 @app.get("/connections/{connection_id}", response_model=schemas.Connection)
-def read_connection(connection_id: int, db_session: Session = Depends(get_db_session)):
+def get_connection(connection_id: int, db_session: Session = Depends(get_db_session)):
     db_connection = crud.get_connection(db_session, connection_id=connection_id)
     if db_connection is None:
         raise HTTPException(status_code=404, detail="Connection not found")
@@ -123,10 +124,11 @@ def main(request: Request):
 
 @app.get("/fileupload")
 def file_upload_page(request: Request):
-    return templates.TemplateResponse("fileupload.html", {"request": request})
+    return templates.TemplateResponse("file-upload.html", {"request": request})
+
 
 @app.post('/upload')
-def upload(file: UploadFile = File(...), db_session: Session=Depends(get_db_session)):
+def upload(file: UploadFile = File(...), db_session: Session = Depends(get_db_session)):
     try:
         file_contents = file.file.read()
         text_buffer = TextIOWrapper(BytesIO(file_contents))
@@ -144,3 +146,20 @@ def upload(file: UploadFile = File(...), db_session: Session=Depends(get_db_sess
     #
     # headers = {'Content-Disposition': 'attachment; filename="modified_data.csv"'}
     # return Response(df.to_csv(), headers=headers, media_type='text/csv')
+
+
+@app.get("/home")
+def home(request: Request):
+    date_string = datetime.date.today().strftime("%A %d %b %Y")
+    return templates.TemplateResponse("home.html", {"request": request, "date": date_string})
+
+
+@app.get("/search-nodes")
+def search_nodes(request: Request):
+    return templates.TemplateResponse("search-nodes.html", {"request": request})
+
+
+@app.get("/node-results")
+def node_results(request: Request, like: str, db_session: Session = Depends(get_db_session)):
+    nodes = get_nodes(like=like, db_session=db_session)
+    return templates.TemplateResponse("node-results.html", {"request": request, "like": like, "nodes": nodes})
