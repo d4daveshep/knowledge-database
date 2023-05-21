@@ -75,7 +75,8 @@ def create_connection(connection: schemas.ConnectionCreate, db_session: Session 
 
 
 @app.get("/connections/", response_model=list[schemas.Connection])
-def get_connections(name_like: str = "*", node_id:int=0, skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
+def get_connections(name_like: str = "*", node_id: int = 0, skip: int = 0, limit: int = 100,
+                    db_session: Session = Depends(get_db_session)):
     if node_id > 0:
         connections = crud.get_connections_to_node(db_session, node_id)
     else:
@@ -167,3 +168,9 @@ def node_results(request: Request, like: str, db_session: Session = Depends(get_
     nodes = get_nodes(like=like, db_session=db_session)
     return templates.TemplateResponse("node-results.html", {"request": request, "like": like, "nodes": nodes})
 
+
+@app.get("/connections-to-node/{node_id}")
+def connection_results(request: Request, node_id: int, db_session: Session = Depends(get_db_session)):
+    node = get_node(node_id=node_id, db_session=db_session)
+    connections = get_connections(node_id=node_id, db_session=db_session)
+    return templates.TemplateResponse("connections-to-node-results.html", {"request": request, "node":node, "connections":connections})
