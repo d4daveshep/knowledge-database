@@ -25,6 +25,7 @@ android_name = "Android"
 spring_boot_name = "SpringBoot"
 
 role_connection_name = "has title"
+skill_connection_name = "knows"
 
 
 @pytest.fixture()
@@ -58,10 +59,15 @@ def client():
     client.post("/nodes/", json=schemas.NodeCreate(name=brian_name).dict())  # id: 3
     client.post("/nodes/", json=schemas.NodeCreate(name=mobile_eng_name).dict())  # id: 4
 
+    client.post("/nodes/", json=schemas.NodeCreate(name=java_name).dict())  # id: 5
+
     client.post("/connections/", json=schemas.ConnectionCreate(
         name=role_connection_name, subject=1, target=2).dict())  # id: 1
     client.post("/connections/", json=schemas.ConnectionCreate(
         name=role_connection_name, subject=3, target=4).dict())  # id: 2
+
+    client.post("/connections/", json=schemas.ConnectionCreate(
+        name=skill_connection_name, subject=1, target=5).dict())  # id: 3
 
     yield client
 
@@ -72,8 +78,9 @@ def test_client_fixture(client):
     response = client.get("/stats/")
     assert response.status_code == 200
     stats = response.json()
-    assert stats["node_count"] == 4
-    assert stats["connection_count"] == 2
+    assert stats["node_count"] == 5
+    assert stats["connection_count"] == 3
+
 
 def test_create_connection_api_with_new_nodes(client):
     subject_name = "Wayne Wallace"
@@ -92,7 +99,7 @@ def test_create_connection_api_with_new_nodes(client):
     assert response.status_code == 200, response.text
     conn = schemas.Connection(**response.json())
     assert conn.name == conn_name
-    assert conn.id == 3  # client fixture creates 2 connections
+    assert conn.id == 4  # client fixture creates 3 connections
     assert conn.subject.name == subject_name
     assert conn.target.name == target_name
 
@@ -113,7 +120,7 @@ def test_create_connection_api_with_existing_nodes(client):
     assert response.status_code == 200, response.text
     conn = schemas.Connection(**response.json())
     assert conn.name == "still has title"
-    assert conn.id == 3  # client fixture creates 2 connections
+    assert conn.id == 4  # client fixture creates 3 connections
     assert conn.subject.name == andrew_name
     assert conn.target.name == chief_eng_name
 
@@ -125,7 +132,7 @@ def test_create_connection_api_with_nonexistent_nodes(client):
 
 
 def test_get_connections_by_name(client):
-    response = client.get("/connections/?like=title")
+    response = client.get("/connections/?name_like=title")
     assert response.status_code == 200, response.text
     nodes_json = response.json()
     assert len(nodes_json) == 2
@@ -139,24 +146,24 @@ def test_get_connections_by_name(client):
 
 def test_delete_existing_connection(client):
     response = client.get("/connections/")
-    assert len(response.json()) == 2
+    orig_count = len(response.json())
 
     response = client.delete("/connections/2")
     assert response.status_code == 200
 
     response = client.get("/connections/")
-    assert len(response.json()) == 1
+    assert len(response.json()) == orig_count - 1
 
 
 def test_delete_nonexistent_connection(client):
     response = client.get("/connections/")
-    assert len(response.json()) == 2
+    orig_count = len(response.json())
 
     response = client.delete("/connections/99")
     assert response.status_code == 404
 
     response = client.get("/connections/")
-    assert len(response.json()) == 2
+    assert len(response.json()) == orig_count
 
 
 def test_get_connection_by_id(client):
@@ -168,9 +175,9 @@ def test_get_connection_by_id(client):
 
 
 def test_put_new_connection(client):
-    response = client.get("/connections/3")
+    response = client.get("/connections/50")
     assert response.status_code == 404
-    response = client.put("/connections/3", json=schemas.ConnectionCreate(
+    response = client.put("/connections/50", json=schemas.ConnectionCreate(
         name="wants to be", subject=3, target=2).dict())  # id 3 = brian wants to be chief engineer
     assert response.status_code == 201  # created
 
@@ -195,5 +202,5 @@ def test_stats_api(client):
     response = client.get("/stats/")
     assert response.status_code == 200
     response_json = response.json()
-    assert response_json["node_count"] == 4
-    assert response_json["connection_count"] == 2
+    assert response_json["node_count"] == 5
+    assert response_json["connection_count"] == 3

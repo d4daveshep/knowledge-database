@@ -75,11 +75,11 @@ def create_connection(connection: schemas.ConnectionCreate, db_session: Session 
 
 
 @app.get("/connections/", response_model=list[schemas.Connection])
-def get_connections(like: str = "*", skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
-    if like == "*":
+def get_connections(name_like: str = "*", skip: int = 0, limit: int = 100, db_session: Session = Depends(get_db_session)):
+    if name_like == "*":
         connections = crud.get_connections(db_session, skip=skip, limit=limit)
     else:
-        connections = crud.get_connections_like_name(db_session, like=like, skip=skip, limit=limit)
+        connections = crud.get_connections_like_name(db_session, like=name_like, skip=skip, limit=limit)
         pass
     return connections
 
@@ -163,3 +163,4 @@ def search_nodes(request: Request):
 def node_results(request: Request, like: str, db_session: Session = Depends(get_db_session)):
     nodes = get_nodes(like=like, db_session=db_session)
     return templates.TemplateResponse("node-results.html", {"request": request, "like": like, "nodes": nodes})
+
