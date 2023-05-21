@@ -1,4 +1,4 @@
-from sqlalchemy import select, update, delete, Result, func, table
+from sqlalchemy import select, update, delete, Result, func, table, or_
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -119,10 +119,8 @@ def delete_connection(db_session: Session, connection_id: int) -> int:
 
 
 def get_connections_to_node(db_session: Session, node_id: int) -> list[models.Connection]:
-    select_stmt = select(models.Connection).filter(models.Connection.subject_id == node_id)
+    select_stmt = select(models.Connection).filter(or_(models.Connection.subject_id == node_id, models.Connection.target_id == node_id))
     connections = list(db_session.scalars(select_stmt).all())
-    select_stmt = select(models.Connection).filter(models.Connection.target_id == node_id)
-    connections.extend(list(db_session.scalars(select_stmt).all()))
     return connections
 
 
