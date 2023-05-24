@@ -129,7 +129,7 @@ def main(request: Request):
     return templates.TemplateResponse('index.html', {'request': request})
 
 
-@app.get("/fileupload")
+@app.get("/file-upload")
 def file_upload_page(request: Request):
     return templates.TemplateResponse("file-upload.html", {"request": request})
 
@@ -155,13 +155,13 @@ def upload(file: UploadFile = File(...), db_session: Session = Depends(get_db_se
     # return Response(df.to_csv(), headers=headers, media_type='text/csv')
 
 
-@app.get("/home")
+@app.get("/home", response_class=HTMLResponse)
 def home(request: Request):
     date_string = datetime.date.today().strftime("%A %d %b %Y")
     return templates.TemplateResponse("home.html", {"request": request, "date": date_string})
 
 
-@app.get("/search-nodes")
+@app.get("/search-nodes", response_class=HTMLResponse)
 def search_nodes(request: Request):
     return templates.TemplateResponse("search-nodes.html", {"request": request})
 
@@ -172,7 +172,7 @@ def node_results(request: Request, like: str, db_session: Session = Depends(get_
     return templates.TemplateResponse("node-results.html", {"request": request, "like": like, "nodes": nodes})
 
 
-@app.get("/connections-to-node/{node_id}")
+@app.get("/connections-to-node/{node_id}", response_class=HTMLResponse)
 def connection_results(request: Request, node_id: int, db_session: Session = Depends(get_db_session)):
     node = get_node(node_id=node_id, db_session=db_session)
     connections = get_connections(node_id=node_id, db_session=db_session)
