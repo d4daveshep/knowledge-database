@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Node Results{% endblock %}
+
+{% block content %}
+<h1>Node results like "{{like}}" </h1>
+<p>Like: {{request.body}}</p>
+<p>Found {{nodes|length}}</p>
+<ul>
+    {% for node in nodes %}
+    <li>
+        <a href="/connections-to-node/{{node.id}}">{{ node.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

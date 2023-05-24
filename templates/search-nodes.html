@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Nodes{% endblock %}
+
+{% block content %}
+<h1>Search nodes</h1>
+
+<form action="/node-results" method="get">
+    <label for="like">like</label>
+    <input type="text" id="like" name="like", value="*"><br><br>
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

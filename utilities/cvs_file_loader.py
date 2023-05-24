@@ -1,4 +1,5 @@
 from datetime import datetime, date
+from io import TextIOWrapper
 
 from pydantic import BaseModel, validator
 from sqlalchemy.orm import Session
@@ -74,30 +75,37 @@ def parse_time_by_task_line(line) -> TaskTimeData:
     return time_task_data
 
 
-def load_staff_list(db_session: Session, csv_filename: str) -> int:
+def load_staff_list_from_csv_buffer(db_session: Session, buffer: TextIOWrapper) -> int:
+    lines_processed = 0
+    for _ in range(9):
+        line = buffer.readline()
+    while line:
+        staff_data: StaffData = parse_staff_list_line(line)
+        if staff_data.name == "" or staff_data.gm == "" or staff_data.employment == "":
+            line = buffer.readline()
+            continue
+        crud.create_connection(
+            db_session, ConnectionCreate(name="Under GM",
+                                         subject=NodeCreate(name=staff_data.name),
+                                         target=NodeCreate(name=staff_data.gm)
+                                         )
+        )
+        crud.create_connection(
+            db_session, ConnectionCreate(name="Employment type",
+                                         subject=NodeCreate(name=staff_data.name),
+                                         target=NodeCreate(name=staff_data.employment)
+                                         )
+        )
+
+        lines_processed += 1
+        line = buffer.readline()
+
+    return lines_processed
+
+
+def load_staff_list_from_csv_file(db_session: Session, csv_filename: str) -> int:
     lines_processed = 0
     with open(csv_filename) as csv_file:
-        for _ in range(9):
-            line = csv_file.readline()
-        while line:
-            staff_data: StaffData = parse_staff_list_line(line)
-            if staff_data.name == "" or staff_data.gm == "" or staff_data.employment == "":
-                line = csv_file.readline()
-                continue
-            crud.create_connection(db_session,
-                                   ConnectionCreate(name="Under GM",
-                                                    subject=NodeCreate(name=staff_data.name),
-                                                    target=NodeCreate(name=staff_data.gm)
-                                                    )
-                                   )
-            crud.create_connection(db_session,
-                                   ConnectionCreate(name="Employment type",
-                                                    subject=NodeCreate(name=staff_data.name),
-                                                    target=NodeCreate(name=staff_data.employment)
-                                                    )
-                                   )
-
-            lines_processed += 1
-            line = csv_file.readline()
+        lines_processed = load_staff_list_from_csv_buffer(db_session, csv_file)
 
     return lines_processed
