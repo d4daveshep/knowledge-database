@@ -6,9 +6,9 @@ from sqlalchemy import create_engine, Engine
 from sqlalchemy.orm import sessionmaker, Session
 from starlette.testclient import TestClient
 
-from sql_app import schemas
-from sql_app.main import app, get_db_session
-from sql_app.models import Base
+from web_apps import schemas
+from web_apps.main import app, get_db_session
+from web_apps.models import Base
 
 # global test data
 andrew_name = "Andrew Anderson"

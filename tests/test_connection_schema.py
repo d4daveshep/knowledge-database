@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from sql_app.schemas import ConnectionCreate, NodeCreate
+from web_apps.schemas import ConnectionCreate, NodeCreate
 
 
 def test_connection_create_subject_target_nodes():
