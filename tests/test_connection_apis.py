@@ -7,7 +7,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from starlette.testclient import TestClient
 
 from web_apps import schemas
-from web_apps.main import app, get_db_session
+from web_apps.json_rest_app import app, get_db_session
 from web_apps.models import Base
 
 # global test data
