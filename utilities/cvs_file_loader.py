@@ -4,8 +4,8 @@ from io import TextIOWrapper
 from pydantic import BaseModel, validator
 from sqlalchemy.orm import Session
 
-from sql_app import crud
-from sql_app.schemas import NodeCreate, ConnectionCreate
+from web_apps import crud
+from web_apps.schemas import NodeCreate, ConnectionCreate
 
 
 class StaffData(BaseModel):

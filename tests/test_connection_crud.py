@@ -2,9 +2,9 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from sql_app import models, crud
-from sql_app.crud import ConnectionNodeNotFoundError
-from sql_app.schemas import NodeCreate, ConnectionCreate
+from web_apps import models, crud
+from web_apps.crud import ConnectionNodeNotFoundError
+from web_apps.schemas import NodeCreate, ConnectionCreate
 
 
 @pytest.fixture()

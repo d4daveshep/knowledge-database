@@ -2,9 +2,9 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from sql_app import models, crud
-from sql_app.models import Node
-from sql_app.schemas import NodeCreate
+from web_apps import models, crud
+from web_apps.models import Node
+from web_apps.schemas import NodeCreate
 
 
 @pytest.fixture()

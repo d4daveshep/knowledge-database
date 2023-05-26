@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from sql_app.schemas import NodeCreate, Node
+from web_apps.schemas import NodeCreate, Node
 
 
 def test_node_create():

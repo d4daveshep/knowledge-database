@@ -4,7 +4,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from sql_app import models, crud
+from web_apps import models, crud
 from utilities.cvs_file_loader import load_staff_list_from_csv_file, parse_staff_list_line, StaffData, TaskTimeData, \
     parse_time_by_task_line, load_time_by_task
 
