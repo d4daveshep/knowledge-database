@@ -10,80 +10,17 @@ from web_apps import schemas
 from web_apps.json_rest_app import app, get_db_session
 from web_apps.models import Base
 
-# global test data
-andrew_name = "Andrew Anderson"
-brian_name = "Brian Brown"
-charlie_name = "Charlie Charkson"
-
-chief_eng_name = "Chief Engineer"
-mobile_eng_name = "Mobile Engineer"
-
-java_name = "Java"
-angular_name = "Angular"
-react_name = "React"
-android_name = "Android"
-spring_boot_name = "SpringBoot"
-
-role_connection_name = "has title"
-skill_connection_name = "knows"
-
-
-@pytest.fixture()
-def json_app_client():
-    if exists("./test.db"):
-        os.remove("./test.db")
-
-    sqlalchemy_database_url = "sqlite:///./test.db"
-
-    engine: Engine = create_engine(
-        sqlalchemy_database_url, connect_args={"check_same_thread": False}
-    )
-    testing_session_local: sessionmaker[Session] = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-    Base.metadata.create_all(bind=engine)
-
-    def override_get_db():
-        global db
-        try:
-            db = testing_session_local()
-            yield db
-        finally:
-            db.close()
-
-    app.dependency_overrides[get_db_session] = override_get_db
-
-    client = TestClient(app)
-
-    client.post("/nodes/", json=schemas.NodeCreate(name=andrew_name).dict())  # id: 1
-    client.post("/nodes/", json=schemas.NodeCreate(name=chief_eng_name).dict())  # id: 2
-    client.post("/nodes/", json=schemas.NodeCreate(name=brian_name).dict())  # id: 3
-    client.post("/nodes/", json=schemas.NodeCreate(name=mobile_eng_name).dict())  # id: 4
-
-    client.post("/nodes/", json=schemas.NodeCreate(name=java_name).dict())  # id: 5
-
-    client.post("/connections/", json=schemas.ConnectionCreate(
-        name=role_connection_name, subject=1, target=2).dict())  # id: 1
-    client.post("/connections/", json=schemas.ConnectionCreate(
-        name=role_connection_name, subject=3, target=4).dict())  # id: 2
-
-    client.post("/connections/", json=schemas.ConnectionCreate(
-        name=skill_connection_name, subject=1, target=5).dict())  # id: 3
-
-    yield client
-
-    os.remove("./test.db")
-
 
 def test_client_fixture(json_app_client):
     response = json_app_client.get("/stats/")
     assert response.status_code == 200
     stats = response.json()
-    assert stats["node_count"] == 5
-    assert stats["connection_count"] == 3
+    assert stats["node_count"] == 15
+    assert stats["connection_count"] == 17
 
 
 def test_create_connection_api_with_new_nodes(json_app_client):
-    subject_name = "Wayne Wallace"
+    subject_name = "Wayne"
     conn_name = "is a"
     target_name = "Test Engineer"
 
@@ -99,14 +36,20 @@ def test_create_connection_api_with_new_nodes(json_app_client):
     assert response.status_code == 200, response.text
     conn = schemas.Connection(**response.json())
     assert conn.name == conn_name
-    assert conn.id == 4  # client fixture creates 3 connections
+    assert conn.id == 28  # client fixture creates 27 connections
     assert conn.subject.name == subject_name
     assert conn.target.name == target_name
+
+    response = json_app_client.get("/stats/")
+    assert response.status_code == 200
+    stats = response.json()
+    assert stats["node_count"] == 17
+    assert stats["connection_count"] == 18
 
 
 def test_create_connection_api_with_existing_nodes(json_app_client):
     andrew = schemas.Node(**json_app_client.get("/nodes/1").json())
-    chief_eng = schemas.Node(**json_app_client.get("/nodes/2").json())
+    chief_eng = schemas.Node(**json_app_client.get("/nodes/11").json())
 
     cc = schemas.ConnectionCreate(
         name="still has title",
@@ -120,10 +63,15 @@ def test_create_connection_api_with_existing_nodes(json_app_client):
     assert response.status_code == 200, response.text
     conn = schemas.Connection(**response.json())
     assert conn.name == "still has title"
-    assert conn.id == 4  # client fixture creates 3 connections
-    assert conn.subject.name == andrew_name
-    assert conn.target.name == chief_eng_name
+    assert conn.id == 28 # client fixture creates 27 connections
+    assert conn.subject.name == "Andrew"
+    assert conn.target.name == "Chief Engineer"
 
+    response = json_app_client.get("/stats/")
+    assert response.status_code == 200
+    stats = response.json()
+    assert stats["node_count"] == 15
+    assert stats["connection_count"] == 18
 
 def test_create_connection_api_with_nonexistent_nodes(json_app_client):
     cc = schemas.ConnectionCreate(name="bad connection", subject=98, target=99)
@@ -135,25 +83,25 @@ def test_get_connections_by_name(json_app_client):
     response = json_app_client.get("/connections/?name_like=title")
     assert response.status_code == 200, response.text
     connections_json = response.json()
-    assert len(connections_json) == 2
+    assert len(connections_json) == 3
     conn_1 = schemas.Connection(**connections_json[0])
     conn_2 = schemas.Connection(**connections_json[1])
-    assert conn_1.name == conn_2.name == role_connection_name
+    assert conn_1.name == conn_2.name == "has title"
 
 
 def test_get_connections_by_node_id(json_app_client):
     response = json_app_client.get("/connections/?node_id=1")
     assert response.status_code == 200, response.text
     connections_json = response.json()
-    assert len(connections_json) == 2
+    assert len(connections_json) == 6
     conn_1 = schemas.Connection(**connections_json[0])
     assert conn_1.id == 1
     conn_2 = schemas.Connection(**connections_json[1])
-    assert conn_2.id == 3
+    assert conn_2.id == 11
 
 
-# def test_update_connection(client):
-#     assert False
+def test_update_connection(json_app_client):
+    assert False
 
 def test_delete_existing_connection(json_app_client):
     response = json_app_client.get("/connections/")
@@ -182,14 +130,14 @@ def test_get_connection_by_id(json_app_client):
     assert response.status_code == 200, response.text
     role_connection_json = response.json()
     assert role_connection_json["id"] == 1
-    assert role_connection_json["name"] == role_connection_name
+    assert role_connection_json["name"] == "has title"
 
 
 def test_put_new_connection(json_app_client):
     response = json_app_client.get("/connections/50")
     assert response.status_code == 404
     response = json_app_client.put("/connections/50", json=schemas.ConnectionCreate(
-        name="wants to be", subject=3, target=2).dict())  # id 3 = brian wants to be chief engineer
+        name="wants to be", subject=3, target=11).dict())  # Brian wants to be Chief Engineer
     assert response.status_code == 201  # created
 
 
