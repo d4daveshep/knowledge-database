@@ -5,7 +5,11 @@ import tempfile
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
+from starlette.testclient import TestClient
+
+from web_apps.json_rest_app import get_db_session, app
+from web_apps.models import Base
 
 
 @pytest.fixture(scope="module")
@@ -152,3 +156,28 @@ def db_session(db_populated):
         yield session
 
         pass
+
+
+@pytest.fixture()
+def json_app_client(db_populated):
+    sqlalchemy_database_url = "sqlite:///" + db_populated
+
+    engine = create_engine(
+        sqlalchemy_database_url, connect_args={"check_same_thread": False}
+    )
+    testing_session_local = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+    Base.metadata.create_all(bind=engine)
+
+    def override_get_db():
+        try:
+            db = testing_session_local()
+            yield db
+        finally:
+            db.close()
+
+    app.dependency_overrides[get_db_session] = override_get_db
+
+    client = TestClient(app)
+
+    yield client

@@ -29,7 +29,7 @@ skill_connection_name = "knows"
 
 
 @pytest.fixture()
-def client():
+def json_app_client():
     if exists("./test.db"):
         os.remove("./test.db")
 
@@ -74,15 +74,15 @@ def client():
     os.remove("./test.db")
 
 
-def test_client_fixture(client):
-    response = client.get("/stats/")
+def test_client_fixture(json_app_client):
+    response = json_app_client.get("/stats/")
     assert response.status_code == 200
     stats = response.json()
     assert stats["node_count"] == 5
     assert stats["connection_count"] == 3
 
 
-def test_create_connection_api_with_new_nodes(client):
+def test_create_connection_api_with_new_nodes(json_app_client):
     subject_name = "Wayne Wallace"
     conn_name = "is a"
     target_name = "Test Engineer"
@@ -92,7 +92,7 @@ def test_create_connection_api_with_new_nodes(client):
         subject=schemas.NodeCreate(name=subject_name),
         target=schemas.NodeCreate(name=target_name)
     )
-    response = client.post(
+    response = json_app_client.post(
         "/connections/",
         json=cc.dict()
     )
@@ -104,16 +104,16 @@ def test_create_connection_api_with_new_nodes(client):
     assert conn.target.name == target_name
 
 
-def test_create_connection_api_with_existing_nodes(client):
-    andrew = schemas.Node(**client.get("/nodes/1").json())
-    chief_eng = schemas.Node(**client.get("/nodes/2").json())
+def test_create_connection_api_with_existing_nodes(json_app_client):
+    andrew = schemas.Node(**json_app_client.get("/nodes/1").json())
+    chief_eng = schemas.Node(**json_app_client.get("/nodes/2").json())
 
     cc = schemas.ConnectionCreate(
         name="still has title",
         subject=andrew.id,
         target=chief_eng.id
     )
-    response = client.post(
+    response = json_app_client.post(
         "/connections/",
         json=cc.dict()
     )
@@ -125,14 +125,14 @@ def test_create_connection_api_with_existing_nodes(client):
     assert conn.target.name == chief_eng_name
 
 
-def test_create_connection_api_with_nonexistent_nodes(client):
+def test_create_connection_api_with_nonexistent_nodes(json_app_client):
     cc = schemas.ConnectionCreate(name="bad connection", subject=98, target=99)
-    response = client.post("/connections/", json=cc.dict())
+    response = json_app_client.post("/connections/", json=cc.dict())
     assert response.status_code == 404
 
 
-def test_get_connections_by_name(client):
-    response = client.get("/connections/?name_like=title")
+def test_get_connections_by_name(json_app_client):
+    response = json_app_client.get("/connections/?name_like=title")
     assert response.status_code == 200, response.text
     connections_json = response.json()
     assert len(connections_json) == 2
@@ -141,8 +141,8 @@ def test_get_connections_by_name(client):
     assert conn_1.name == conn_2.name == role_connection_name
 
 
-def test_get_connections_by_node_id(client):
-    response = client.get("/connections/?node_id=1")
+def test_get_connections_by_node_id(json_app_client):
+    response = json_app_client.get("/connections/?node_id=1")
     assert response.status_code == 200, response.text
     connections_json = response.json()
     assert len(connections_json) == 2
@@ -155,53 +155,53 @@ def test_get_connections_by_node_id(client):
 # def test_update_connection(client):
 #     assert False
 
-def test_delete_existing_connection(client):
-    response = client.get("/connections/")
+def test_delete_existing_connection(json_app_client):
+    response = json_app_client.get("/connections/")
     orig_count = len(response.json())
 
-    response = client.delete("/connections/2")
+    response = json_app_client.delete("/connections/2")
     assert response.status_code == 200
 
-    response = client.get("/connections/")
+    response = json_app_client.get("/connections/")
     assert len(response.json()) == orig_count - 1
 
 
-def test_delete_nonexistent_connection(client):
-    response = client.get("/connections/")
+def test_delete_nonexistent_connection(json_app_client):
+    response = json_app_client.get("/connections/")
     orig_count = len(response.json())
 
-    response = client.delete("/connections/99")
+    response = json_app_client.delete("/connections/99")
     assert response.status_code == 404
 
-    response = client.get("/connections/")
+    response = json_app_client.get("/connections/")
     assert len(response.json()) == orig_count
 
 
-def test_get_connection_by_id(client):
-    response = client.get("connections/1")
+def test_get_connection_by_id(json_app_client):
+    response = json_app_client.get("connections/1")
     assert response.status_code == 200, response.text
     role_connection_json = response.json()
     assert role_connection_json["id"] == 1
     assert role_connection_json["name"] == role_connection_name
 
 
-def test_put_new_connection(client):
-    response = client.get("/connections/50")
+def test_put_new_connection(json_app_client):
+    response = json_app_client.get("/connections/50")
     assert response.status_code == 404
-    response = client.put("/connections/50", json=schemas.ConnectionCreate(
+    response = json_app_client.put("/connections/50", json=schemas.ConnectionCreate(
         name="wants to be", subject=3, target=2).dict())  # id 3 = brian wants to be chief engineer
     assert response.status_code == 201  # created
 
 
-def test_put_existing_connection(client):
-    response = client.get("/connections/1")
+def test_put_existing_connection(json_app_client):
+    response = json_app_client.get("/connections/1")
     assert response.status_code == 200
 
-    response = client.put("/connections/1", json=schemas.ConnectionCreate(
+    response = json_app_client.put("/connections/1", json=schemas.ConnectionCreate(
         name="wants to be", subject=3, target=2).dict())  # id 1 = brian wants to be chief engineer
     assert response.status_code == 200
 
-    response = client.get("/connections/1")
+    response = json_app_client.get("/connections/1")
     connection = schemas.Connection.parse_raw(response.text)
     assert connection.id == 1
     assert connection.name == "wants to be"
@@ -209,8 +209,8 @@ def test_put_existing_connection(client):
     assert connection.target.id == 2
 
 
-def test_stats_api(client):
-    response = client.get("/stats/")
+def test_stats_api(json_app_client):
+    response = json_app_client.get("/stats/")
     assert response.status_code == 200
     response_json = response.json()
     assert response_json["node_count"] == 5
