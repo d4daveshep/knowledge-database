@@ -5,15 +5,6 @@ from web_apps.crud import ConnectionNodeNotFoundError
 from web_apps.schemas import NodeCreate, ConnectionCreate
 
 
-def test_fixture(db_session):
-    nodes = crud.get_nodes(db_session)
-    assert len(nodes) == 15
-    assert crud.get_table_size(db_session, models.Node) == 15
-
-    connections = crud.get_connections(db_session)
-    assert len(connections) == 17
-    assert crud.get_table_size(db_session, models.Connection) == 17
-
 
 def test_create_connection_and_nodes(db_session):
     conn = crud.create_connection(

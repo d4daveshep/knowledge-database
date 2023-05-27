@@ -1,3 +1,6 @@
+from web_apps import crud, models
+
+
 def test_db_tables_setup(db_cursor):
     result = db_cursor.execute("SELECT name FROM sqlite_master")
     assert result.fetchall() == [("nodes",), ("connections",)]
@@ -5,13 +8,12 @@ def test_db_tables_setup(db_cursor):
     pass
 
 
-def test_db_populated(db_populated):
-    result = db_populated.execute("SELECT name FROM nodes")
-    node_names = result.fetchall()
-    assert len(node_names) == 15
+def test_fixture(db_session):
+    nodes = crud.get_nodes(db_session)
+    assert len(nodes) == 15
+    assert crud.get_table_size(db_session, models.Node) == 15
 
-    result = db_populated.execute("SELECT name, subject_id, target_id FROM connections")
-    connections = result.fetchall()
+    connections = crud.get_connections(db_session)
     assert len(connections) == 17
+    assert crud.get_table_size(db_session, models.Connection) == 17
 
-    # assert names[0] == ("Andrew",)

@@ -1,6 +1,3 @@
-import os
-from os.path import exists
-
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -10,18 +7,11 @@ from web_apps import schemas
 from web_apps.json_rest_app import app, get_db_session
 from web_apps.models import Base
 
-# global test data
-name_1 = "Andrew Anderson"
-name_2 = "Brian Brown"
-name_3 = "Charlie Charkson"
-
 
 @pytest.fixture()
-def client():
-    if exists("./test.db"):
-        os.remove("./test.db")
+def client(db_populated):
 
-    sqlalchemy_database_url = "sqlite:///./test.db"
+    sqlalchemy_database_url = "sqlite:///" + db_populated
 
     engine = create_engine(
         sqlalchemy_database_url, connect_args={"check_same_thread": False}
@@ -41,13 +31,13 @@ def client():
 
     client = TestClient(app)
 
-    client.post("/nodes/", json=schemas.NodeCreate(name=name_1).dict())
-    client.post("/nodes/", json=schemas.NodeCreate(name=name_2).dict())
-    client.post("/nodes/", json=schemas.NodeCreate(name=name_3).dict())
-
     yield client
 
-    os.remove("./test.db")
+    # os.remove("./test.db")
+
+
+def test_client(client):
+    assert client
 
 
 def test_node_crud_apis(client):
@@ -61,14 +51,14 @@ def test_create_node_api(client):
     assert response.status_code == 200, response.text
     node = schemas.Node(**response.json())
     assert node.name == name
-    assert node.id == 4
+    assert node.id == 35
 
 
 def test_read_node_api(client):
     response = client.get(f"/nodes/2")
     assert response.status_code == 200, response.text
     node = schemas.Node(**response.json())
-    assert node.name == name_2
+    assert node.name == "Brian"
     assert node.id == 2
 
 
@@ -76,13 +66,13 @@ def test_read_all_nodes_api(client):
     response = client.get("/nodes/")
     assert response.status_code == 200, response.text
     nodes_json = response.json()
-    assert len(nodes_json) == 3
+    assert len(nodes_json) == 15
     node_1 = schemas.Node(**nodes_json[0])
     node_2 = schemas.Node(**nodes_json[1])
     node_3 = schemas.Node(**nodes_json[2])
-    assert node_1.name == name_1
-    assert node_2.name == name_2
-    assert node_3.name == name_3
+    assert node_1.name == "Andrew"
+    assert node_2.name == "Brian"
+    assert node_3.name == "Cindy"
 
 
 def test_read_node_by_name_api(client):
@@ -91,7 +81,7 @@ def test_read_node_by_name_api(client):
     nodes_json = response.json()
     assert len(nodes_json) == 1
     node_1 = schemas.Node(**nodes_json[0])
-    assert node_1.name == name_1
+    assert node_1.name == "Andrew"
 
 
 def test_update_node_api(client):
