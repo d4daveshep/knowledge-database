@@ -3,6 +3,9 @@ import sqlite3
 import tempfile
 
 import pytest
+from sqlalchemy import create_engine
+from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import Session
 
 
 @pytest.fixture(scope="module")
@@ -13,7 +16,6 @@ def temp_dir():
 
     # tear down
     os.rmdir(tmp_dir)
-
 
 
 @pytest.fixture(scope="function")
@@ -135,3 +137,18 @@ def db_populated(db_cursor):
     # tear down
     pass
 
+
+@pytest.fixture()
+def db_session(db_populated):
+    engine = create_engine("sqlite:///" + db_populated, echo=True)
+
+    base = automap_base()
+    base.prepare(autoload_with=engine)
+
+    # engine = create_engine("sqlite://", echo=True)
+    # models.Base.metadata.create_all(engine)
+
+    with Session(engine) as session:
+        yield session
+
+        pass

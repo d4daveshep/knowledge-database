@@ -5,12 +5,12 @@ def test_db_tables_setup(db_cursor):
     pass
 
 
-def test_db_populated(db_populate):
-    result = db_populate.execute("SELECT name FROM nodes")
+def test_db_populated(db_populated):
+    result = db_populated.execute("SELECT name FROM nodes")
     node_names = result.fetchall()
     assert len(node_names) == 15
 
-    result = db_populate.execute("SELECT name, subject_id, target_id FROM connections")
+    result = db_populated.execute("SELECT name, subject_id, target_id FROM connections")
     connections = result.fetchall()
     assert len(connections) == 17
 

@@ -1,125 +1,51 @@
 import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
 
 from web_apps import models, crud
 from web_apps.crud import ConnectionNodeNotFoundError
 from web_apps.schemas import NodeCreate, ConnectionCreate
 
 
-@pytest.fixture()
-def db_session():
-    engine = create_engine("sqlite://", echo=True)
+def test_fixture(db_session):
+    nodes = crud.get_nodes(db_session)
+    assert len(nodes) == 15
+    assert crud.get_table_size(db_session, models.Node) == 15
 
-    models.Base.metadata.create_all(engine)
-
-    with Session(engine) as session:
-        yield session
-
-        pass
-
-
-@pytest.fixture()
-def db_session_with_nodes_and_connections(db_session):
-    # people
-    andrew = NodeCreate(name="Andrew Lindesay")
-    david = NodeCreate(name="David Rawson")
-    robin = NodeCreate(name="Robin Southgate")
-
-    # roles
-    chief = NodeCreate(name="Chief Engineer")
-    fe_pl = NodeCreate(name="Front End Practice Lead")
-
-    # skills
-    java = NodeCreate(name="Java")
-    angular = NodeCreate(name="Angular")
-    react = NodeCreate(name="React")
-    android = NodeCreate(name="Android")
-    spring_boot = NodeCreate(name="SpringBoot")
-
-    # customers
-    twg = NodeCreate(name="The Warehouse Group")
-    cdx = NodeCreate(name="CountdownX")
-    westpac = NodeCreate(name="Westpac NZ")
-    gdt = NodeCreate(name="Global Dairy Trade")
-
-    crud.create_connection(db_session, ConnectionCreate(name="has title", subject=andrew, target=chief))
-    crud.create_connection(db_session, ConnectionCreate(name="has experience in", subject=andrew, target=java))
-    crud.create_connection(db_session, ConnectionCreate(name="has experience in", subject=andrew, target=spring_boot))
-    crud.create_connection(db_session, ConnectionCreate(subject=andrew, name="worked at", target=twg))
-    crud.create_connection(db_session, ConnectionCreate(subject=andrew, name="worked at", target=gdt))
-
-    crud.create_connection(db_session, ConnectionCreate(subject=david, name="has title", target=fe_pl))
-    crud.create_connection(db_session, ConnectionCreate(subject=david, name="has experience in", target=java))
-    crud.create_connection(db_session, ConnectionCreate(subject=david, name="has experience in", target=android))
-    crud.create_connection(db_session, ConnectionCreate(subject=david, name="worked at", target=westpac))
-
-    crud.create_connection(db_session, ConnectionCreate(subject=robin, name="has title", target=chief))
-    crud.create_connection(db_session, ConnectionCreate(subject=robin, name="has experience in", target=angular))
-    crud.create_connection(db_session, ConnectionCreate(subject=robin, name="has experience in", target=react))
-    crud.create_connection(db_session, ConnectionCreate(subject=robin, name="worked at", target=cdx))
-    crud.create_connection(db_session, ConnectionCreate(subject=robin, name="worked at", target=gdt))
-
-    # assert False  # TODO this stuff doesn't work yet
-
-    # db_session.add_all([andrew_chief, andrew_java, andrew_spring_boot, andrew_twg, andrew_gdt,
-    #                     david_lead, david_java, david_android, david_westpac,
-    #                     robin_chief, robin_angular, robin_react, robin_cdx, robin_gdt
-    #                     ])
-    # db_session.commit()
-
-    yield db_session
-
-
-def test_fixture(db_session_with_nodes_and_connections):
-    nodes = crud.get_nodes(db_session_with_nodes_and_connections)
-    assert len(nodes) == 14
-    assert crud.get_table_size(db_session_with_nodes_and_connections, models.Node) == 14
-
-    connections = crud.get_connections(db_session_with_nodes_and_connections)
-    assert len(connections) == 14
-    assert crud.get_table_size(db_session_with_nodes_and_connections, models.Connection) == 14
+    connections = crud.get_connections(db_session)
+    assert len(connections) == 17
+    assert crud.get_table_size(db_session, models.Connection) == 17
 
 
 def test_create_connection_and_nodes(db_session):
     conn = crud.create_connection(
         db_session, ConnectionCreate(
             name="has title",
-            subject=NodeCreate(name="Andrew"),
-            target=NodeCreate(name="Chief Engineer")
+            subject=NodeCreate(name="David"),
+            target=NodeCreate(name="General Manager")
         )
     )
 
     assert conn.name == "has title"
-    assert conn.subject.name == "Andrew"
-    assert conn.target.name == "Chief Engineer"
+    assert conn.subject.name == "David"
+    assert conn.target.name == "General Manager"
 
 
 def test_create_connection_to_existing_nodes(db_session):
-    conn_1 = crud.create_connection(
+    new_conn = crud.create_connection(
         db_session, ConnectionCreate(
-            name="has title",
-            subject=NodeCreate(name="Andrew"),
-            target=NodeCreate(name="Chief Engineer")
+            name="wants to learn",
+            subject=3,  # Cindy
+            target=25  # SpringBoot
         )
     )
 
-    conn_2 = crud.create_connection(
-        db_session, ConnectionCreate(
-            name="is a",
-            subject=conn_1.subject_id,
-            target=conn_1.target_id
-        )
-    )
-
-    assert conn_2.name == "is a"
-    assert conn_2.subject.name == "Andrew"
-    assert conn_2.target.name == "Chief Engineer"
+    assert new_conn.name == "wants to learn"
+    assert new_conn.subject.name == "Cindy"
+    assert new_conn.target.name == "SpringBoot"
 
 
 def test_create_connection_to_nonexistent_node_ids(db_session):
     with pytest.raises(ConnectionNodeNotFoundError) as error:
-        conn_2 = crud.create_connection(
+        crud.create_connection(
             db_session, ConnectionCreate(
                 name="bad connection",
                 subject=98,
@@ -128,98 +54,109 @@ def test_create_connection_to_nonexistent_node_ids(db_session):
         )
 
 
-def test_delete_connection(db_session_with_nodes_and_connections):
-    rows_deleted = crud.delete_connection(db_session_with_nodes_and_connections, 1)
+def test_delete_connection(db_session):
+    original_connection_count = len(crud.get_connections(db_session))
+    rows_deleted = crud.delete_connection(db_session, 1)
     assert rows_deleted == 1
 
-    connections = crud.get_connections(db_session_with_nodes_and_connections)
-    assert len(connections) == 13
+    new_connection_count = len(crud.get_connections(db_session))
+    assert new_connection_count == original_connection_count - 1
 
 
-def test_delete_nonexistent_connection(db_session_with_nodes_and_connections):
-    crud.delete_connection(db_session_with_nodes_and_connections, 99)
-    connections = crud.get_connections(db_session_with_nodes_and_connections)
-    assert len(connections) == 14
+def test_delete_nonexistent_connection(db_session):
+    original_connection_count = len(crud.get_connections(db_session))
+    crud.delete_connection(db_session, 99)
+
+    new_connection_count = len(crud.get_connections(db_session))
+    assert new_connection_count == original_connection_count
 
 
-def test_delete_node_deletes_connections_to_node(db_session_with_nodes_and_connections):
+def test_delete_node_deletes_connections_to_node(db_session):
+    original_node_count = len(crud.get_nodes(db_session))
+    original_connection_count = len(crud.get_connections(db_session))
+
     # find and delete Andrew
-    andrew = crud.get_nodes_like_name(db_session_with_nodes_and_connections, "Andrew")[0]
-    crud.delete_node(db_session_with_nodes_and_connections, andrew.id)
+    andrew = crud.get_nodes_like_name(db_session, "andrew")[0]
+    crud.delete_node(db_session, andrew.id)
 
     # verify only 1 node deleted
-    nodes = crud.get_nodes(db_session_with_nodes_and_connections)
-    assert len(nodes) == 13
+    new_node_count = len(crud.get_nodes(db_session))
+    assert new_node_count == original_node_count - 1
 
-    # verify 5 connections deleted
-    connections = crud.get_connections(db_session_with_nodes_and_connections)
-    assert len(connections) == 9
-
-
-def test_get_connections_to_node_id(db_session_with_nodes_and_connections):
-    andrew = crud.get_nodes_like_name(db_session_with_nodes_and_connections, "Andrew")[0]
-
-    connections = crud.get_connections_to_node(db_session_with_nodes_and_connections, andrew.id)
-    assert len(connections) == 5
+    # verify 6 connections deleted
+    new_connection_count = len(crud.get_connections(db_session))
+    assert new_connection_count == original_connection_count - 6
 
 
-def test_get_connections_to_node_name_like(db_session_with_nodes_and_connections):
-    nodes_like = crud.get_nodes_like_name(db_session_with_nodes_and_connections, "robin")
-    assert len(nodes_like) == 1
+def test_get_connections_to_node_id(db_session):
+    andrew = crud.get_nodes_like_name(db_session, "Andrew")[0]
 
-    connections_to_nodes_like = crud.get_connections_to_node_like_name(db_session_with_nodes_and_connections, "robin")
-
-    assert len(connections_to_nodes_like) == 5
-    connection_10 = crud.get_connection(db_session_with_nodes_and_connections, 10)
-    assert connection_10 in connections_to_nodes_like
+    connections = crud.get_connections_to_node(db_session, andrew.id)
+    assert len(connections) == 6
 
 
-def test_get_connection_by_id(db_session_with_nodes_and_connections):
-    andrew = crud.get_connection(db_session_with_nodes_and_connections, 1)
-    assert andrew.id == 1
+def test_get_connections_to_node_name_like(db_session):
+    nodes_like = crud.get_nodes_like_name(db_session, "engineer")
+    assert len(nodes_like) == 2
+
+    connections_to_nodes_like = crud.get_connections_to_node_like_name(db_session, "engineer")
+
+    assert len(connections_to_nodes_like) == 2
+    connection_3 = crud.get_connection(db_session, 3)
+    assert connection_3 in connections_to_nodes_like
 
 
-def test_update_connection(db_session_with_nodes_and_connections):
-    connection = crud.update_connection(db_session_with_nodes_and_connections, connection_id=1,
-                                        updated_connection=ConnectionCreate(name="is a",
-                                                                            subject=NodeCreate(name="Ryan Sharpe"),
-                                                                            target=NodeCreate(name="Nice Guy")
-                                                                            )
-                                        )
+def test_get_connection_by_id(db_session):
+    andrew_appt = crud.get_connection(db_session, 1)
+    assert andrew_appt.id == 1
+
+
+def test_update_connection(db_session):
+    connection = crud.update_connection(
+        db_session, connection_id=1,
+        updated_connection=ConnectionCreate(
+            name="is a",
+            subject=NodeCreate(name="Ryan"),
+            target=NodeCreate(name="Nice Guy")
+        )
+    )
     assert connection.id == 1
     assert connection.name == "is a"
-    assert connection.subject.name == "Ryan Sharpe"
+    assert connection.subject.name == "Ryan"
     assert connection.target.name == "Nice Guy"
 
 
 def test_cant_create_duplicate_connection(db_session):
     crud.create_connection(
         db_session,
-        ConnectionCreate(name="is a unique", subject=NodeCreate(name="David"), target=NodeCreate(name="human being"))
+        ConnectionCreate(name="is a unique", subject=NodeCreate(name="David"), target=NodeCreate(name="Human Being"))
     )
 
-    assert crud.get_table_size(db_session, models.Node) == 2
-    assert crud.get_table_size(db_session, models.Connection) == 1
+    original_node_count = len(crud.get_nodes(db_session))
+    original_connection_count = len(crud.get_connections(db_session))
 
     crud.create_connection(
         db_session,
-        ConnectionCreate(name="is a unique", subject=NodeCreate(name="David"), target=NodeCreate(name="human being"))
+        ConnectionCreate(name="is a unique", subject=NodeCreate(name="David"), target=NodeCreate(name="Human Being"))
     )
 
-    assert crud.get_table_size(db_session, models.Node) == 2
-    assert crud.get_table_size(db_session, models.Connection) == 1
+    new_node_count = len(crud.get_nodes(db_session))
+    new_connection_count = len(crud.get_connections(db_session))
+
+    assert new_node_count == original_node_count
+    assert original_connection_count == new_connection_count
 
 
-def test_get_connection_by_name_and_node_ids(db_session_with_nodes_and_connections):
-    node_1 = crud.get_node(db_session_with_nodes_and_connections, 1)
-    node_2 = crud.get_node(db_session_with_nodes_and_connections, 2)
-    new_connection_name = "my new connection"
+def test_get_connection_by_name_and_node_ids(db_session):
+    node_1 = crud.get_node(db_session, 1)
+    node_2 = crud.get_node(db_session, 2)
+    new_connection_name = "is friends with"
     new_connection = crud.create_connection(
-        db_session_with_nodes_and_connections,
+        db_session,
         ConnectionCreate(name=new_connection_name, subject=node_1.id, target=node_2.id)
     )
 
-    got_connection = crud.get_connection_by_name_target_id_and_subject_id(db_session_with_nodes_and_connections,
+    got_connection = crud.get_connection_by_name_target_id_and_subject_id(db_session,
                                                                           name=new_connection_name,
                                                                           subject_id=node_1.id,
                                                                           target_id=node_2.id)

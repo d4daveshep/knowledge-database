@@ -1,42 +1,6 @@
-import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.ext.automap import automap_base
-from sqlalchemy.orm import Session
-
-from web_apps import models, crud
-from web_apps.models import Node
+from web_apps import crud
 from web_apps.schemas import NodeCreate
 
-
-@pytest.fixture()
-def db_session(db_populated):
-    engine = create_engine("sqlite:///"+db_populated, echo=True)
-
-    base = automap_base()
-    base.prepare(autoload_with=engine)
-
-    # engine = create_engine("sqlite://", echo=True)
-    # models.Base.metadata.create_all(engine)
-
-    with Session(engine) as session:
-        yield session
-
-        pass
-
-def test_db_session_with_populated_db(db_populated):
-    engine = create_engine("sqlite:///"+db_populated, echo=True)
-
-    Base = automap_base()
-    Base.prepare(autoload_with=engine)
-
-
-    with Session(engine) as session:
-        david = Node(name="David")
-        session.add(david)
-        session.commit()
-
-
-    pass
 
 def test_create_node(db_session):
     name = "Chris"
@@ -95,3 +59,18 @@ def test_delete_nonexistent_node(db_session):
     assert rows_deleted == 0
     nodes = crud.get_nodes(db_session)
     assert len(nodes) == 15
+
+
+def test_cant_create_duplicate_node_name(db_session):
+    original_node_count = len(crud.get_nodes(db_session))
+
+    node_1 = crud.get_node(db_session, 1)
+    node_1_name: str = node_1.name
+
+    new_node = crud.create_node(db_session, NodeCreate(name=node_1_name.upper()))
+    new_node_count = len(crud.get_nodes(db_session))
+
+    assert original_node_count == new_node_count
+
+    assert new_node.id == node_1.id
+    assert new_node.name == node_1_name
