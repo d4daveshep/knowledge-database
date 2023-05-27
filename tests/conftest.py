@@ -1,13 +1,26 @@
 import os.path
 import sqlite3
+import tempfile
 
 import pytest
 
 
-@pytest.fixture()
-def db_connection(tmp_path):
+@pytest.fixture(scope="module")
+def temp_dir():
+    tmp_dir = tempfile.mkdtemp(dir="/tmp")
+    # print(tmp_dir)
+    yield tmp_dir
+
+    # tear down
+    os.rmdir(tmp_dir)
+
+
+
+@pytest.fixture(scope="function")
+def db_connection(temp_dir):
     # set up
-    db_filename = tmp_path / "temp.db"
+    db_filename = temp_dir + "/test.db"
+    print(f"\ndb_file={db_filename}")
     db_conn = sqlite3.connect(db_filename)
     yield db_conn
 
@@ -17,7 +30,7 @@ def db_connection(tmp_path):
         os.remove(db_filename)
 
 
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def db_cursor(db_connection):
     cursor = db_connection.cursor()
     cursor.execute("""
@@ -44,12 +57,31 @@ def db_cursor(db_connection):
     cursor.close()
 
 
-@pytest.fixture()
-def db_populate(db_cursor):
-    names = [(1, "Andrew"), (2, "Brian"), (3, "Cindy")]
-    titles = [(11, "Chief Engineer"), (12, "Practice Lead"), (13, "Senior Engineer")]
-    skills = [(21, "Java"), (22, "Angular"), (23, "React"), (24, "Android"), (25, "SpringBoot")]
-    customers = [(31, "Warehouse Group"), (32, "Countdown"), (33, "Westpac"), (34, "Global Dairy")]
+@pytest.fixture(scope="function")
+def db_populated(db_cursor):
+    names = [
+        (1, "Andrew"),
+        (2, "Brian"),
+        (3, "Cindy")
+    ]
+    titles = [
+        (11, "Chief Engineer"),
+        (12, "Practice Lead"),
+        (13, "Senior Engineer")
+    ]
+    skills = [
+        (21, "Java"),
+        (22, "Angular"),
+        (23, "React"),
+        (24, "Android"),
+        (25, "SpringBoot")
+    ]
+    customers = [
+        (31, "Warehouse Group"),
+        (32, "Countdown"),
+        (33, "Westpac"),
+        (34, "Global Dairy")
+    ]
 
     appointment_name = "has title"
     appointments = [
@@ -92,4 +124,14 @@ def db_populate(db_cursor):
     db_cursor.executemany("INSERT INTO connections VALUES ( ?, ?, ?, ?)", appointments + experiences + assignments)
     db_cursor.connection.commit()
 
-    return db_cursor
+    db_cursor.execute("PRAGMA database_list")
+    rows = db_cursor.fetchone()
+    db_filename = rows[2]
+
+    # db_cursor.close()
+    # db_cursor.connection.close()
+    yield db_filename
+
+    # tear down
+    pass
+
