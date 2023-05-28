@@ -1,6 +1,7 @@
 from datetime import datetime, date
 from io import TextIOWrapper
 
+import pandas as pd
 from pydantic import BaseModel, validator
 from sqlalchemy.orm import Session
 
@@ -36,6 +37,7 @@ def parse_staff_list_line(line) -> StaffData:
     # print(staff_data)
     return staff_data
 
+
 def load_staff_list_from_csv_buffer(db_session: Session, buffer: TextIOWrapper) -> int:
     lines_processed = 0
     for _ in range(9):
@@ -63,38 +65,34 @@ def load_staff_list_from_csv_buffer(db_session: Session, buffer: TextIOWrapper) 
         line = buffer.readline()
 
     return lines_processed
+
+
 def load_staff_list_from_csv_file(db_session: Session, csv_filename: str) -> int:
     lines_processed = 0
     with open(csv_filename) as csv_file:
         lines_processed = load_staff_list_from_csv_buffer(db_session, csv_file)
 
     return lines_processed
+
+
 def load_time_by_task(db_session: Session, csv_filename: str) -> int:
-    lines_processed = 0
-    with open(csv_filename) as csv_file:
-        for _ in range(2):
-            line = csv_file.readline()
-        while line:
-            task_time_data: TaskTimeData = parse_time_by_task_line(line)
+    df = pd.read_csv(csv_filename, usecols=[0, 2, 5], header=0)
+    lines_processed = len(df)
 
-            crud.create_connection(
-                db_session, ConnectionCreate(name="worked on", subject=NodeCreate(name=task_time_data.staff_name),
-                                             target=NodeCreate(name=task_time_data.client_name))
-            )
-            crud.create_connection(
-                db_session, ConnectionCreate(name="billed time to", subject=NodeCreate(name=task_time_data.staff_name),
-                                             target=NodeCreate(name=task_time_data.job_name))
-            )
-            crud.create_connection(
-                db_session, ConnectionCreate(name="has job", subject=NodeCreate(name=task_time_data.client_name),
-                                             target=NodeCreate(name=task_time_data.job_name))
-            )
+    worked_on = df.drop(columns=["[Job] Name"]).drop_duplicates()
+    for row in worked_on.itertuples(index=False):
+        crud.create_connection(db_session, ConnectionCreate(name="worked on", subject=NodeCreate(name=row[1]),
+                                                            target=NodeCreate(name=row[0])))
 
-            # a_graph.add_connection(name, "worked on", client)
-            # a_graph.add_connection(name, "billed time to", job)
-            # a_graph.add_connection(client, "has job", job)
-            lines_processed += 1
-            line = csv_file.readline()
+    billed_to = df.drop(columns=["[Job] Client"]).drop_duplicates()
+    for row in billed_to.itertuples(index=False):
+        crud.create_connection(db_session, ConnectionCreate(name="worked on", subject=NodeCreate(name=row[1]),
+                                                            target=NodeCreate(name=row[0])))
+
+    has_job = df.drop(columns=["[Staff] Name"]).drop_duplicates()
+    for row in has_job.itertuples(index=False):
+        crud.create_connection(db_session, ConnectionCreate(name="worked on", subject=NodeCreate(name=row[0]),
+                                                            target=NodeCreate(name=row[1])))
 
     return lines_processed
 
@@ -105,9 +103,3 @@ def parse_time_by_task_line(line) -> TaskTimeData:
                                   hours=data[9])
     # print(time_task_data)
     return time_task_data
-
-
-
-
-
-

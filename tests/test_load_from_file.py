@@ -87,7 +87,7 @@ def test_load_time_by_task(db_session):
     filename = "./Utilisation report - 20230227.xlsx - TimeByTask.csv"
     lines_in_file = 5056
     nodes_in_file = 382
-    connections_in_file = 206 + 206 + 139  # TODO this is wrong - it will be some number higher
+    connections_in_file = 379 + 539 + 143
 
     lines_processed = load_time_by_task(db_session, filename)
     assert lines_processed == lines_in_file
