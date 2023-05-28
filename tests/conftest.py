@@ -144,7 +144,7 @@ def db_populated(db_cursor):
 
 @pytest.fixture()
 def db_session(db_populated):
-    engine = create_engine("sqlite:///" + db_populated, echo=True)
+    engine = create_engine("sqlite:///" + db_populated, echo=False)
 
     base = automap_base()
     base.prepare(autoload_with=engine)

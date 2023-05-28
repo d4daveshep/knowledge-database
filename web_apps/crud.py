@@ -9,6 +9,7 @@ def create_node(db_session: Session, node: schemas.NodeCreate) -> models.Node:
     if existing_node:
         return existing_node
     else:
+        # print(f"{node.name}")
         new_node = models.Node(name=node.name)
         db_session.add(new_node)
         db_session.commit()
@@ -22,7 +23,8 @@ def get_node(db_session: Session, node_id: int) -> models.Node | None:
 
 
 def get_node_by_name(db_session: Session, name: str) -> models.Node | None:
-    select_stmt = select(models.Node).filter(models.Node.name.contains(name))
+    # select_stmt = select(models.Node).filter(models.Node.name.contains(name))
+    select_stmt = select(models.Node).filter_by(name_insensitive=name)
     return db_session.scalars(select_stmt).first()
 
 
@@ -74,16 +76,16 @@ def get_or_create_connection_node(db_session: Session, node: schemas.NodeCreate 
         if db_node is None:
             raise ConnectionNodeNotFoundError(f"node_id: {node}")
     else:
-        db_node = get_node_by_name(db_session, node.name)
-        if not db_node:
-            db_node = create_node(db_session, node)
+        # db_node = get_node_by_name(db_session, node.name)
+        # if not db_node:
+        db_node = create_node(db_session, node)
 
     return db_node
 
 
 def get_connection_by_name_target_id_and_subject_id(db_session: Session, name: str, subject_id: int,
                                                     target_id: int) -> models.Connection | None:
-    select_stmt = select(models.Connection).filter(models.Connection.name == name,
+    select_stmt = select(models.Connection).filter(models.Connection.name.contains(name),
                                                    models.Connection.subject_id == subject_id,
                                                    models.Connection.target_id == target_id)
 

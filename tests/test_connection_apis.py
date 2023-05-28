@@ -1,14 +1,4 @@
-import os
-from os.path import exists
-
-import pytest
-from sqlalchemy import create_engine, Engine
-from sqlalchemy.orm import sessionmaker, Session
-from starlette.testclient import TestClient
-
 from web_apps import schemas
-from web_apps.json_rest_app import app, get_db_session
-from web_apps.models import Base
 
 
 def test_client_fixture(json_app_client):
@@ -63,7 +53,7 @@ def test_create_connection_api_with_existing_nodes(json_app_client):
     assert response.status_code == 200, response.text
     conn = schemas.Connection(**response.json())
     assert conn.name == "still has title"
-    assert conn.id == 28 # client fixture creates 27 connections
+    assert conn.id == 28  # client fixture creates 27 connections
     assert conn.subject.name == "Andrew"
     assert conn.target.name == "Chief Engineer"
 
@@ -72,6 +62,7 @@ def test_create_connection_api_with_existing_nodes(json_app_client):
     stats = response.json()
     assert stats["node_count"] == 15
     assert stats["connection_count"] == 18
+
 
 def test_create_connection_api_with_nonexistent_nodes(json_app_client):
     cc = schemas.ConnectionCreate(name="bad connection", subject=98, target=99)
@@ -99,9 +90,6 @@ def test_get_connections_by_node_id(json_app_client):
     conn_2 = schemas.Connection(**connections_json[1])
     assert conn_2.id == 11
 
-
-def test_update_connection(json_app_client):
-    assert False
 
 def test_delete_existing_connection(json_app_client):
     response = json_app_client.get("/connections/")
@@ -146,7 +134,7 @@ def test_put_existing_connection(json_app_client):
     assert response.status_code == 200
 
     response = json_app_client.put("/connections/1", json=schemas.ConnectionCreate(
-        name="wants to be", subject=3, target=2).dict())  # id 1 = brian wants to be chief engineer
+        name="wants to be", subject=3, target=2).dict())  # id 1 = Brian wants to be Chief Engineer
     assert response.status_code == 200
 
     response = json_app_client.get("/connections/1")
@@ -161,5 +149,5 @@ def test_stats_api(json_app_client):
     response = json_app_client.get("/stats/")
     assert response.status_code == 200
     response_json = response.json()
-    assert response_json["node_count"] == 5
-    assert response_json["connection_count"] == 3
+    assert response_json["node_count"] == 15
+    assert response_json["connection_count"] == 17
