@@ -57,3 +57,16 @@ class Connection(Base):
 
     def __repr__(self):
         return f"Connection(id={self.id}, name={self.name}, subject_id={self.subject_id}, target_id={self.target_id})"
+
+    """
+     Copied this from https://docs.sqlalchemy.org/en/20/orm/extensions/hybrid.html#building-custom-comparators
+     """
+
+    @hybrid_property
+    def name_insensitive(self) -> str:
+        return self.name.lower()
+
+    @name_insensitive.inplace.comparator
+    @classmethod
+    def _name_insensitive_comparator(cls) -> CaseInsensitiveComparator:
+        return CaseInsensitiveComparator(cls.name)

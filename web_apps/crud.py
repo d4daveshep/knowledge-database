@@ -85,7 +85,7 @@ def get_or_create_connection_node(db_session: Session, node: schemas.NodeCreate 
 
 def get_connection_by_name_target_id_and_subject_id(db_session: Session, name: str, subject_id: int,
                                                     target_id: int) -> models.Connection | None:
-    select_stmt = select(models.Connection).filter(models.Connection.name.contains(name),
+    select_stmt = select(models.Connection).filter(models.Connection.name.contains(name),  # TODO changes this to use comparator
                                                    models.Connection.subject_id == subject_id,
                                                    models.Connection.target_id == target_id)
 
