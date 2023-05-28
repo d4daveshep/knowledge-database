@@ -1,0 +1,6 @@
+pytest
+SQLAlchemy
+starlette
+pydantic
+fastapi
+pandas
