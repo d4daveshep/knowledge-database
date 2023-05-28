@@ -1,89 +1,90 @@
-import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
-
-from web_apps import models, crud
-from web_apps.models import Node
+from web_apps import crud
 from web_apps.schemas import NodeCreate
 
 
-@pytest.fixture()
-def db_session():
-    engine = create_engine("sqlite://", echo=True)
-
-    models.Base.metadata.create_all(engine)
-
-    with Session(engine) as session:
-        yield session
-
-        pass
-
-
-@pytest.fixture()
-def session_with_3_nodes(db_session):
-    andrew = Node(name="Andrew Lindesay")
-    david = Node(name="David Rawson")
-    robin = Node(name="Robin Southgate")
-    db_session.add_all([andrew, david, robin])
-    db_session.commit()
-
-    yield db_session
-
-
 def test_create_node(db_session):
-    name = "Chris Callahan"
+    name = "Chris"
     node = crud.create_node(db_session, NodeCreate(name=name))
     assert node.name == name
     assert node.id
 
 
-def test_get_node_by_id(session_with_3_nodes):
-    node = crud.get_node(session_with_3_nodes, 2)
-    assert node.name == "David Rawson"
+def test_get_node_by_id(db_session):
+    node = crud.get_node(db_session, 2)
+    assert node.name == "Brian"
 
-    node = crud.get_node(session_with_3_nodes, 99)
+    node = crud.get_node(db_session, 99)
     assert not node
 
 
-def test_get_node_by_name(session_with_3_nodes):
-    node = crud.get_node_by_name(session_with_3_nodes, "David Rawson")
-    assert node.name == "David Rawson"
+def test_get_node_by_name(db_session):
+    node = crud.get_node_by_name(db_session, "Cindy")
+    assert node.name == "Cindy"
 
 
-def test_get_nodes(session_with_3_nodes):
-    nodes = crud.get_nodes(session_with_3_nodes)
-    assert len(nodes) == 3
+def test_get_nodes(db_session):
+    nodes = crud.get_nodes(db_session)
+    assert len(nodes) == 15
 
 
-def test_get_node_like_name(session_with_3_nodes):
-    nodes = crud.get_nodes_like_name(session_with_3_nodes, like="robin")
-    assert len(nodes) == 1
-    robin = nodes[0]
-    assert robin.name == "Robin Southgate"
-
-
-def test_update_node(session_with_3_nodes):
-    node = crud.update_node(session_with_3_nodes, 1, updated_name="Andy Linde")
-    assert node.name == "Andy Linde"
-
-
-def test_update_nonexistent_node(session_with_3_nodes):
-    node = crud.update_node(session_with_3_nodes, 99, updated_name="Andy Linde")
-    assert node is None
-
-
-def test_delete_existing_node(session_with_3_nodes):
-    rows_deleted = crud.delete_node(session_with_3_nodes, 2)
-    assert rows_deleted == 1
-    node = crud.get_node(session_with_3_nodes, 2)
-    assert node is None
-
-    nodes = crud.get_nodes(session_with_3_nodes)
+def test_get_node_like_name(db_session):
+    nodes = crud.get_nodes_like_name(db_session, like="engineer")
     assert len(nodes) == 2
+    chief = nodes[0]
+    assert chief.name == "Chief Engineer"
 
 
-def test_delete_nonexistent_node(session_with_3_nodes):
-    rows_deleted = crud.delete_node(session_with_3_nodes, 99)
+def test_update_node(db_session):
+    node = crud.update_node(db_session, 1, updated_name="Andy")
+    assert node.name == "Andy"
+
+
+def test_update_nonexistent_node(db_session):
+    node = crud.update_node(db_session, 99, updated_name="Bogie Man")
+    assert node is None
+
+
+def test_delete_existing_node(db_session):
+    rows_deleted = crud.delete_node(db_session, 2)
+    assert rows_deleted == 1
+    node = crud.get_node(db_session, 2)
+    assert node is None
+
+    nodes = crud.get_nodes(db_session)
+    assert len(nodes) == 14
+
+
+def test_delete_nonexistent_node(db_session):
+    rows_deleted = crud.delete_node(db_session, 99)
     assert rows_deleted == 0
-    nodes = crud.get_nodes(session_with_3_nodes)
-    assert len(nodes) == 3
+    nodes = crud.get_nodes(db_session)
+    assert len(nodes) == 15
+
+
+def test_cant_create_duplicate_node_name(db_session):
+    original_node_count = len(crud.get_nodes(db_session))
+
+    node_1 = crud.get_node(db_session, 1)
+    node_1_name: str = node_1.name
+
+    new_node = crud.create_node(db_session, NodeCreate(name=node_1_name.upper()))
+    new_node_count = len(crud.get_nodes(db_session))
+
+    assert original_node_count == new_node_count
+
+    assert new_node.id == node_1.id
+    assert new_node.name == node_1_name
+
+def test_create_node_name_substring(db_session):
+    """
+    Test that we can create two unique nodes where one node name is a substring of the other
+    """
+    david = crud.create_node(db_session,NodeCreate(name="David"))
+    david_anthony = crud.create_node(db_session,NodeCreate(name="David Anthony"))
+
+    assert david.id != david_anthony.id
+
+    stephen_robert = crud.create_node(db_session,NodeCreate(name="Stephen Robert"))
+    stephen = crud.create_node(db_session,NodeCreate(name="Stephen"))
+
+    assert stephen.id != stephen_robert.id

@@ -13,8 +13,6 @@ def test_connection_create_subject_target_nodes():
     assert cc_dict["name"] == "has title"
     assert cc_dict["subject"]["name"] == "Andrew"
     assert cc_dict["target"]["name"] == "Chief Engineer"
-    # assert cc_dict["subject_id"] is None
-    # assert cc_dict["target_id"] is None
 
 
 def test_connection_create_subject_target_ids():
@@ -22,6 +20,10 @@ def test_connection_create_subject_target_ids():
                           name="has title",
                           target=2)
     assert cc
+    cc_dict = cc.dict()
+    assert cc_dict["name"] == "has title"
+    assert cc_dict["subject"] == 1
+    assert cc_dict["target"] == 2
 
 
 def test_connection_create_no_subject():

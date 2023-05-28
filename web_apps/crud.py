@@ -5,11 +5,16 @@ from . import models, schemas
 
 
 def create_node(db_session: Session, node: schemas.NodeCreate) -> models.Node:
-    db_node = models.Node(name=node.name)
-    db_session.add(db_node)
-    db_session.commit()
-    db_session.refresh(db_node)
-    return db_node
+    existing_node = get_node_by_name(db_session, node.name)
+    if existing_node:
+        return existing_node
+    else:
+        # print(f"{node.name}")
+        new_node = models.Node(name=node.name)
+        db_session.add(new_node)
+        db_session.commit()
+        db_session.refresh(new_node)
+        return new_node
 
 
 def get_node(db_session: Session, node_id: int) -> models.Node | None:
@@ -18,7 +23,8 @@ def get_node(db_session: Session, node_id: int) -> models.Node | None:
 
 
 def get_node_by_name(db_session: Session, name: str) -> models.Node | None:
-    select_stmt = select(models.Node).filter(models.Node.name == name)
+    # select_stmt = select(models.Node).filter(models.Node.name.contains(name))
+    select_stmt = select(models.Node).filter_by(name_insensitive=name)
     return db_session.scalars(select_stmt).first()
 
 
@@ -70,19 +76,21 @@ def get_or_create_connection_node(db_session: Session, node: schemas.NodeCreate 
         if db_node is None:
             raise ConnectionNodeNotFoundError(f"node_id: {node}")
     else:
-        db_node = get_node_by_name(db_session, node.name)
-        if not db_node:
-            db_node = create_node(db_session, node)
+        # db_node = get_node_by_name(db_session, node.name)
+        # if not db_node:
+        db_node = create_node(db_session, node)
 
     return db_node
 
+
 def get_connection_by_name_target_id_and_subject_id(db_session: Session, name: str, subject_id: int,
                                                     target_id: int) -> models.Connection | None:
-    select_stmt = select(models.Connection).filter(models.Connection.name == name,
+    select_stmt = select(models.Connection).filter(models.Connection.name.contains(name),  # TODO changes this to use comparator
                                                    models.Connection.subject_id == subject_id,
                                                    models.Connection.target_id == target_id)
 
     return db_session.scalars(select_stmt).first()
+
 
 def create_connection(db_session: Session, connection: schemas.ConnectionCreate) -> models.Connection:
     subject_node: models.Node = get_or_create_connection_node(db_session, connection.subject)
@@ -119,7 +127,8 @@ def delete_connection(db_session: Session, connection_id: int) -> int:
 
 
 def get_connections_to_node(db_session: Session, node_id: int) -> list[models.Connection]:
-    select_stmt = select(models.Connection).filter(or_(models.Connection.subject_id == node_id, models.Connection.target_id == node_id))
+    select_stmt = select(models.Connection).filter(
+        or_(models.Connection.subject_id == node_id, models.Connection.target_id == node_id))
     connections = list(db_session.scalars(select_stmt).all())
     return connections
 
@@ -164,5 +173,3 @@ def get_connections_to_node_like_name(db_session: Session, like: str) -> list[mo
 def get_table_size(db_session, table_class: table) -> int:
     length = db_session.scalar(select(func.count()).select_from(table_class))
     return length
-
-
