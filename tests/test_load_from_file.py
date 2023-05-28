@@ -81,10 +81,19 @@ def test_parse_time_by_task_line():
     assert task_time_data.hours == 0.25
 
 def test_load_time_by_task(db_session):
+    original_node_count = crud.get_table_size(db_session, models.Node)
+    original_connection_count = crud.get_table_size(db_session, models.Connection)
+
     filename = "./Utilisation report - 20230227.xlsx - TimeByTask.csv"
+    lines_in_file = 5056
+    nodes_in_file = 382
+    connections_in_file = 206 + 206 + 139  # TODO this is wrong - it will be some number higher
 
     lines_processed = load_time_by_task(db_session, filename)
-    assert lines_processed == 5056
+    assert lines_processed == lines_in_file
 
-    assert crud.get_table_size(db_session, models.Connection) == 1061
-    assert crud.get_table_size(db_session, models.Node) == 382
+    new_node_count = crud.get_table_size(db_session, models.Node)
+    new_connection_count = crud.get_table_size(db_session, models.Connection)
+
+    assert new_node_count == original_node_count + nodes_in_file
+    assert new_connection_count == original_connection_count + connections_in_file

@@ -43,7 +43,7 @@ def load_staff_list_from_csv_buffer(db_session: Session, buffer: TextIOWrapper) 
     while line:
         staff_data: StaffData = parse_staff_list_line(line)
         if staff_data.name == "" or staff_data.gm == "" or staff_data.employment == "":
-            print(f"blanks at {lines_processed}: {staff_data.json()}")
+            # print(f"blanks at {lines_processed}: {staff_data.json()}")
             line = buffer.readline()
             continue
         crud.create_connection(
