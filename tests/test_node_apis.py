@@ -66,3 +66,10 @@ def test_delete_node_api(json_app_client):
     node_3 = schemas.Node(**nodes_json[1])
     assert node_1.name == "Andrew"
     assert node_3.name == "Cindy"
+
+
+def test_delete_all_nodes(json_app_client):
+    response = json_app_client.delete("/nodes/")
+    assert response.status_code == 200
+    response_json = response.json()
+    assert response_json["message"] == "deleted 15 nodes and 17 connections"

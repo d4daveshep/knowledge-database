@@ -116,20 +116,20 @@ def get_db_session():
 #     return db_connection.id
 #
 
-@app.get("/stats/", status_code=200)
-def get_database_stats(response: Response, db_session: Session = Depends(get_db_session)):
-    stats = {"node_count": crud.get_table_size(db_session, models.Node),
-             "connection_count": crud.get_table_size(db_session, models.Connection)}
+# @app.get("/stats/", status_code=200)
+# def get_database_stats(response: Response, db_session: Session = Depends(get_db_session)):
+#     stats = {"node_count": crud.get_table_size(db_session, models.Node),
+#              "connection_count": crud.get_table_size(db_session, models.Connection)}
+#
+#     return stats
 
-    return stats
 
-
-@app.get('/')
+@app.get('/', response_class=HTMLResponse)
 def main(request: Request):
     return templates.TemplateResponse('index.html', {'request': request})
 
 
-@app.get("/file-upload")
+@app.get("/file-upload", response_class=HTMLResponse)
 def file_upload_page(request: Request):
     return templates.TemplateResponse("file-upload.html", {"request": request})
 
