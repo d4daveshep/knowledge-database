@@ -1,4 +1,4 @@
-from web_apps import crud
+from web_apps import crud, models
 from web_apps.schemas import NodeCreate
 
 
@@ -75,16 +75,27 @@ def test_cant_create_duplicate_node_name(db_session):
     assert new_node.id == node_1.id
     assert new_node.name == node_1_name
 
+
 def test_create_node_name_substring(db_session):
     """
     Test that we can create two unique nodes where one node name is a substring of the other
     """
-    david = crud.create_node(db_session,NodeCreate(name="David"))
-    david_anthony = crud.create_node(db_session,NodeCreate(name="David Anthony"))
+    david = crud.create_node(db_session, NodeCreate(name="David"))
+    david_anthony = crud.create_node(db_session, NodeCreate(name="David Anthony"))
 
     assert david.id != david_anthony.id
 
-    stephen_robert = crud.create_node(db_session,NodeCreate(name="Stephen Robert"))
-    stephen = crud.create_node(db_session,NodeCreate(name="Stephen"))
+    stephen_robert = crud.create_node(db_session, NodeCreate(name="Stephen Robert"))
+    stephen = crud.create_node(db_session, NodeCreate(name="Stephen"))
 
     assert stephen.id != stephen_robert.id
+
+
+def test_delete_all_nodes(db_session):
+    original_node_count = crud.get_table_size(db_session, models.Node)
+    assert original_node_count > 0
+
+    crud.delete_nodes(db_session)
+
+    new_node_count = crud.get_table_size(db_session, models.Node)
+    assert new_node_count == 0

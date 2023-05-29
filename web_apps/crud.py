@@ -85,7 +85,8 @@ def get_or_create_connection_node(db_session: Session, node: schemas.NodeCreate 
 
 def get_connection_by_name_target_id_and_subject_id(db_session: Session, name: str, subject_id: int,
                                                     target_id: int) -> models.Connection | None:
-    select_stmt = select(models.Connection).filter(models.Connection.name.contains(name),  # TODO changes this to use comparator
+    select_stmt = select(models.Connection).filter(models.Connection.name.contains(name),
+                                                   # TODO changes this to use comparator
                                                    models.Connection.subject_id == subject_id,
                                                    models.Connection.target_id == target_id)
 
@@ -173,3 +174,17 @@ def get_connections_to_node_like_name(db_session: Session, like: str) -> list[mo
 def get_table_size(db_session, table_class: table) -> int:
     length = db_session.scalar(select(func.count()).select_from(table_class))
     return length
+
+
+def delete_nodes(db_session: Session) -> int:
+    delete_stmt = delete(models.Node)
+    result: Result = db_session.execute(delete_stmt)
+    db_session.commit()
+    return result.rowcount
+
+
+def delete_connections(db_session: Session) -> int:
+    delete_stmt = delete(models.Connection)
+    result: Result = db_session.execute(delete_stmt)
+    db_session.commit()
+    return result.rowcount

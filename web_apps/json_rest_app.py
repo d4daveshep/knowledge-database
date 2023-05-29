@@ -1,11 +1,7 @@
-import datetime
-from io import BytesIO, TextIOWrapper
-
-from fastapi import Depends, FastAPI, HTTPException, Response, status, Request, UploadFile, File
+from fastapi import Depends, FastAPI, HTTPException, Response, status
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
-import utilities.cvs_file_loader
 from . import crud, models, schemas
 from .crud import ConnectionNodeNotFoundError
 from .database import LocalSession, engine
@@ -120,3 +116,15 @@ def get_database_stats(db_session: Session = Depends(get_db_session)):
 
     return stats
 
+
+@app.delete("/connections/", status_code=200)
+def delete_all_connections(db_session: Session = Depends(get_db_session)):
+    num_connections_deleted = crud.delete_connections(db_session)
+    return {"message": f"deleted {num_connections_deleted} connections"}
+
+
+@app.delete("/nodes/", status_code=200)
+def delete_all_nodes(db_session: Session = Depends(get_db_session)):
+    num_connections_deleted = crud.delete_connections(db_session)
+    num_nodes_deleted = crud.delete_nodes(db_session)
+    return {"message": f"deleted {num_nodes_deleted} nodes and {num_connections_deleted} connections"}

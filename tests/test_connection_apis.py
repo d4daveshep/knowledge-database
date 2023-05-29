@@ -151,3 +151,10 @@ def test_stats_api(json_app_client):
     response_json = response.json()
     assert response_json["node_count"] == 15
     assert response_json["connection_count"] == 17
+
+
+def test_delete_all_connections(json_app_client):
+    response = json_app_client.delete("/connections/")
+    assert response.status_code == 200
+    response_json = response.json()
+    assert response_json["message"] == "deleted 17 connections"

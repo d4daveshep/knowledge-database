@@ -5,7 +5,6 @@ from web_apps.crud import ConnectionNodeNotFoundError
 from web_apps.schemas import NodeCreate, ConnectionCreate
 
 
-
 def test_create_connection_and_nodes(db_session):
     conn = crud.create_connection(
         db_session, ConnectionCreate(
@@ -153,3 +152,13 @@ def test_get_connection_by_name_and_node_ids(db_session):
                                                                           target_id=node_2.id)
 
     assert new_connection.id == got_connection.id
+
+
+def test_delete_all_connections(db_session):
+    original_connection_count = crud.get_table_size(db_session, models.Connection)
+    assert original_connection_count > 0
+
+    crud.delete_connections(db_session)
+
+    new_connection_count = crud.get_table_size(db_session, models.Connection)
+    assert new_connection_count == 0
