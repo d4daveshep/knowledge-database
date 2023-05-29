@@ -1,12 +1,10 @@
 from datetime import date
 
 import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.orm import Session
 
-from web_apps import models, crud
 from utilities.cvs_file_loader import load_staff_list_from_csv_file, parse_staff_list_line, StaffData, TaskTimeData, \
     parse_time_by_task_line, load_time_by_task
+from web_apps import models, crud
 
 
 # @pytest.fixture()
@@ -30,15 +28,15 @@ def test_parse_staff_list_line():
     assert staff_data.employment == "Contract"
 
 
-def dump_nodes_to_file(filename:str,nodes:list[models.Node]):
-    with open(filename,"w") as file:
+def dump_nodes_to_file(filename: str, nodes: list[models.Node]):
+    with open(filename, "w") as file:
         for node in nodes:
             file.write(node.name)
             file.write('\n')
 
 
+@pytest.mark.slow
 def test_load_staff_list(db_session):
-
     original_node_count = crud.get_table_size(db_session, models.Node)
     original_connection_count = crud.get_table_size(db_session, models.Connection)
 
@@ -50,14 +48,14 @@ def test_load_staff_list(db_session):
     lines_processed = load_staff_list_from_csv_file(db_session, filename)
     assert lines_processed == lines_in_file
 
-    nodes = crud.get_nodes(db_session,limit=400)
+    nodes = crud.get_nodes(db_session, limit=400)
     dump_nodes_to_file("./nodes.txt", nodes)
 
     assert crud.get_table_size(db_session, models.Connection) == original_connection_count + connections_in_file
     assert crud.get_table_size(db_session, models.Node) == original_node_count + nodes_in_file
 
     all_connections: list[models.Connection] = crud.get_connections(db_session, limit=400)
-    assert len(all_connections) == original_connection_count+connections_in_file
+    assert len(all_connections) == original_connection_count + connections_in_file
 
     aaron_connections: list[models.Connection] = crud.get_connections_to_node_like_name(db_session, like="Aaron Ooi")
     assert len(aaron_connections) == 2
@@ -80,6 +78,8 @@ def test_parse_time_by_task_line():
     task_time_data: TaskTimeData = parse_time_by_task_line(data_line)
     assert task_time_data.hours == 0.25
 
+
+@pytest.mark.slow
 def test_load_time_by_task(db_session):
     original_node_count = crud.get_table_size(db_session, models.Node)
     original_connection_count = crud.get_table_size(db_session, models.Connection)
