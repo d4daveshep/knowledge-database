@@ -62,6 +62,7 @@ def test_delete_node_api(json_app_client):
     assert response.status_code == 200, response.text
     nodes_json = response.json()
     assert len(nodes_json) == 14
+
     node_1 = schemas.Node(**nodes_json[0])
     node_3 = schemas.Node(**nodes_json[1])
     assert node_1.name == "Andrew"

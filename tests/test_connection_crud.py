@@ -45,36 +45,37 @@ def test_create_connection_to_nonexistent_node_ids(db_session):
 
 
 def test_delete_connection(db_session):
-    original_connection_count = len(crud.get_connections(db_session))
+    orig_count = crud.get_table_size(db_session, models.Connection)
+
     rows_deleted = crud.delete_connection(db_session, 1)
     assert rows_deleted == 1
 
-    new_connection_count = len(crud.get_connections(db_session))
-    assert new_connection_count == original_connection_count - 1
+    new_count = crud.get_table_size(db_session, models.Connection)
+    assert new_count == orig_count - 1
 
 
 def test_delete_nonexistent_connection(db_session):
-    original_connection_count = len(crud.get_connections(db_session))
+    orig_count = crud.get_table_size(db_session, models.Connection)
     crud.delete_connection(db_session, 99)
 
-    new_connection_count = len(crud.get_connections(db_session))
-    assert new_connection_count == original_connection_count
+    new_count = crud.get_table_size(db_session, models.Connection)
+    assert new_count == orig_count
 
 
 def test_delete_node_deletes_connections_to_node(db_session):
-    original_node_count = len(crud.get_nodes(db_session))
-    original_connection_count = len(crud.get_connections(db_session))
+    original_node_count = crud.get_table_size(db_session, models.Node)
+    original_connection_count = crud.get_table_size(db_session, models.Connection)
 
     # find and delete Andrew
     andrew = crud.get_nodes_like_name(db_session, "andrew")[0]
     crud.delete_node(db_session, andrew.id)
 
     # verify only 1 node deleted
-    new_node_count = len(crud.get_nodes(db_session))
+    new_node_count = crud.get_table_size(db_session, models.Node)
     assert new_node_count == original_node_count - 1
 
     # verify 6 connections deleted
-    new_connection_count = len(crud.get_connections(db_session))
+    new_connection_count = crud.get_table_size(db_session, models.Connection)
     assert new_connection_count == original_connection_count - 6
 
 
@@ -122,16 +123,16 @@ def test_cant_create_duplicate_connection(db_session):
         ConnectionCreate(name="is a unique", subject=NodeCreate(name="David"), target=NodeCreate(name="Human Being"))
     )
 
-    original_node_count = len(crud.get_nodes(db_session))
-    original_connection_count = len(crud.get_connections(db_session))
+    original_node_count = crud.get_table_size(db_session, models.Node)
+    original_connection_count = crud.get_table_size(db_session, models.Connection)
 
     crud.create_connection(
         db_session,
         ConnectionCreate(name="is a unique", subject=NodeCreate(name="David"), target=NodeCreate(name="Human Being"))
     )
 
-    new_node_count = len(crud.get_nodes(db_session))
-    new_connection_count = len(crud.get_connections(db_session))
+    new_node_count = crud.get_table_size(db_session, models.Node)
+    new_connection_count = crud.get_table_size(db_session, models.Connection)
 
     assert new_node_count == original_node_count
     assert original_connection_count == new_connection_count

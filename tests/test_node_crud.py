@@ -45,33 +45,37 @@ def test_update_nonexistent_node(db_session):
 
 
 def test_delete_existing_node(db_session):
+    orig_count = crud.get_table_size(db_session, models.Node)
+
     rows_deleted = crud.delete_node(db_session, 2)
     assert rows_deleted == 1
     node = crud.get_node(db_session, 2)
     assert node is None
 
-    nodes = crud.get_nodes(db_session)
-    assert len(nodes) == 14
+    new_count = crud.get_table_size(db_session, models.Node)
+    assert new_count == orig_count - 1
 
 
 def test_delete_nonexistent_node(db_session):
+    orig_count = crud.get_table_size(db_session, models.Node)
+
     rows_deleted = crud.delete_node(db_session, 99)
     assert rows_deleted == 0
-    nodes = crud.get_nodes(db_session)
-    assert len(nodes) == 15
+
+    new_count = crud.get_table_size(db_session, models.Node)
+    assert new_count == orig_count
 
 
 def test_cant_create_duplicate_node_name(db_session):
-    original_node_count = len(crud.get_nodes(db_session))
+    orig_count = crud.get_table_size(db_session, models.Node)
 
     node_1 = crud.get_node(db_session, 1)
     node_1_name: str = node_1.name
 
     new_node = crud.create_node(db_session, NodeCreate(name=node_1_name.upper()))
-    new_node_count = len(crud.get_nodes(db_session))
+    new_count = crud.get_table_size(db_session, models.Node)
 
-    assert original_node_count == new_node_count
-
+    assert orig_count == new_count
     assert new_node.id == node_1.id
     assert new_node.name == node_1_name
 
