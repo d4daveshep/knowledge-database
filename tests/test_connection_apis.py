@@ -92,25 +92,27 @@ def test_get_connections_by_node_id(json_app_client):
 
 
 def test_delete_existing_connection(json_app_client):
-    response = json_app_client.get("/connections/")
-    orig_count = len(response.json())
+    response = json_app_client.get("/stats/")
+    orig_count = response.json()["connection_count"]
 
     response = json_app_client.delete("/connections/2")
     assert response.status_code == 200
 
-    response = json_app_client.get("/connections/")
-    assert len(response.json()) == orig_count - 1
+    response = json_app_client.get("/stats/")
+    new_count = response.json()["connection_count"]
+    assert new_count == orig_count - 1
 
 
 def test_delete_nonexistent_connection(json_app_client):
-    response = json_app_client.get("/connections/")
-    orig_count = len(response.json())
+    response = json_app_client.get("/stats/")
+    orig_count = response.json()["connection_count"]
 
     response = json_app_client.delete("/connections/99")
     assert response.status_code == 404
 
-    response = json_app_client.get("/connections/")
-    assert len(response.json()) == orig_count
+    response = json_app_client.get("/stats/")
+    new_count = response.json()["connection_count"]
+    assert new_count == orig_count
 
 
 def test_get_connection_by_id(json_app_client):
