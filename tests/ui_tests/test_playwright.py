@@ -20,3 +20,9 @@ def test_homepage_has_Playwright_in_title_and_get_started_link_linking_to_the_in
 
     # Expects the URL to contain intro.
     expect(page).to_have_url(re.compile(".*intro"))
+
+
+def test_my_first_test(page: Page):
+    page.goto("http://192.168.1.51:8080")
+
+    expect(page).to_have_title("Fermenter Controller")
