@@ -4,3 +4,4 @@ starlette
 pydantic
 fastapi
 pandas
+pytest-playwright
