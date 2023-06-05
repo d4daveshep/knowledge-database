@@ -80,3 +80,7 @@ def connection_results(request: Request, node_id: int, db_session: Session = Dep
     connections = get_connections(node_id=node_id, db_session=db_session)
     return templates.TemplateResponse("connections-to-node-results.html",
                                       {"request": request, "node": node, "connections": connections})
+
+@app.get("/add-connection", response_class=HTMLResponse)
+def add_connection(request: Request):
+    return templates.TemplateResponse("add-connection.html", {"request":request})
