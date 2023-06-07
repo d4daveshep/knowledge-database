@@ -4,6 +4,16 @@
 
 {% block content %}
     <h1>Add New Connection</h1>
-    <!-- Additional content specific to the home page -->
-    <p>Today is {{date}}</p>
+
+    <form action="/add-connection" method="post">
+        <label for="subject">Subject:</label><br>
+        <input type="text" id="subject" name="subject"><br>
+        <label for="conn-name">Connection:</label><br>
+        <input type="text" id="conn-name" name="conn-name"><br>
+        <label for="target">Target:</label><br>
+        <input type="text" id="target" name="target"><br>
+        <input type="submit" value="Add Connection">
+    </form>
+
+
 {% endblock %}
