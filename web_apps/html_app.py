@@ -1,7 +1,7 @@
 import datetime
 from io import BytesIO, TextIOWrapper
 
-from fastapi import Depends, FastAPI, HTTPException, Request, UploadFile, File
+from fastapi import Depends, FastAPI, HTTPException, Request, UploadFile, File, Form
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -9,7 +9,8 @@ from sqlalchemy.orm import Session
 import utilities.cvs_file_loader
 from . import models
 from .database import LocalSession, engine
-from .json_rest_app import get_node, get_nodes, get_connections
+from .json_rest_app import get_node, get_nodes, get_connections, create_connection
+from .schemas import NodeCreate, ConnectionCreate
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -81,6 +82,16 @@ def connection_results(request: Request, node_id: int, db_session: Session = Dep
     return templates.TemplateResponse("connections-to-node-results.html",
                                       {"request": request, "node": node, "connections": connections})
 
+
 @app.get("/add-connection", response_class=HTMLResponse)
-def add_connection(request: Request):
-    return templates.TemplateResponse("add-connection.html", {"request":request})
+def add_new_connection(request: Request):
+    return templates.TemplateResponse("add-connection.html", {"request": request})
+
+
+@app.post("/add-connection", response_class=HTMLResponse)
+def create_connection_in_database(request: Request, subject: str = Form(), conn_name: str = Form(),
+                                  target: str = Form(), db_session: Session = Depends(get_db_session)):
+    connection = ConnectionCreate(subject=NodeCreate(name=subject), name=conn_name, target=NodeCreate(name=target))
+
+    connection = create_connection(db_session=db_session, connection=connection)
+    return templates.TemplateResponse("/connection-results.html", {"request": request})

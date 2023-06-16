@@ -39,11 +39,15 @@ def test_add_connection(page: Page):
     submit_button.click()
 
     # arrive at page confirming connection added
-    expect(page).to_have_title("/connection")
+    expect(page).to_have_title("Connections")
+
+    # page displays the new connection as hyperlinks
+    new_subject_link = page.get_by_role("link", name="Andrew")
+    expect(new_subject_link).to_have_text("Andrew")
+    # expect(add_connection_link).to_have_attribute("href", "/add-connection")
 
     assert False
 
-    # page displays the new connection as hyperlinks
 
     # click the subject Andrew
 
