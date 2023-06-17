@@ -45,11 +45,18 @@ def test_add_connection(page: Page):
 
     # page displays the new connection as hyperlinks
     new_subject_link = page.get_by_role("link", name="Andrew")
-
     expect(new_subject_link).to_have_text("Andrew")
     expect(new_subject_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
 
-    assert False
+    new_target_link = page.get_by_role("link", name="Chief Engineer")
+    expect(new_target_link).to_have_text("Chief Engineer")
+    expect(new_target_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
+
+    new_name_link = page.get_by_role("link", name="is a")
+    expect(new_name_link).to_have_text("is a")
+    expect(new_name_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
+
+    # assert False
 
 
     # click the subject Andrew
