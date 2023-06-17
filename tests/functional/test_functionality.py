@@ -1,3 +1,5 @@
+import re
+
 from playwright.sync_api import Page, expect
 
 
@@ -43,8 +45,9 @@ def test_add_connection(page: Page):
 
     # page displays the new connection as hyperlinks
     new_subject_link = page.get_by_role("link", name="Andrew")
+
     expect(new_subject_link).to_have_text("Andrew")
-    # expect(add_connection_link).to_have_attribute("href", "/add-connection")
+    expect(new_subject_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
 
     assert False
 
