@@ -3,8 +3,14 @@
 {% block title %}Add Connection{% endblock %}
 
 {% block content %}
-    <h1>Add New Connection</h1>
+{% if connection %}
+    <h1>Added connection</h1>
+    <a href="/connections-to-node/{{connection.subject.id}}">{{connection.subject.name}}</a>
+    <a href="/connections-to-node/456">is a</a>
+    <a href="/connections-to-node/789">Chief Engineer</a>
+{% endif %}
 
+    <h1>Add New Connection</h1>
     <form action="/add-connection" method="post">
         <label for="subject">Subject:</label><br>
         <input type="text" id="subject" name="subject"><br>
@@ -14,6 +20,5 @@
         <input type="text" id="target" name="target"><br>
         <input type="submit" value="Add Connection">
     </form>
-
 
 {% endblock %}

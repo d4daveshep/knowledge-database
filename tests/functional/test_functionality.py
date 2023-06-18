@@ -1,9 +1,20 @@
 import re
 
+import pytest
 from playwright.sync_api import Page, expect
 
+@pytest.fixture
+def purged_database(page:Page):
+    # browse to the purge database page
+    page.goto("http://127.0.0.1:8000/purge-database")
+    expect(page).to_have_title("Purge Database")
 
-def test_add_connection(page: Page):
+    # click the confirm button
+    purge_button = page.get_by_role("button", name="Purge Database")
+    purge_button.click()
+
+
+def test_add_connection(page: Page, purged_database):
     # browse to the home page
     page.goto("http://127.0.0.1:8000/home")
     expect(page).to_have_title("Home")
@@ -41,7 +52,7 @@ def test_add_connection(page: Page):
     submit_button.click()
 
     # arrive at page confirming connection added
-    expect(page).to_have_title("Connections")
+    expect(page).to_have_title("Add Connection")
 
     # page displays the new connection as hyperlinks
     new_subject_link = page.get_by_role("link", name="Andrew")
@@ -56,12 +67,17 @@ def test_add_connection(page: Page):
     expect(new_name_link).to_have_text("is a")
     expect(new_name_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
 
-    # assert False
-
-
     # click the subject Andrew
+    new_subject_link.click()
+
+    # takes us to the connections-to-node-results page
+    expect(page).to_have_title("Connections to Node Results")
 
     # page displays the existing connections that Andrew has
+    new_subject_link = page.get_by_role("link", name="Andrew")
+    expect(new_subject_link).to_have_text("Andrew")
+    expect(new_subject_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
+
 
     # confirm the new connection is listed
 

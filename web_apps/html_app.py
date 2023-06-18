@@ -9,8 +9,8 @@ from sqlalchemy.orm import Session
 import utilities.cvs_file_loader
 from . import models
 from .database import LocalSession, engine
-from .json_rest_app import get_node, get_nodes, get_connections, create_connection
-from .schemas import NodeCreate, ConnectionCreate
+from .json_rest_app import get_node, get_nodes, get_connections, create_connection, delete_all_nodes
+from .schemas import NodeCreate, ConnectionCreate, Connection
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -84,8 +84,8 @@ def connection_results(request: Request, node_id: int, db_session: Session = Dep
 
 
 @app.get("/add-connection", response_class=HTMLResponse)
-def add_new_connection(request: Request):
-    return templates.TemplateResponse("add-connection.html", {"request": request})
+def add_new_connection(request: Request, connection: Connection = None):
+    return templates.TemplateResponse("add-connection.html", {"request": request, "connection": connection})
 
 
 @app.post("/add-connection", response_class=HTMLResponse)
@@ -94,4 +94,15 @@ def create_connection_in_database(request: Request, subject: str = Form(), conn_
     connection = ConnectionCreate(subject=NodeCreate(name=subject), name=conn_name, target=NodeCreate(name=target))
 
     connection = create_connection(db_session=db_session, connection=connection)
-    return templates.TemplateResponse("/connection-results.html", {"request": request})
+    return templates.TemplateResponse("/add-connection.html", {"request": request, "connection": connection})
+
+
+@app.get("/purge-database", response_class=HTMLResponse)
+def show_purge_database_page(request: Request):
+    return templates.TemplateResponse("/purge-database.html", {"request": request})
+
+
+@app.post("/purge-database", response_class=HTMLResponse)
+def purge_database(request: Request, db_session: Session = Depends(get_db_session)):
+    delete_all_nodes(db_session)
+    return templates.TemplateResponse("/database-stats.html", {"request": request})
