@@ -72,7 +72,7 @@ def test_add_connection(page: Page, purge_database):
 
     new_name_link = page.get_by_role("link", name="is a")
     expect(new_name_link).to_have_text("is a")
-    expect(new_name_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
+    expect(new_name_link).to_have_attribute("href", re.compile("/connections/[0-9]+"))
 
     # click the subject Andrew
     new_subject_link.click()
@@ -85,9 +85,34 @@ def test_add_connection(page: Page, purge_database):
     expect(new_subject_link).to_have_text("Andrew")
     expect(new_subject_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
 
-
     # confirm the new connection is listed
+    new_name_link = page.get_by_role("link", name="is a")
+    expect(new_name_link).to_have_text("is a")
+    expect(new_name_link).to_have_attribute("href", re.compile("/connections/[0-9]+"))
+
+    # click the connection name link
+    new_name_link.click()
+
+    # takes us to the connections results page
+    expect(page).to_have_title("Connection Results")
+    #TODO add connection results page
 
     # enter another connection that "Andrew knows Java"
 
     # assert False
+
+def test_file_upload(page:Page):
+    assert False
+
+def test_database_stats(page:Page):
+    page.goto("http://127.0.0.1:8000/database-stats")
+
+    # expect to be at database stats page
+    expect(page).to_have_title("Database Stats")
+    node_count = page.get_by_text("Nodes")
+    expect(node_count).to_contain_text(re.compile("Nodes: [0-9]+"))
+    connection_count = page.get_by_text("Connections")
+    expect(connection_count).to_contain_text(re.compile("Connections: [0-9]+"))
+
+
+

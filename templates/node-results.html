@@ -4,7 +4,6 @@
 
 {% block content %}
 <h1>Node results like "{{like}}" </h1>
-<p>Like: {{request.body}}</p>
 <p>Found {{nodes|length}}</p>
 <ul>
     {% for node in nodes %}
