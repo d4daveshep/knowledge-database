@@ -4,7 +4,7 @@ import pytest
 from playwright.sync_api import Page, expect
 
 @pytest.fixture
-def purged_database(page:Page):
+def purge_database(page:Page):
     # browse to the purge database page
     page.goto("http://127.0.0.1:8000/purge-database")
     expect(page).to_have_title("Purge Database")
@@ -13,8 +13,15 @@ def purged_database(page:Page):
     purge_button = page.get_by_role("button", name="Purge Database")
     purge_button.click()
 
+    # expect to be at database stats page
+    expect(page).to_have_title("Database Stats")
+    node_count = page.get_by_text("Nodes")
+    expect(node_count).to_contain_text("0")
+    connection_count = page.get_by_text("Connections")
+    expect(connection_count).to_contain_text("0")
 
-def test_add_connection(page: Page, purged_database):
+
+def test_add_connection(page: Page, purge_database):
     # browse to the home page
     page.goto("http://127.0.0.1:8000/home")
     expect(page).to_have_title("Home")

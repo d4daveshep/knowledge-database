@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 import utilities.cvs_file_loader
 from . import models
 from .database import LocalSession, engine
-from .json_rest_app import get_node, get_nodes, get_connections, create_connection, delete_all_nodes
+from .json_rest_app import get_node, get_nodes, get_connections, create_connection, delete_all_nodes, get_database_stats
 from .schemas import NodeCreate, ConnectionCreate, Connection
 
 models.Base.metadata.create_all(bind=engine)
@@ -105,4 +105,10 @@ def show_purge_database_page(request: Request):
 @app.post("/purge-database", response_class=HTMLResponse)
 def purge_database(request: Request, db_session: Session = Depends(get_db_session)):
     delete_all_nodes(db_session)
-    return templates.TemplateResponse("/database-stats.html", {"request": request})
+    stats = get_database_stats(db_session)
+    return templates.TemplateResponse("/database-stats.html", {"request": request, "stats": stats})
+
+@app.get("/database-stats", response_class=HTMLResponse)
+def show_database_stats_page(request:Request, db_session:Session=Depends(get_db_session)):
+    stats = get_database_stats(db_session)
+    return templates.TemplateResponse("/database-stats.html", {"request": request, "stats": stats})
