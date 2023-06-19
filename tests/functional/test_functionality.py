@@ -95,7 +95,7 @@ def test_add_connection(page: Page, purge_database):
 
     # takes us to the connections results page
     expect(page).to_have_title("Connection Results")
-    #TODO add connection results page
+    #TODO add connection-results.html template
 
     # enter another connection that "Andrew knows Java"
 
