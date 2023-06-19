@@ -108,7 +108,14 @@ def purge_database(request: Request, db_session: Session = Depends(get_db_sessio
     stats = get_database_stats(db_session)
     return templates.TemplateResponse("/database-stats.html", {"request": request, "stats": stats})
 
+
 @app.get("/database-stats", response_class=HTMLResponse)
-def show_database_stats_page(request:Request, db_session:Session=Depends(get_db_session)):
+def show_database_stats_page(request: Request, db_session: Session = Depends(get_db_session)):
     stats = get_database_stats(db_session)
     return templates.TemplateResponse("/database-stats.html", {"request": request, "stats": stats})
+
+
+@app.get("/connections/", response_class=HTMLResponse)
+def get_connections_by_name(request: Request, name_like: str, db_session: Session = Depends(get_db_session)):
+    connections = get_connections(name_like, db_session)
+    return templates.TemplateResponse("/connection-results.html", {"request": request, "connections": connections})

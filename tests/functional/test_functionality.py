@@ -72,7 +72,7 @@ def test_add_connection(page: Page, purge_database):
 
     new_name_link = page.get_by_role("link", name="is a")
     expect(new_name_link).to_have_text("is a")
-    expect(new_name_link).to_have_attribute("href", re.compile("/connections/[0-9]+"))
+    expect(new_name_link).to_have_attribute("href", "/connections/?name_like=is+a")
 
     # click the subject Andrew
     new_subject_link.click()
@@ -88,7 +88,7 @@ def test_add_connection(page: Page, purge_database):
     # confirm the new connection is listed
     new_name_link = page.get_by_role("link", name="is a")
     expect(new_name_link).to_have_text("is a")
-    expect(new_name_link).to_have_attribute("href", re.compile("/connections/[0-9]+"))
+    expect(new_name_link).to_have_attribute("href", "/connections/?name_like=is+a")
 
     # click the connection name link
     new_name_link.click()

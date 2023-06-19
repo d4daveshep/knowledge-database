@@ -10,7 +10,7 @@
     {% for connection in connections %}
     <tr>
         <td><a href="/connections-to-node/{{connection.subject.id}}">{{ connection.subject.name }}</a></td>
-        <td><a href="/connections/{{connection.id}}">{{ connection.name }}</a></td>
+        <td><a href="/connections/?name_like={{connection.name|replace(' ','+')}}">{{ connection.name }}</a></td>
         <td><a href="/connections-to-node/{{connection.target.id}}">{{ connection.target.name }}</a></td>
     </tr>
     {% endfor %}
