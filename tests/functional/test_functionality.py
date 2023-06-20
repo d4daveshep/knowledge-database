@@ -30,19 +30,19 @@ def add_new_connection(page: Page, subject_name: str, conn_name: str, target_nam
     subject_field = page.get_by_label("Subject")
     expect(subject_field).to_be_empty()
     expect(subject_field).to_be_editable()
-    subject_field.fill("Andrew")
+    subject_field.fill(subject_name)
 
     # enter Chief Engineer as the target
     target_field = page.get_by_label("Target")
     expect(target_field).to_be_empty()
     expect(target_field).to_be_editable()
-    target_field.fill("Chief Engineer")
+    target_field.fill(target_name)
 
     # enter "is a" as the connection name
     conn_name_field = page.get_by_label("Connection")
     expect(conn_name_field).to_be_empty()
     expect(conn_name_field).to_be_editable()
-    conn_name_field.fill("is a")
+    conn_name_field.fill(conn_name)
 
     # click the submit button
     submit_button = page.get_by_role("button", name="Add Connection")
@@ -50,17 +50,17 @@ def add_new_connection(page: Page, subject_name: str, conn_name: str, target_nam
 
 
 def check_added_connection_links(page: Page, subject_name: str, conn_name: str, target_name: str) -> tuple:
-    new_subject_link = page.get_by_role("link", name="Andrew")
-    expect(new_subject_link).to_have_text("Andrew")
+    new_subject_link = page.get_by_role("link", name=subject_name)
+    expect(new_subject_link).to_have_text(subject_name)
     expect(new_subject_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
 
-    new_target_link = page.get_by_role("link", name="Chief Engineer")
-    expect(new_target_link).to_have_text("Chief Engineer")
+    new_target_link = page.get_by_role("link", name=target_name)
+    expect(new_target_link).to_have_text(target_name)
     expect(new_target_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
 
-    new_name_link = page.get_by_role("link", name="is a")
-    expect(new_name_link).to_have_text("is a")
-    expect(new_name_link).to_have_attribute("href", "/connections/?name_like=is+a")
+    new_name_link = page.get_by_role("link", name=conn_name)
+    expect(new_name_link).to_have_text(conn_name)
+    expect(new_name_link).to_have_attribute("href", f"/connections/?name_like={conn_name.replace(' ','+')}")
 
     return new_subject_link, new_target_link, new_name_link
 
@@ -118,8 +118,11 @@ def test_add_connection(page: Page, purge_database):
     page.goto("http://127.0.0.1:8000/add-connection")
     add_new_connection(page, "Andrew", "knows", "Java")
 
-    # assert False
+    # page displays the new connection as hyperlinks
+    new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Andrew", "knows", "Java")
+
     # TODO add tests for second connection
+
 
 def test_file_upload(page: Page):
     assert False
