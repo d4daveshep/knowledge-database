@@ -118,4 +118,4 @@ def show_database_stats_page(request: Request, db_session: Session = Depends(get
 @app.get("/connections/", response_class=HTMLResponse)
 def get_connections_by_name(request: Request, name_like: str, db_session: Session = Depends(get_db_session)):
     connections = get_connections(name_like=name_like, db_session=db_session)
-    return templates.TemplateResponse("/connection-results.html", {"request": request, "connections": connections})
+    return templates.TemplateResponse("/connection-results.html", {"request": request, "name":name_like, "connections": connections})
