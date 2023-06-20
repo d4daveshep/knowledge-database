@@ -25,20 +25,16 @@ def purge_database(page: Page):
 def add_new_connection(page: Page, subject_name: str, conn_name: str, target_name: str):
     expect(page).to_have_title("Add Connection")
 
-    # enter the connection that "Andrew is a Chief Engineer"
-    # enter Andrew as the subject
     subject_field = page.get_by_label("Subject")
     expect(subject_field).to_be_empty()
     expect(subject_field).to_be_editable()
     subject_field.fill(subject_name)
 
-    # enter Chief Engineer as the target
     target_field = page.get_by_label("Target")
     expect(target_field).to_be_empty()
     expect(target_field).to_be_editable()
     target_field.fill(target_name)
 
-    # enter "is a" as the connection name
     conn_name_field = page.get_by_label("Connection")
     expect(conn_name_field).to_be_empty()
     expect(conn_name_field).to_be_editable()
@@ -50,6 +46,7 @@ def add_new_connection(page: Page, subject_name: str, conn_name: str, target_nam
 
 
 def check_added_connection_links(page: Page, subject_name: str, conn_name: str, target_name: str) -> tuple:
+
     new_subject_link = page.get_by_role("link", name=subject_name)
     expect(new_subject_link).to_have_text(subject_name)
     expect(new_subject_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
@@ -77,6 +74,8 @@ def test_add_connection(page: Page, purge_database):
 
     # click the link to a add connection
     add_connection_link.click()
+
+    # enter the connection that "Andrew is a Chief Engineer"
     add_new_connection(page, "Andrew", "is a", "Chief Engineer")
 
     # arrive at page confirming connection added
