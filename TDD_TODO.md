@@ -34,3 +34,4 @@
 * I can search for nodes and connection names in the same text box
 * the search text box populates as I type (use Ajax?)
 * Search results separate tables for nodes name matches and connection name matches
+* 
