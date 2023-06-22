@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Connections to Node Results{% endblock %}
+{% block title %}Connection Results{% endblock %}
 
 {% block content %}
-<h1>Connections to {{node.name}} </h1>
+<h1>Connections like '{{name}}' </h1>
 <p>Found {{connections|length}}</p>
 <table>
     <tr><th>Subject</th><th>Connection</th><th>Target</th></tr>

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Purge Database{% endblock %}
+
+{% block content %}
+    <h1>Purge Database</h1>
+    <form action="/purge-database" method="post">
+        <input type="submit" value="Purge Database">
+    </form>
+
+{% endblock %}

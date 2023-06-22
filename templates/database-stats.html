@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Database Stats{% endblock %}
+
+{% block content %}
+    <h1>Database Stats</h1>
+
+    <ul>
+        <li>Nodes: {{ stats.node_count }}</li>
+        <li>Connections: {{ stats.connection_count }}</li>
+    </ul>
+
+{% endblock %}

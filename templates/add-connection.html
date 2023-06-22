@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Connection{% endblock %}
+
+{% block content %}
+{% if connection %}
+    <h1>Added connection</h1>
+    <a href="/connections-to-node/{{connection.subject.id}}">{{connection.subject.name}}</a>
+    <a href="/connections/?name_like={{connection.name|replace(' ','+')}}">{{ connection.name }}</a>
+    <a href="/connections-to-node/{{connection.target.id}}">{{connection.target.name}}</a>
+{% endif %}
+
+    <h1>Add New Connection</h1>
+    <form action="/add-connection" method="post">
+        <label for="subject">Subject:</label><br>
+        <input type="text" id="subject" name="subject"><br>
+        <label for="conn_name">Connection:</label><br>
+        <input type="text" id="conn_name" name="conn_name"><br>
+        <label for="target">Target:</label><br>
+        <input type="text" id="target" name="target"><br>
+        <input type="submit" value="Add Connection">
+    </form>
+
+{% endblock %}
