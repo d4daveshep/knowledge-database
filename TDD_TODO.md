@@ -1,6 +1,7 @@
 # TDD To Do List #
 
-* make /home the default root page
+## Home page ##
+*[x] make /home the default root page
 
 ## Add Connection ##
 * reformat the fields into a row
