@@ -28,8 +28,8 @@ def get_db_session():
 
 
 @app.get('/', response_class=HTMLResponse)
-def main(request: Request):
-    return templates.TemplateResponse('index.html', {'request': request})
+def root(request: Request):
+    return templates.TemplateResponse('home.html', {'request': request})
 
 
 @app.get("/file-upload", response_class=HTMLResponse)
