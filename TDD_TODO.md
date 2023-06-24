@@ -29,7 +29,7 @@
 * I can edit a node name that will make a global change to all nodes with that name
 
 ## Search ##
-* I can search for nodes and connection names in the same text box
+*[ ] **I can search for nodes and connection names in the same text box**
 * the search text box populates as I type (use Ajax?)
 * Search results separate tables for nodes name matches and connection name matches
 * 
