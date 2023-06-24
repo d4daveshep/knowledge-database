@@ -1,6 +1,7 @@
 import os.path
 import sqlite3
 import tempfile
+from sqlite3 import Connection, Cursor
 
 import pytest
 from sqlalchemy import create_engine
@@ -13,8 +14,8 @@ from web_apps.models import Base
 
 
 @pytest.fixture(scope="module")
-def temp_dir():
-    tmp_dir = tempfile.mkdtemp(dir="/tmp")
+def temp_dir() -> str:
+    tmp_dir: str = tempfile.mkdtemp(dir="/tmp")
     # print(tmp_dir)
     yield tmp_dir
 
@@ -23,11 +24,11 @@ def temp_dir():
 
 
 @pytest.fixture(scope="function")
-def db_connection(temp_dir):
+def db_connection(temp_dir: str) -> Connection:
     # set up
     db_filename = temp_dir + "/test.db"
     print(f"\ndb_file={db_filename}")
-    db_conn = sqlite3.connect(db_filename)
+    db_conn: Connection = sqlite3.connect(db_filename)
     yield db_conn
 
     # tear down
@@ -37,8 +38,8 @@ def db_connection(temp_dir):
 
 
 @pytest.fixture(scope="function")
-def db_cursor(db_connection):
-    cursor = db_connection.cursor()
+def db_cursor(db_connection: Connection) -> Cursor:
+    cursor: Cursor = db_connection.cursor()
     cursor.execute("""
         CREATE TABLE nodes (
             id INTEGER NOT NULL, 
@@ -64,7 +65,7 @@ def db_cursor(db_connection):
 
 
 @pytest.fixture(scope="function")
-def db_populated(db_cursor):
+def db_populated_filename(db_cursor: Cursor) -> str:
     names = [
         (1, "Andrew"),
         (2, "Brian"),
@@ -143,8 +144,8 @@ def db_populated(db_cursor):
 
 
 @pytest.fixture()
-def db_session(db_populated):
-    engine = create_engine("sqlite:///" + db_populated, echo=False)
+def db_session(db_populated_filename: str) -> Session:
+    engine = create_engine("sqlite:///" + db_populated_filename, echo=False)
 
     base = automap_base()
     base.prepare(autoload_with=engine)
@@ -159,8 +160,8 @@ def db_session(db_populated):
 
 
 @pytest.fixture()
-def json_app_client(db_populated):
-    sqlalchemy_database_url = "sqlite:///" + db_populated
+def json_app_client(db_populated_filename: str) -> TestClient:
+    sqlalchemy_database_url = "sqlite:///" + db_populated_filename
 
     engine = create_engine(
         sqlalchemy_database_url, connect_args={"check_same_thread": False}
