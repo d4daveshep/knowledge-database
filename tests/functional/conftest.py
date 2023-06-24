@@ -2,11 +2,14 @@ import pytest
 from playwright.sync_api import Page
 from playwright.sync_api import expect
 
+@pytest.fixture
+def my_base_url()->str:
+    return "http://localhost:8000"
 
 @pytest.fixture
-def purge_database(page: Page):
+def purge_database(my_base_url:str, page: Page):
     # browse to the purge database page
-    page.goto("http://127.0.0.1:8000/purge-database")
+    page.goto(my_base_url + "/purge-database")
     expect(page).to_have_title("Purge Database")
 
     # click the confirm button

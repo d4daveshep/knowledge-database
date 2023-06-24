@@ -42,9 +42,9 @@ def check_added_connection_links(page: Page, subject_name: str, conn_name: str, 
     return new_subject_link, new_target_link, new_name_link
 
 
-def test_add_connection(page: Page, purge_database):
+def test_add_connection(my_base_url:str, page: Page, purge_database):
     # browse to the home page
-    page.goto("http://localhost:8000/home")
+    page.goto(my_base_url+"/home")
     expect(page).to_have_title("Home")
 
     # find the link to add a connection
@@ -94,7 +94,7 @@ def test_add_connection(page: Page, purge_database):
                                                                                     "Chief Engineer")
 
     # enter another connection that "Andrew knows Java"
-    page.goto("http://localhost:8000/add-connection")
+    page.goto(my_base_url+"/add-connection")
     add_new_connection(page, "Andrew", "knows", "Java")
 
     # page displays the new connection as hyperlinks

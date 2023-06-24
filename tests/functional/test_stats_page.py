@@ -3,8 +3,8 @@ import re
 from playwright.sync_api import Page, expect
 
 
-def test_database_stats(page: Page):
-    page.goto("http://localhost:8000/database-stats")
+def test_database_stats(my_base_url: str, page: Page):
+    page.goto(my_base_url + "/database-stats")
 
     # expect to be at database stats page
     expect(page).to_have_title("Database Stats")
