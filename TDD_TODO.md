@@ -1,8 +1,5 @@
 # TDD To Do List #
 
-## Home page ##
-*[x] make /home the default root page
-
 ## Add Connection ##
 * reformat the fields into a row
 * put more spacing between the nodes and connections
