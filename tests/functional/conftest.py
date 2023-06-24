@@ -1,5 +1,5 @@
 import pytest
-from playwright.async_api import Page
+from playwright.sync_api import Page
 from playwright.sync_api import expect
 
 
@@ -19,4 +19,3 @@ def purge_database(page: Page):
     expect(node_count).to_contain_text("0")
     connection_count = page.get_by_text("Connections")
     expect(connection_count).to_contain_text("0")
-

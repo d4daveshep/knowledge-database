@@ -1,8 +1,6 @@
 import re
 
-import pytest
 from playwright.sync_api import Page, expect
-
 
 
 def add_new_connection(page: Page, subject_name: str, conn_name: str, target_name: str):
@@ -29,7 +27,6 @@ def add_new_connection(page: Page, subject_name: str, conn_name: str, target_nam
 
 
 def check_added_connection_links(page: Page, subject_name: str, conn_name: str, target_name: str) -> tuple:
-
     new_subject_link = page.get_by_role("link", name=subject_name)
     expect(new_subject_link).to_have_text(subject_name)
     expect(new_subject_link).to_have_attribute("href", re.compile("/connections-to-node/[0-9]+"))
@@ -40,14 +37,14 @@ def check_added_connection_links(page: Page, subject_name: str, conn_name: str, 
 
     new_name_link = page.get_by_role("link", name=conn_name)
     expect(new_name_link).to_have_text(conn_name)
-    expect(new_name_link).to_have_attribute("href", f"/connections/?name_like={conn_name.replace(' ','+')}")
+    expect(new_name_link).to_have_attribute("href", f"/connections/?name_like={conn_name.replace(' ', '+')}")
 
     return new_subject_link, new_target_link, new_name_link
 
 
 def test_add_connection(page: Page, purge_database):
     # browse to the home page
-    page.goto("http://127.0.0.1:8000/home")
+    page.goto("http://localhost:8000/home")
     expect(page).to_have_title("Home")
 
     # find the link to add a connection
@@ -97,22 +94,10 @@ def test_add_connection(page: Page, purge_database):
                                                                                     "Chief Engineer")
 
     # enter another connection that "Andrew knows Java"
-    page.goto("http://127.0.0.1:8000/add-connection")
+    page.goto("http://localhost:8000/add-connection")
     add_new_connection(page, "Andrew", "knows", "Java")
 
     # page displays the new connection as hyperlinks
     new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Andrew", "knows", "Java")
 
     # TODO add tests for second connection
-
-
-def test_file_upload(page: Page):
-    assert False
-
-
-
-
-def test_search_page(page: Page):
-    page.goto("http://127.0.0.1:8000/search")
-    expect(page).to_have_title("Search")
-
