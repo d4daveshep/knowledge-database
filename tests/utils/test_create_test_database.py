@@ -1,24 +1,26 @@
 """
 Test the creation of a test database (using common fixtures)
 """
-import os
+import sqlite3
 from os import path
 
-
-def create_test_database(temp_filename: str):
-    if path.exists(temp_filename):
-        os.remove(temp_filename)
-
-    with open(file=temp_filename, mode="x") as temp_file:
-        temp_file.write('abc')
+from utilities.create_test_database import create_test_database
 
 
 def test_create_test_database():
-    temp_filename = "/tmp/test.db"
+    temp_dir = "."
 
-    create_test_database(temp_filename)
+    db_filename = create_test_database(temp_dir)
 
-    assert path.exists(temp_filename)
-    assert path.getsize(temp_filename) > 0
+    assert path.exists(db_filename)
+    assert path.getsize(db_filename) == 12288
 
-    assert False, "TODO make this a database"
+    with sqlite3.connect(db_filename) as connection:
+        cursor = connection.cursor()
+        cursor.execute("SELECT COUNT(*) FROM nodes")
+        node_count, *rest = cursor.fetchone()
+        assert node_count == 15
+
+        cursor.execute("SELECT COUNT(*) FROM connections")
+        connection_count, *rest = cursor.fetchone()
+        assert connection_count == 17
