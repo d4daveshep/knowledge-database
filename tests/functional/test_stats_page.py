@@ -12,3 +12,6 @@ def test_database_stats(my_base_url: str, page: Page):
     expect(node_count).to_contain_text(re.compile("Nodes: [0-9]+"))
     connection_count = page.get_by_text("Connections")
     expect(connection_count).to_contain_text(re.compile("Connections: [0-9]+"))
+
+def test_populated_database_stats(my_base_url:str, page:Page, db_populated_filename):
+    assert False
