@@ -13,5 +13,12 @@ def test_database_stats(my_base_url: str, page: Page):
     connection_count = page.get_by_text("Connections")
     expect(connection_count).to_contain_text(re.compile("Connections: [0-9]+"))
 
-def test_populated_database_stats(my_base_url:str, page:Page, db_populated_filename):
-    assert False
+def test_populated_test_database_stats(my_base_url:str, page:Page):
+    page.goto(my_base_url + "/database-stats")
+
+    # expect to be at database stats page
+    expect(page).to_have_title("Database Stats")
+    node_count = page.get_by_text("Nodes")
+    expect(node_count).to_have_text("Nodes: 15")
+    connection_count = page.get_by_text("Connections")
+    expect(connection_count).to_have_text("Connections: 17")
