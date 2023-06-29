@@ -1,5 +1,13 @@
 # TDD To Do List #
 
+## Test Database ##
+*[ ] **Create hidden links to purge database and load test data** 
+
+## Search ##
+*[ ] **I can search for nodes and connection names in the same text box**
+* the search text box populates as I type (use Ajax?)
+* Search results separate tables for nodes name matches and connection name matches
+
 ## Add Connection ##
 * reformat the fields into a row
 * put more spacing between the nodes and connections
@@ -28,8 +36,3 @@
 * I can edit a single node name which will alter just that connection
 * I can edit a node name that will make a global change to all nodes with that name
 
-## Search ##
-*[ ] **I can search for nodes and connection names in the same text box**
-* the search text box populates as I type (use Ajax?)
-* Search results separate tables for nodes name matches and connection name matches
-* 
