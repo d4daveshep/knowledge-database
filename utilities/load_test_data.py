@@ -12,6 +12,3 @@ def load_test_data(db_session: Session) -> None:
     cursor: Cursor = db_connection.connection.cursor()
 
     insert_data(cursor)
-
-
-

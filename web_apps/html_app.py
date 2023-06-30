@@ -6,7 +6,9 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
-import utilities.create_test_database
+import utilities
+from utilities.cvs_file_loader import load_staff_list_from_csv_buffer
+from utilities.load_test_data import load_test_data
 from . import models
 from .database import LocalSession, engine
 from .json_rest_app import get_node, get_nodes, get_connections, create_connection, delete_all_nodes, get_database_stats
@@ -42,7 +44,7 @@ def upload(file: UploadFile = File(...), db_session: Session = Depends(get_db_se
     try:
         file_contents = file.file.read()
         text_buffer = TextIOWrapper(BytesIO(file_contents))
-        lines_processed = utilities.cvs_file_loader.load_staff_list_from_csv_buffer(db_session, text_buffer)
+        lines_processed = load_staff_list_from_csv_buffer(db_session, text_buffer)
     except:
         raise HTTPException(status_code=500, detail='Something went wrong')
     finally:
@@ -134,10 +136,7 @@ def show_load_test_data_page(request: Request):
 
 @app.post("/load-test-data", response_class=HTMLResponse)
 def load_test_data(request: Request, db_session: Session = Depends(get_db_session)):
-    # TODO something differnt here
-    # db_cursor = db_session.connection().connection.cursor() # wrong cursor type
-    # utilities.create_test_database.insert_data(db_cursor)
-    # db_cursor.close()
+    utilities.load_test_data.load_test_data(db_session)
 
     stats = get_database_stats(db_session)
     return templates.TemplateResponse("/database-stats.html", {"request": request, "stats": stats})

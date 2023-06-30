@@ -32,7 +32,7 @@ def test_load_test_data(purge_database, my_base_url: str, page: Page):
     node_count = page.get_by_text("Nodes")
     expect(node_count).to_have_text("Nodes: 15")
     connection_count = page.get_by_text("Connections")
-    expect(connection_count).to_have_text("Connections: 15")
+    expect(connection_count).to_have_text("Connections: 17")
 
 
 
