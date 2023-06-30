@@ -4,4 +4,10 @@
 
 {% block content %}
 <h1>Search</h1>
+<form action="/fails" method="get">
+    <label for="search">Search</label>
+    <input type="text" id="search" name="search", value=""><br><br>
+    <input type="submit" value="Submit">
+</form>
+
 {% endblock %}
