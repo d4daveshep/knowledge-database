@@ -104,3 +104,4 @@ def create_test_database(temp_dir: str) -> str:
         db_cursor.close()
 
     return db_filename
+

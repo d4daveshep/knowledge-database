@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
-import utilities.cvs_file_loader
+import utilities.create_test_database
 from . import models
 from .database import LocalSession, engine
 from .json_rest_app import get_node, get_nodes, get_connections, create_connection, delete_all_nodes, get_database_stats
@@ -134,6 +134,10 @@ def show_load_test_data_page(request: Request):
 
 @app.post("/load-test-data", response_class=HTMLResponse)
 def load_test_data(request: Request, db_session: Session = Depends(get_db_session)):
-    # TODO something here
+    # TODO something differnt here
+    # db_cursor = db_session.connection().connection.cursor() # wrong cursor type
+    # utilities.create_test_database.insert_data(db_cursor)
+    # db_cursor.close()
+
     stats = get_database_stats(db_session)
     return templates.TemplateResponse("/database-stats.html", {"request": request, "stats": stats})
