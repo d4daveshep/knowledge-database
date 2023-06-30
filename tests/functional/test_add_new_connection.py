@@ -42,7 +42,7 @@ def check_added_connection_links(page: Page, subject_name: str, conn_name: str, 
     return new_subject_link, new_target_link, new_name_link
 
 
-def test_add_connection(my_base_url:str, page: Page):#, purge_database):
+def test_add_connection(loaded_test_data, my_base_url:str, page: Page):
     # browse to the home page
     page.goto(my_base_url+"/home")
     expect(page).to_have_title("Home")
