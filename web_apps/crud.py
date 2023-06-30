@@ -190,5 +190,3 @@ def delete_connections(db_session: Session) -> int:
     return result.rowcount
 
 
-def load_test_data(db_session):
-    return None
