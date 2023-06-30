@@ -188,3 +188,5 @@ def delete_connections(db_session: Session) -> int:
     result: Result = db_session.execute(delete_stmt)
     db_session.commit()
     return result.rowcount
+
+
