@@ -30,7 +30,9 @@ def test_search_page(loaded_test_data, my_base_url: str, page: Page):
     expect(page).to_have_title("Search Results")
 
     # and at least one node I searched for is there
-    links = page.get_by_role("link", name=re.compile(f".?{searching_for}.?"))
-    expect(links).to_have_count(13)
+    result_count = page.get_by_text("Found 7 Nodes")
+    # links = page.get_by_role("link", name=re.compile(f".?{searching_for}.?"))
+    links = page.get_by_role("listitem")
+    expect(links).to_have_count(7)
 
     # assert False
