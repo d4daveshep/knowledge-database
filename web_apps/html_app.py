@@ -129,6 +129,12 @@ def show_search_page(request: Request):
     return templates.TemplateResponse("/search.html", {"request": request})
 
 
+@app.get("/search-results", response_class=HTMLResponse)
+def search_results(request: Request, like: str, db_session: Session = Depends(get_db_session)):
+    nodes = get_nodes(like=like, db_session=db_session)
+    return templates.TemplateResponse("search-results.html", {"request": request, "like": like, "nodes": nodes})
+
+
 @app.get("/load-test-data", response_class=HTMLResponse)
 def show_load_test_data_page(request: Request):
     return templates.TemplateResponse("/load-test-data.html", {"request": request})

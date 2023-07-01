@@ -1,3 +1,5 @@
+import re
+
 from playwright.sync_api import Page, expect
 
 
@@ -20,11 +22,15 @@ def test_search_page(loaded_test_data, my_base_url: str, page: Page):
     submit_button = page.get_by_role("button", name="Search")
 
     # when I enter a node name and hit submit I go to the Connections to a Node page
-    search_field.fill("Andrew")
+    # searching_for = "Andrew"
+    searching_for = "e"
+    search_field.fill(value=searching_for)
     submit_button.click()
 
-    expect(page).to_have_title("Connections to a Node")
+    expect(page).to_have_title("Search Results")
 
     # and at least one node I searched for is there
+    links = page.get_by_role("link", name=re.compile(f".?{searching_for}.?"))
+    expect(links).to_have_count(13)
 
     # assert False
