@@ -13,7 +13,7 @@ def test_database_stats(my_base_url: str, page: Page):
     connection_count = page.get_by_text("Connections")
     expect(connection_count).to_contain_text(re.compile("Connections: [0-9]+"))
 
-def test_populated_test_database_stats(my_base_url:str, page:Page):
+def test_populated_test_database_stats(loaded_test_data, my_base_url:str, page:Page):
     page.goto(my_base_url + "/database-stats")
 
     # expect to be at database stats page

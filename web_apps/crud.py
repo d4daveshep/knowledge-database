@@ -188,3 +188,14 @@ def delete_connections(db_session: Session) -> int:
     result: Result = db_session.execute(delete_stmt)
     db_session.commit()
     return result.rowcount
+
+
+def get_connection_names(db_session: Session, like: str) -> dict[str:int]:
+    connections = get_connections_like_name(db_session, like)
+    connection_names = {}
+
+    for connection in connections:
+        count = connection_names.get(connection.name, 0)
+        connection_names[connection.name] = count + 1
+
+    return connection_names

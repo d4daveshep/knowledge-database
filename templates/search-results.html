@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<h1>Searching for "{{like}}" </h1>
+<h2>Found {{nodes|length}} Nodes</h2>
+<ul>
+    {% for node in nodes %}
+    <li>
+        <a href="/connections-to-node/{{node.id}}">{{ node.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
+
+<h2>Found {{connection_names|length}} Connection Names</h2>
+<ul>
+    {% for name, count in connection_names.items() %}
+    <li>
+        <a href="/connections/?name_like={{name}}">{{ name|e }}</a>&nbsp;({{ count|e }})
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

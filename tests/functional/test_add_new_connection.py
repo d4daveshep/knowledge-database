@@ -42,7 +42,7 @@ def check_added_connection_links(page: Page, subject_name: str, conn_name: str, 
     return new_subject_link, new_target_link, new_name_link
 
 
-def test_add_connection(my_base_url:str, page: Page, purge_database):
+def test_add_connection(loaded_test_data, my_base_url:str, page: Page):
     # browse to the home page
     page.goto(my_base_url+"/home")
     expect(page).to_have_title("Home")
@@ -55,15 +55,15 @@ def test_add_connection(my_base_url:str, page: Page, purge_database):
     # click the link to a add connection
     add_connection_link.click()
 
-    # enter the connection that "Andrew is a Chief Engineer"
-    add_new_connection(page, "Andrew", "is a", "Chief Engineer")
+    # enter the connection that "Paul was a Sales Engineer"
+    add_new_connection(page, "Paul", "was a", "Sales Engineer")
 
     # arrive at page confirming connection added
     expect(page).to_have_title("Add Connection")
 
     # page displays the new connection as hyperlinks
-    new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Andrew", "is a",
-                                                                                    "Chief Engineer")
+    new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Paul", "was a",
+                                                                                    "Sales Engineer")
 
     # click the subject Andrew
     new_subject_link.click()
@@ -72,8 +72,8 @@ def test_add_connection(my_base_url:str, page: Page, purge_database):
     expect(page).to_have_title("Connections to Node Results")
 
     # page displays the existing connections that Andrew has
-    new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Andrew", "is a",
-                                                                                    "Chief Engineer")
+    new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Paul", "was a",
+                                                                                    "Sales Engineer")
 
     # click the connection name link
     new_name_link.click()
@@ -82,22 +82,22 @@ def test_add_connection(my_base_url:str, page: Page, purge_database):
     expect(page).to_have_title("Connection Results")
 
     # page contains heading
-    heading = page.get_by_role("heading", name="Connections like 'is a'")
-    expect(heading).to_contain_text("is a")
+    heading = page.get_by_role("heading", name="Connections like 'was a'")
+    expect(heading).to_contain_text("was a")
 
     # page contains number found
     count = page.get_by_text(text=re.compile("Found [0-9]+"))
     expect(count).to_contain_text(expected=re.compile("[0-9]+"))
 
     # confirm again the new connection is there
-    new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Andrew", "is a",
-                                                                                    "Chief Engineer")
+    new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Paul", "was a",
+                                                                                    "Sales Engineer")
 
     # enter another connection that "Andrew knows Java"
     page.goto(my_base_url+"/add-connection")
-    add_new_connection(page, "Andrew", "knows", "Java")
+    add_new_connection(page, "Paul", "knows", "Salesforce")
 
     # page displays the new connection as hyperlinks
-    new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Andrew", "knows", "Java")
+    new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Paul", "knows", "Salesforce")
 
     # TODO add tests for second connection
