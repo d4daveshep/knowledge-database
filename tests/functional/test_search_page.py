@@ -35,10 +35,14 @@ def test_search_page(loaded_test_data, my_base_url: str, page: Page):
     # and at least one connection I searched for is there
     expect(page.get_by_text("Found 3 Connection Names")).to_be_visible()
 
-    links = page.get_by_role("listitem")
-    expect(links).to_have_count(10)
+    lists = page.get_by_role("list")
+    expect(lists).to_have_count(2)
+
+    node_list = page.get_by_role("list").first.get_by_role("listitem")
+    expect(node_list).to_have_count(7)
+
+    connection_list = page.get_by_role("list").last.get_by_role("listitem")
+    expect(connection_list).to_have_count(3)
+
 
     # assert False
-
-"""
-"""
