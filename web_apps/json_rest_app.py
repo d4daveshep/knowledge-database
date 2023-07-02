@@ -128,3 +128,4 @@ def delete_all_nodes(db_session: Session = Depends(get_db_session)):
     num_connections_deleted = crud.delete_connections(db_session)
     num_nodes_deleted = crud.delete_nodes(db_session)
     return {"message": f"deleted {num_nodes_deleted} nodes and {num_connections_deleted} connections"}
+

@@ -12,11 +12,12 @@
     </li>
     {% endfor %}
 </ul>
-<p>Found {{connections|length}} Connections</p>
+
+<p>Found {{connection_names|length}} Connections</p>
 <ul>
-    {% for connection in connections %}
+    {% for name, count in connection_names.items() %}
     <li>
-        <a href="/connection/{{node.id}}">{{ connection.name }}</a>
+        <a href="/fail">{{ name|e }},{{ count|e }}</a>
     </li>
     {% endfor %}
 </ul>

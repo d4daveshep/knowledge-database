@@ -10,6 +10,7 @@ import utilities
 from utilities.cvs_file_loader import load_staff_list_from_csv_buffer
 from utilities.load_test_data import load_test_data
 from . import models
+from .crud import get_connection_names
 from .database import LocalSession, engine
 from .json_rest_app import get_node, get_nodes, get_connections, create_connection, delete_all_nodes, get_database_stats
 from .schemas import NodeCreate, ConnectionCreate, Connection
@@ -119,7 +120,7 @@ def show_database_stats_page(request: Request, db_session: Session = Depends(get
 
 @app.get("/connections/", response_class=HTMLResponse)
 def get_connections_by_name(request: Request, name_like: str, db_session: Session = Depends(get_db_session)):
-    connections:list[Connection] = get_connections(name_like=name_like, db_session=db_session)
+    connections: list[Connection] = get_connections(name_like=name_like, db_session=db_session)
 
     return templates.TemplateResponse("/connection-results.html",
                                       {"request": request, "name": name_like, "connections": connections})
@@ -133,7 +134,9 @@ def show_search_page(request: Request):
 @app.get("/search-results", response_class=HTMLResponse)
 def search_results(request: Request, like: str, db_session: Session = Depends(get_db_session)):
     nodes = get_nodes(like=like, db_session=db_session)
-    return templates.TemplateResponse("search-results.html", {"request": request, "like": like, "nodes": nodes})
+    connection_names: dict[str:int] = get_connection_names(like=like, db_session=db_session)
+    return templates.TemplateResponse("search-results.html", {"request": request, "like": like, "nodes": nodes,
+                                                              "connection_names": connection_names})
 
 
 @app.get("/load-test-data", response_class=HTMLResponse)

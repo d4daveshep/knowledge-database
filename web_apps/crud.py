@@ -190,7 +190,7 @@ def delete_connections(db_session: Session) -> int:
     return result.rowcount
 
 
-def get_connection_names(db_session: Session, like: str) -> dict:
+def get_connection_names(db_session: Session, like: str) -> dict[str:int]:
     connections = get_connections_like_name(db_session, like)
     connection_names = {}
 
