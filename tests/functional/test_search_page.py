@@ -33,7 +33,7 @@ def test_search_page(loaded_test_data, my_base_url: str, page: Page):
     expect(page.get_by_text("Found 7 Nodes")).to_be_visible()
 
     # and at least one connection I searched for is there
-    expect(page.get_by_text("Found 3 Connections")).to_be_visible()
+    expect(page.get_by_text("Found 3 Connection Names")).to_be_visible()
 
     links = page.get_by_role("listitem")
     expect(links).to_have_count(10)

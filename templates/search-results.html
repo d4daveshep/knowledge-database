@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Searching for "{{like}}" </h1>
-<p>Found {{nodes|length}} Nodes</p>
+<h2>Found {{nodes|length}} Nodes</h2>
 <ul>
     {% for node in nodes %}
     <li>
@@ -13,11 +13,11 @@
     {% endfor %}
 </ul>
 
-<p>Found {{connection_names|length}} Connections</p>
+<h2>Found {{connection_names|length}} Connection Names</h2>
 <ul>
     {% for name, count in connection_names.items() %}
     <li>
-        <a href="/fail">{{ name|e }},{{ count|e }}</a>
+        <a href="/connections/?name_like={{name}}">{{ name|e }}</a>&nbsp;({{ count|e }})
     </li>
     {% endfor %}
 </ul>
