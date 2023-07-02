@@ -3,17 +3,6 @@
 {% block title %}Connection Results{% endblock %}
 
 {% block content %}
-<h1>Connections like '{{name}}' </h1>
-<p>Found {{connections|length}}</p>
-<table>
-    <tr><th>Subject</th><th>Connection</th><th>Target</th></tr>
-    {% for connection in connections %}
-    <tr>
-        <td><a href="/connections-to-node/{{connection.subject.id}}">{{ connection.subject.name }}</a></td>
-        <td><a href="/connections/?name_like={{connection.name|replace(' ','+')}}">{{ connection.name }}</a></td>
-        <td><a href="/connections-to-node/{{connection.target.id}}">{{ connection.target.name }}</a></td>
-    </tr>
-    {% endfor %}
-</table>
-
+<h1>Connections named <i>{{name}}</i></h1>
+{% include "connections-table.html" %}
 {% endblock %}

@@ -11,9 +11,8 @@
 * If I enter commas in subject and target nodes then I get a cross-product of connections
 * 
 ## Connections to a Node ##
-* reuse the same layout as on Add Connection
 * make the table grid invisible
-* 
+
 ## Delete Connections ##
 * I can delete a connection
 * I can delete multiple connections
@@ -35,4 +34,5 @@
 *[x] Create hidden links to purge database and load test data 
 *[x] I can search for nodes and connection names in the same text box
 *[x] Search results separate tables for nodes name matches and connection name matches
+*[x] reuse the same layout as on Add Connection
 

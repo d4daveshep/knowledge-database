@@ -67,15 +67,6 @@ def home(request: Request):
     return templates.TemplateResponse("home.html", {"request": request, "date": date_string})
 
 
-@app.get("/search-nodes", response_class=HTMLResponse)
-def search_nodes(request: Request):
-    return templates.TemplateResponse("search-nodes.html", {"request": request})
-
-
-@app.get("/node-results", response_class=HTMLResponse)
-def node_results(request: Request, like: str, db_session: Session = Depends(get_db_session)):
-    nodes = get_nodes(like=like, db_session=db_session)
-    return templates.TemplateResponse("node-results.html", {"request": request, "like": like, "nodes": nodes})
 
 
 @app.get("/connections-to-node/{node_id}", response_class=HTMLResponse)

@@ -82,7 +82,7 @@ def test_add_connection(loaded_test_data, my_base_url:str, page: Page):
     expect(page).to_have_title("Connection Results")
 
     # page contains heading
-    heading = page.get_by_role("heading", name="Connections like 'was a'")
+    heading = page.get_by_role("heading", name="Connections named was a")
     expect(heading).to_contain_text("was a")
 
     # page contains number found
