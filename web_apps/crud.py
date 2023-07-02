@@ -190,3 +190,5 @@ def delete_connections(db_session: Session) -> int:
     return result.rowcount
 
 
+def get_connection_names(db_session:Session, like:str):
+    return None

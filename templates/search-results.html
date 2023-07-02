@@ -12,5 +12,13 @@
     </li>
     {% endfor %}
 </ul>
+<p>Found {{connections|length}} Connections</p>
+<ul>
+    {% for connection in connections %}
+    <li>
+        <a href="/connection/{{node.id}}">{{ connection.name }}</a>
+    </li>
+    {% endfor %}
+</ul>
 
 {% endblock %}

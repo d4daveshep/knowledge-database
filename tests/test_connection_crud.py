@@ -163,3 +163,8 @@ def test_delete_all_connections(db_session):
 
     new_connection_count = crud.get_table_size(db_session, models.Connection)
     assert new_connection_count == 0
+
+def test_get_connection_names(db_session):
+    connection_names = crud.get_connection_names(db_session, like="e")
+    assert len(connection_names) == 3
+
