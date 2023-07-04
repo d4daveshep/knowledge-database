@@ -14,7 +14,7 @@
 * make the table grid invisible
 
 ## Delete Connections ##
-* I can delete a connection
+*[ ] **I can delete a connection**
 * I can delete multiple connections
 * I can delete all connections displayed
 
