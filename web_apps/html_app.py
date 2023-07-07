@@ -141,3 +141,9 @@ def load_test_data(request: Request, db_session: Session = Depends(get_db_sessio
 
     stats = get_database_stats(db_session)
     return templates.TemplateResponse("/database-stats.html", {"request": request, "stats": stats})
+
+@app.get("/delete-connection/{connection_id}", response_class=HTMLResponse)
+def delete_connection(request:Request, connection_id:int, name_like:str, db_session:Session=Depends(get_db_session)):
+    print(f"name_like='{name_like}'")
+    # TODO need to delete connection and then get connections matching name_like
+    return templates.TemplateResponse("/connection-results.html", {"request":request, "name_like":name_like})
