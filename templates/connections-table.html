@@ -8,7 +8,7 @@
             <td><a href="/connections/?name_like={{connection.name|replace(' ','+')}}">{{ connection.name }}</a></td>
             <td><a href="/connections-to-node/{{connection.target.id}}">{{ connection.target.name }}</a></td>
             <td>
-                <input type="hidden" name="name_like", value="{{connection.name}}">
+                <input type="hidden" name="name_like", value="{{name}}">
                 <button type="submit" formmethod="get" formaction="/delete-connection/{{connection.id}}">Delete</button>
             </td>
         </form>
