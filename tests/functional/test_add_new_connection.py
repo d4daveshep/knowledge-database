@@ -69,7 +69,7 @@ def test_add_connection(loaded_test_data, my_base_url:str, page: Page):
     new_subject_link.click()
 
     # takes us to the connections-to-node-results page
-    expect(page).to_have_title("Connections to Node Results")
+    expect(page).to_have_title("Connections Results")
 
     # page displays the existing connections that Andrew has
     new_subject_link, new_target_link, new_name_link = check_added_connection_links(page, "Paul", "was a",
