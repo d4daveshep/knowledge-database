@@ -1,9 +1,10 @@
 <h2>Found {{connections|length}} Connections</h2>
 <table>
-    <tr><th>Subject</th><th>Connection</th><th>Target</th></tr>
+    <tr><th></th><th>Subject</th><th>Connection</th><th>Target</th></tr>
     {% for connection in connections %}
     <tr>
         <form>
+            <td><input type="checkbox" id="connection_id_{{connection.id}}" name="{{connection.id}}" value="{{connection.id}}"></td>
             <td><a href="/connections-to-node/{{connection.subject.id}}">{{ connection.subject.name }}</a></td>
             <td><a href="/connections/?name_like={{connection.name|replace(' ','+')}}">{{ connection.name }}</a></td>
             <td><a href="/connections-to-node/{{connection.target.id}}">{{ connection.target.name }}</a></td>
