@@ -145,7 +145,6 @@ def load_test_data(request: Request, db_session: Session = Depends(get_db_sessio
 @app.get("/delete-connection/{connection_id}", response_class=HTMLResponse)
 def delete_connection(request:Request, connection_id:int, name_like:str, db_session:Session=Depends(get_db_session)):
 
-    # TODO need to delete connection
     if not crud.delete_connection(db_session, connection_id):
         raise HTTPException(status_code=404)
 
