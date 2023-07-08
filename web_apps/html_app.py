@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 import utilities
 from utilities.cvs_file_loader import load_staff_list_from_csv_buffer
 from utilities.load_test_data import load_test_data
-from . import models
+from . import models, json_rest_app, crud
 from .crud import get_connection_names
 from .database import LocalSession, engine
 from .json_rest_app import get_node, get_nodes, get_connections, create_connection, delete_all_nodes, get_database_stats
@@ -146,6 +146,8 @@ def load_test_data(request: Request, db_session: Session = Depends(get_db_sessio
 def delete_connection(request:Request, connection_id:int, name_like:str, db_session:Session=Depends(get_db_session)):
 
     # TODO need to delete connection
+    if not crud.delete_connection(db_session, connection_id):
+        raise HTTPException(status_code=404)
 
     connections: list[Connection] = get_connections(name_like=name_like, db_session=db_session)
 
