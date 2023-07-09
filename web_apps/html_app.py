@@ -1,5 +1,6 @@
 import datetime
 from io import BytesIO, TextIOWrapper
+from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException, Request, UploadFile, File, Form
 from fastapi.responses import HTMLResponse
@@ -9,7 +10,7 @@ from sqlalchemy.orm import Session
 import utilities
 from utilities.cvs_file_loader import load_staff_list_from_csv_buffer
 from utilities.load_test_data import load_test_data
-from . import models, json_rest_app, crud
+from . import models, crud
 from .crud import get_connection_names
 from .database import LocalSession, engine
 from .json_rest_app import get_node, get_nodes, get_connections, create_connection, delete_all_nodes, get_database_stats
@@ -65,8 +66,6 @@ def upload(file: UploadFile = File(...), db_session: Session = Depends(get_db_se
 def home(request: Request):
     date_string = datetime.date.today().strftime("%A %d %b %Y")
     return templates.TemplateResponse("home.html", {"request": request, "date": date_string})
-
-
 
 
 @app.get("/connections-to-node/{node_id}", response_class=HTMLResponse)
@@ -142,12 +141,26 @@ def load_test_data(request: Request, db_session: Session = Depends(get_db_sessio
     stats = get_database_stats(db_session)
     return templates.TemplateResponse("/database-stats.html", {"request": request, "stats": stats})
 
-@app.get("/delete-connection/{connection_id}", response_class=HTMLResponse)
-def delete_connection(request:Request, connection_id:int, name_like:str, db_session:Session=Depends(get_db_session)):
 
+@app.get("/delete-connection/{connection_id}", response_class=HTMLResponse)
+def delete_connection(request: Request, connection_id: int, name_like: str,
+                      db_session: Session = Depends(get_db_session)):
     if not crud.delete_connection(db_session, connection_id):
         raise HTTPException(status_code=404)
 
     connections: list[Connection] = get_connections(name_like=name_like, db_session=db_session)
 
-    return templates.TemplateResponse("/connection-results.html", {"request":request, "name_like":name_like, "connections":connections})
+    return templates.TemplateResponse("/connection-results.html",
+                                      {"request": request, "name_like": name_like, "connections": connections})
+
+
+@app.post("/delete-connections/", response_class=HTMLResponse)
+async def delete_connections(request: Request, name_like: str=Form(...),
+                             conn_id: List[int] = Form(...)):  # , db_session: Session = Depends(get_db_session)):
+    print("id list =")
+    print(conn_id)
+
+    # connections: list[Connection] = get_connections(name_like=name_like, db_session=db_session)
+
+    return templates.TemplateResponse("/connection-results.html",
+                                      {"request": request})  # , "name_like":name_like, "connections":connections})
