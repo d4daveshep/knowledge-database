@@ -113,7 +113,7 @@ def get_connections_by_name(request: Request, name_like: str, db_session: Sessio
     connections: list[Connection] = get_connections(name_like=name_like, db_session=db_session)
 
     return templates.TemplateResponse("/connection-results.html",
-                                      {"request": request, "name": name_like, "connections": connections})
+                                      {"request": request, "name_like": name_like, "connections": connections})
 
 
 @app.get("/search", response_class=HTMLResponse)
@@ -161,6 +161,8 @@ def delete_connections(request: Request, name_like: str = Form(...),
     This handles a dynamic number of conn_id items in the form
     :param conn_id: list of connection ids to be deleted, can be empty
     """
+    print(f"name_like={name_like}")
+    print("conn_id list", conn_id)
     for id in conn_id:
         if not crud.delete_connection(db_session, connection_id=id):
             raise HTTPException(status_code=404)
