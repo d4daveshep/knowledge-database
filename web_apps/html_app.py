@@ -156,10 +156,10 @@ def delete_connection(request: Request, connection_id: int, name_like: str,
 
 @app.post("/delete-connections/", response_class=HTMLResponse)
 def delete_connections(request: Request, name_like: str = Form(...),
-                       conn_id: List[int] = Form(...), db_session: Session = Depends(get_db_session)):
+                       conn_id: List[int] = Form(list()), db_session: Session = Depends(get_db_session)):
     """
     This handles a dynamic number of conn_id items in the form
-    :param conn_id: list of connection ids to be deleted
+    :param conn_id: list of connection ids to be deleted, can be empty
     """
     for id in conn_id:
         if not crud.delete_connection(db_session, connection_id=id):
