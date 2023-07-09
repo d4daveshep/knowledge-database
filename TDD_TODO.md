@@ -14,7 +14,6 @@
 * make the table grid invisible
 
 ## Delete Connections ##
-* I can delete multiple connections
 * I can delete all connections displayed
 
 ## Delete Nodes ##
@@ -35,4 +34,6 @@
 *[x] Search results separate tables for nodes name matches and connection name matches
 *[x] reuse the same layout as on Add Connection
 *[x] I can delete a connection
+*[x] I can delete multiple connections
+*[x] Only selected connections get deleted
 
