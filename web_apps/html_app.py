@@ -155,12 +155,17 @@ def delete_connection(request: Request, connection_id: int, name_like: str,
 
 
 @app.post("/delete-connections/", response_class=HTMLResponse)
-async def delete_connections(request: Request, name_like: str=Form(...),
-                             conn_id: List[int] = Form(...)):  # , db_session: Session = Depends(get_db_session)):
-    print("id list =")
-    print(conn_id)
+def delete_connections(request: Request, name_like: str = Form(...),
+                       conn_id: List[int] = Form(...), db_session: Session = Depends(get_db_session)):
+    """
+    This handles a dynamic number of conn_id items in the form
+    :param conn_id: list of connection ids to be deleted
+    """
+    for id in conn_id:
+        if not crud.delete_connection(db_session, connection_id=id):
+            raise HTTPException(status_code=404)
 
-    # connections: list[Connection] = get_connections(name_like=name_like, db_session=db_session)
+    connections: list[Connection] = get_connections(name_like=name_like, db_session=db_session)
 
     return templates.TemplateResponse("/connection-results.html",
-                                      {"request": request})  # , "name_like":name_like, "connections":connections})
+                                      {"request": request, "name_like": name_like, "connections": connections})
