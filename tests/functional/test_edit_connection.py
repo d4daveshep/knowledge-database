@@ -3,7 +3,7 @@ import re
 from playwright.sync_api import Page, expect
 
 
-def test_edit_single_connection_name(loaded_test_data,my_base_url:str,page:Page):
+def test_edit_single_connection_name(loaded_test_data, my_base_url: str, page: Page):
     # search for some connections
     page.goto(my_base_url + "/connections/?name_like=has+title")
     orig_found_heading = page.get_by_role("heading", name=re.compile("Found [0-9]+ Connections"))
@@ -15,6 +15,9 @@ def test_edit_single_connection_name(loaded_test_data,my_base_url:str,page:Page)
 
     # should go to the edit connection page
     expect(page).to_have_title("Edit Connection")
+
+    # should find connection name field editable
+
 
     # change the connection name
 

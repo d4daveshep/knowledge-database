@@ -171,3 +171,9 @@ def delete_connections(request: Request, name_like: str = Form(...),
 
     return templates.TemplateResponse("/connection-results.html",
                                       {"request": request, "name_like": name_like, "connections": connections})
+
+
+@app.get("/edit-connection/{connection_id}", response_class=HTMLResponse)
+def show_edit_connection_page(request: Request, connection_id: int,
+                              db_session: Session = Depends(get_db_session)):
+    return templates.TemplateResponse("/edit-connection.html", {"request": request})

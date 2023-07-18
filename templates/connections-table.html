@@ -11,6 +11,7 @@
             <td><a href="/connections/?name_like={{connection.name|replace(' ','+')}}">{{ connection.name }}</a></td>
             <td><a href="/connections-to-node/{{connection.target.id}}">{{ connection.target.name }}</a></td>
             <td><button type="submit" formmethod="get" formaction="/edit-connection/{{connection.id}}">Edit</button></td>
+
         </tr>
     {% endfor %}
     </table>
