@@ -185,5 +185,7 @@ def show_edit_connection_page(request: Request, connection_id: int,
 @app.post("/edit-connection", response_class=HTMLResponse)
 def edit_connection_in_database(request: Request, conn_name: str = Form(), conn_id: int = Form(),
                                 db_session: Session = Depends(get_db_session)):
+    # TODO update the database
+    # TODO get the connection results for the updated name
     return templates.TemplateResponse("/connection-results.html",
                                       {"request": request, "name_like": conn_name, "connections": []})
