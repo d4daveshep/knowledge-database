@@ -178,4 +178,12 @@ def delete_connections(request: Request, name_like: str = Form(...),
 def show_edit_connection_page(request: Request, connection_id: int,
                               db_session: Session = Depends(get_db_session)):
     connection = get_connection(connection_id=connection_id, db_session=db_session)
-    return templates.TemplateResponse("/edit-connection.html", {"request": request, "connection_name": connection.name})
+    return templates.TemplateResponse("/edit-connection.html", {"request": request, "conn_id": connection_id,
+                                                                "connection_name": connection.name})
+
+
+@app.post("/edit-connection", response_class=HTMLResponse)
+def edit_connection_in_database(request: Request, conn_name: str = Form(), conn_id: int = Form(),
+                                db_session: Session = Depends(get_db_session)):
+    return templates.TemplateResponse("/connection-results.html",
+                                      {"request": request, "name_like": conn_name, "connections": []})

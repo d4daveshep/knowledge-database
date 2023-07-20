@@ -22,11 +22,13 @@ def test_edit_single_connection_name(loaded_test_data, my_base_url: str, page: P
     expect(conn_name_field).to_be_editable()
 
     # change the connection name
-#    conn_name_field.fill(conn_name)
+    conn_name_field.fill("is a")
 
     # click button to change just this connection name
+    page.get_by_role("button", name="Add Connection").click()
 
     # check I'm back on the connections to node page
+    expect(page).to_have_title("Connection Results")
 
     # and my connection name has changed
 
