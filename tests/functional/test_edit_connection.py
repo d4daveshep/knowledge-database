@@ -29,6 +29,9 @@ def test_edit_single_connection_name(loaded_test_data, my_base_url: str, page: P
 
     # check I'm back on the connections to node page
     expect(page).to_have_title("Connection Results")
+    expect(page.get_by_role("heading", name="Connections named is a")).to_be_visible()
+    expect(page.get_by_text("Found 1 Connections")).to_be_visible()
+
 
     # and my connection name has changed
 
