@@ -17,9 +17,12 @@ def test_edit_single_connection_name(loaded_test_data, my_base_url: str, page: P
     expect(page).to_have_title("Edit Connection")
 
     # should find connection name field editable
-
+    conn_name_field = page.get_by_label("Connection name:")
+    expect(conn_name_field).to_have_value("has title")
+    expect(conn_name_field).to_be_editable()
 
     # change the connection name
+#    conn_name_field.fill(conn_name)
 
     # click button to change just this connection name
 
