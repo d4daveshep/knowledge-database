@@ -32,7 +32,5 @@ def test_edit_single_connection_name(loaded_test_data, my_base_url: str, page: P
     expect(page.get_by_role("heading", name="Connections named is a")).to_be_visible()
     expect(page.get_by_text("Found 1 Connections")).to_be_visible()
 
-
     # and my connection name has changed
-
-    assert False, "TODO do something more here"
+    expect(page.get_by_role("row", name="Brian is a Practice Lead Edit")).to_be_visible()

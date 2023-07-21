@@ -185,7 +185,14 @@ def show_edit_connection_page(request: Request, connection_id: int,
 @app.post("/edit-connection", response_class=HTMLResponse)
 def edit_connection_in_database(request: Request, conn_name: str = Form(), conn_id: int = Form(),
                                 db_session: Session = Depends(get_db_session)):
-    # TODO update the database
-    # TODO get the connection results for the updated name
+    connection: Connection = crud.get_connection(db_session, conn_id)
+    if connection is None:
+        assert False  # TODO fix this with a proper error page
+
+    connection.name = conn_name
+    connection = crud.update_connection(db_session, conn_id, updated_connection=connection)
+
+    connections: list[Connection] = crud.get_connections_like_name(db_session=db_session, like=conn_name)
+
     return templates.TemplateResponse("/connection-results.html",
-                                      {"request": request, "name_like": conn_name, "connections": []})
+                                      {"request": request, "name_like": conn_name, "connections": connections})
