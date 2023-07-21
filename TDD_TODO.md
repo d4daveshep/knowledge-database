@@ -21,7 +21,6 @@
 * I get warned about the number of connections deleted when deleting a node
 
 ## Edit Connection ##
-*[ ] **I can edit a single connection name that alters just that connection**
 * I can edit a connection name that alters all connections with that name
 
 ## Edit Node ##
@@ -36,4 +35,4 @@
 *[x] I can delete a connection
 *[x] I can delete multiple connections
 *[x] Only selected connections get deleted
-
+*[x] I can edit a single connection name that alters just that connection
