@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Connection{% endblock %}
+
+{% block content %}
+    <h1>Edit Connection</h1>
+    <form action="/edit-connection" method="post">
+        <label for="conn_name">Connection name:</label><br>
+        <input type="text" id="conn_name" name="conn_name" value="{{connection_name}}"><br>
+        <input type="submit" value="Add Connection">
+        <input type="hidden" name="conn_id", value="{{conn_id}}">
+
+    </form>
+
+{% endblock %}

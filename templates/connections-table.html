@@ -2,7 +2,7 @@
 <form>
     <table>
     <tr>
-        <th></th><th>Subject</th><th>Connection</th><th>Target</th></th>
+        <th></th><th>Subject</th><th>Connection</th><th>Target</th><th></th>
     </tr>
     {% for connection in connections %}
         <tr>
@@ -10,6 +10,8 @@
             <td><a href="/connections-to-node/{{connection.subject.id}}">{{ connection.subject.name }}</a></td>
             <td><a href="/connections/?name_like={{connection.name|replace(' ','+')}}">{{ connection.name }}</a></td>
             <td><a href="/connections-to-node/{{connection.target.id}}">{{ connection.target.name }}</a></td>
+            <td><button type="submit" formmethod="get" formaction="/edit-connection/{{connection.id}}">Edit</button></td>
+
         </tr>
     {% endfor %}
     </table>

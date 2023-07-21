@@ -13,7 +13,8 @@ from utilities.load_test_data import load_test_data
 from . import models, crud
 from .crud import get_connection_names
 from .database import LocalSession, engine
-from .json_rest_app import get_node, get_nodes, get_connections, create_connection, delete_all_nodes, get_database_stats
+from .json_rest_app import get_node, get_nodes, get_connections, create_connection, delete_all_nodes, \
+    get_database_stats, get_connection
 from .schemas import NodeCreate, ConnectionCreate, Connection
 
 models.Base.metadata.create_all(bind=engine)
@@ -171,3 +172,27 @@ def delete_connections(request: Request, name_like: str = Form(...),
 
     return templates.TemplateResponse("/connection-results.html",
                                       {"request": request, "name_like": name_like, "connections": connections})
+
+
+@app.get("/edit-connection/{connection_id}", response_class=HTMLResponse)
+def show_edit_connection_page(request: Request, connection_id: int,
+                              db_session: Session = Depends(get_db_session)):
+    connection = get_connection(connection_id=connection_id, db_session=db_session)
+    return templates.TemplateResponse("/edit-connection.html", {"request": request, "conn_id": connection_id,
+                                                                "connection_name": connection.name})
+
+
+@app.post("/edit-connection", response_class=HTMLResponse)
+def edit_connection_in_database(request: Request, conn_name: str = Form(), conn_id: int = Form(),
+                                db_session: Session = Depends(get_db_session)):
+    connection: Connection = crud.get_connection(db_session, conn_id)
+    if connection is None:
+        assert False  # TODO fix this with a proper error page
+
+    connection.name = conn_name
+    connection = crud.update_connection(db_session, conn_id, updated_connection=connection)
+
+    connections: list[Connection] = crud.get_connections_like_name(db_session=db_session, like=conn_name)
+
+    return templates.TemplateResponse("/connection-results.html",
+                                      {"request": request, "name_like": conn_name, "connections": connections})
